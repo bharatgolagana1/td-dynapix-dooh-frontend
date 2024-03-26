@@ -7,6 +7,7 @@ export enum AppRoutePaths {
   userManagement = 'user-management',
   userList = 'user-list',
   dashboard = 'dashboard',
+  users = 'users',
   resetPassword = 'reset-password',
   email = 'email',
   forgotPassword = 'forgot-password',
