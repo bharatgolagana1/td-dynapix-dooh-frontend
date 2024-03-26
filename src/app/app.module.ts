@@ -16,6 +16,7 @@ import { DashboardModule } from './features/dashboard/dashboard.module';
 import { UsersModule } from './features/users/users.module';
 
 
+import { SchedulerModule } from './features/schedulers/scheduler.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +34,8 @@ import { UsersModule } from './features/users/users.module';
     MaterialModule,
     CoreModule,
     DashboardModule,
-    UsersModule 
+    UsersModule,
+    SchedulerModule
   ],
   providers: [],
   bootstrap: [AppComponent],
