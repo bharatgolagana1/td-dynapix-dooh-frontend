@@ -21,6 +21,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./features/users/users.module').then(
         (m) => m.UsersModule
+      ),},
+
+  {
+    path: AppRoutePaths.schedulers,
+    loadChildren: () =>
+      import('./features/schedulers/scheduler.module').then(
+        (m) => m.SchedulerModule
       ),
   },
 ];
