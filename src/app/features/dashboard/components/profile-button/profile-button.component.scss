@@ -1,0 +1,27 @@
+.profile-btn {
+  width: auto;
+  height: auto;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 0;
+  font-size: 14px !important;
+  padding: 2px 20px 2px 57px;
+}
+::ng-deep .profile-btn .mat-mdc-button-persistent-ripple {
+  border-radius: 12px;
+  padding: 3px;
+}
+.profile-btn-img {
+  left: 0;
+  top: 50%;
+  width: 45px;
+  height: 45px;
+  display: block;
+  position: absolute;
+  transform: translateY(-50%);
+}
+.profile-btn-subtitle {
+  display: block;
+  margin-top: 5px;
+  font-size: 16px;
+}
