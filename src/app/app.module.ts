@@ -13,6 +13,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { CoreModule } from './core/core.module';
 import { DashboardModule } from './features/dashboard/dashboard.module';
+import { UsersModule } from './features/users/users.module';
+
 
 @NgModule({
   declarations: [
@@ -31,6 +33,7 @@ import { DashboardModule } from './features/dashboard/dashboard.module';
     MaterialModule,
     CoreModule,
     DashboardModule,
+    UsersModule 
   ],
   providers: [],
   bootstrap: [AppComponent],

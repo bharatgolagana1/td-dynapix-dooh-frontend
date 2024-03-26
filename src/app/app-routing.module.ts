@@ -16,6 +16,13 @@ const routes: Routes = [
         (m) => m.DashboardModule
       ),
   },
+  {
+    path: AppRoutePaths.users,
+    loadChildren: () =>
+      import('./features/users/users.module').then(
+        (m) => m.UsersModule
+      ),
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
