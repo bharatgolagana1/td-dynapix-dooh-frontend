@@ -11,7 +11,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
-
+import { MatRadioModule } from '@angular/material/radio';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
 @NgModule({
   declarations: [],
   imports: [
@@ -28,6 +30,9 @@ import { MatCardModule } from '@angular/material/card';
     MatListModule,
     MatTableModule,
     MatCardModule,
+    MatRadioModule,
+    MatAutocompleteModule,
+    MatSelectModule 
   ],
   exports: [
     MatButtonModule,
@@ -43,6 +48,9 @@ import { MatCardModule } from '@angular/material/card';
     MatListModule,
     MatTableModule,
     MatCardModule,
+    MatRadioModule,
+    MatAutocompleteModule,
+    MatSelectModule 
   ],
 })
 export class MaterialModule {}

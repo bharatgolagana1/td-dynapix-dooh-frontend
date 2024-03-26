@@ -1,1 +1,125 @@
-<p>create-user works!</p>
+<div class="create-user-main-container">
+    <div class="create-user-title">New Users</div>
+    <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()" >
+    <div class="create-user-content">
+            <div class="section-title-main">
+              <div class="section-title-txt">User Info</div>
+            </div>
+            <div class="create-user-section-grid">
+                <mat-form-field appearance="outline" [style.fontSize.px]="14">
+                  <mat-label>First Name</mat-label>
+                  <input matInput formControlName="firstName" placeholder="First name" value="" required  />
+                  <mat-hint style="color: red;" *ngIf="createUserForm.get('firstName')?.touched && createUserForm.get('firstName')?.errors?.['required']">
+                    Firstname is required
+                  </mat-hint>
+                </mat-form-field>
+                <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
+                  <mat-label>Last Name</mat-label>
+                  <input matInput formControlName="lastName"   placeholder="Last name" value="" required  />
+                  <mat-hint style="color: red;" *ngIf="createUserForm.get('lastName')?.touched && createUserForm.get('lastName')?.errors?.['required']">
+                    Lastname is required
+                  </mat-hint>
+                </mat-form-field>
+                <div>
+                  <mat-label class="create-user-geder--content">Gender</mat-label>
+                  <mat-radio-group formControlName="gender" aria-label="Select an option">
+                    <mat-radio-button value="female">Female</mat-radio-button>
+                    <mat-radio-button value="male">Male</mat-radio-button>
+                    <mat-radio-button value="others">Others</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
+                    <mat-label>User Name</mat-label>
+                    <input matInput formControlName="userName"  placeholder="User name" value="" required />
+                    <mat-hint style="color: red;" *ngIf="createUserForm.get('userName')?.touched && createUserForm.get('userName')?.errors?.['required']">
+                      Username is required
+                    </mat-hint>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline"  [style.fontSize.px]="14" class="matform-full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" placeholder="Email" value="" required />
+                    <mat-hint style="color: red;" *ngIf="createUserForm.get('email')?.touched && createUserForm.get('email')?.errors?.['required']">
+                      Email is required
+                    </mat-hint>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="password" placeholder="Password" value=""  required />
+                    <mat-hint style="color: red;" *ngIf="createUserForm.get('password')?.touched && createUserForm.get('password')?.errors?.['required']">
+                      Password is required
+                    </mat-hint>
+                  </mat-form-field>
+                <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
+                    <mat-label>Identification Type</mat-label>
+                    <mat-select required formControlName="identificationType" [value]="defaultTypes">
+                      <mat-option *ngFor="let identificationType of identificationTypes" [value]="identificationType">
+                        {{identificationType }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-hint style="color: red;" *ngIf="createUserForm.get('identificationType')?.touched && createUserForm.get('identificationType')?.errors?.['required']">
+                     IdentificationType is required
+                    </mat-hint>
+                  </mat-form-field>
+                <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
+                  <mat-label>Identification No</mat-label>
+                  <input matInput formControlName="identificationNo" placeholder="Identification No" value="" required />
+                  <mat-hint style="color: red;" *ngIf="createUserForm.get('identificationNo')?.touched && createUserForm.get('identificationNo')?.errors?.['required']">
+                    identificationNo is required
+                  </mat-hint>
+                </mat-form-field>
+                <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
+                  <mat-label>Employee No</mat-label>
+                  <input matInput formControlName="employeeNo" placeholder="Employee no" value=""  required />
+                  <mat-hint style="color: red;" *ngIf="createUserForm.get('employeeNo')?.touched && createUserForm.get('employeeNo')?.errors?.['required']">
+                    Employee No is required
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <mat-divider style="color: #e7e7ec"></mat-divider>
+              <div class="create-user-section--content">
+              <div class="section-title-main">
+                <div class="section-title-txt">Role & Profile</div>
+              </div>
+              <div class="create-user-section-grid">
+                <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
+                    <mat-label>Role</mat-label>
+                    <mat-select required formControlName="role" [value]="defaultRole">
+                      <mat-option *ngFor="let role of roles"  [value]="role">
+                        {{role}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-hint style="color: red;" *ngIf="createUserForm.get('role')?.touched && createUserForm.get('role')?.errors?.['required']">
+                      Role is required
+                    </mat-hint>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
+                  <mat-label>Profile</mat-label>
+                  <mat-select required formControlName="profile" [value]="defaultProfile">
+                    <mat-option *ngFor="let profile of profiles" [value]="profile">
+                      {{profile }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-hint style="color: red;" *ngIf="createUserForm.get('profile')?.touched && createUserForm.get('profile')?.errors?.['required']">
+                    Profile is required
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+            <div mat-dialog-actions class="footer">
+                <div class="footer-button">
+                    <button type="submit" mat-raised-button color="primary" [disabled]="isSubmitting">
+                        <span *ngIf="!isSubmitting">Save</span>
+                        <span *ngIf="isSubmitting">
+                          <mat-spinner diameter="20" color="accent"></mat-spinner>
+                        </span>
+                      </button>
+                </div>
+             </div>
+          </div>
+          
+          
+
+    </form>
+
+        </div>
+      
