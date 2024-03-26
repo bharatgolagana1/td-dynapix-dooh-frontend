@@ -1,4 +1,42 @@
 /* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Roboto";
+}
+.mat-mdc-form-field .mdc-notched-outline__notch {
+  border-right: 0px !important;
+}
+.mat-drawer-container {
+  height: -webkit-fill-available;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.mat-drawer-side {
+  min-width: 200px;
+  padding: 1rem;
+  align-items: center;
+}
+.mdc-list-item__content {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+}
+a.mdc-list-item {
+  border-radius: 12px;
+}
+.mat-drawer-content {
+  background-color: #f0f3f5;
+  padding-left: 25px;
+}
+mat-sidenav {
+  border-right-width: 0px !important;
+}
+.mat-toolbar.mat-primary {
+  background-color: #ffffff;
+  color: #757fef;
+  margin-left: 20px;
+  border-bottom-left-radius: 10px;
+}

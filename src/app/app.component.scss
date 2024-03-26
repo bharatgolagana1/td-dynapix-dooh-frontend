@@ -1,0 +1,22 @@
+.election-campaign-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+}
+
+.parent-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.expand-icon-container {
+  margin-left: auto; /* Pushes the icons to the right */
+}
+
+::ng-deep .parent-link .mdc-list-item__primary-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
