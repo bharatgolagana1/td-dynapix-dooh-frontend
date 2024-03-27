@@ -13,10 +13,25 @@
 
 .expand-icon-container {
   margin-left: auto; /* Pushes the icons to the right */
+  display: flex;
+  align-items: center;
+  color: #00BCD4;
 }
 
 ::ng-deep .parent-link .mdc-list-item__primary-text {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.company-logo--image{
+  width: 150px;
+  height: 45px;
+}
+.users-logo--image{
+  width: 25px;
+  margin-right: 6px;
+}
+.dashboard--title{
+  display: flex;
+  align-items: center;
 }
