@@ -17,5 +17,8 @@ export class UserService {
   return this.http.post<any>(`${this.apiUrl}/create`, { ...userData, tenantId: this.tenantId });
   }
   
+  getUsers(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}?tenantId=${this.tenantId}`, );
+  }
  
 }

@@ -14,6 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
+import {MatPaginatorModule} from '@angular/material/paginator';
 @NgModule({
   declarations: [],
   imports: [
@@ -22,6 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     MatFormFieldModule,
     MatProgressBarModule,
+    MatPaginatorModule,
     MaterialFileInputModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
@@ -50,6 +52,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatCardModule,
     MatRadioModule,
     MatAutocompleteModule,
+    MatPaginatorModule,
     MatSelectModule 
   ],
 })
