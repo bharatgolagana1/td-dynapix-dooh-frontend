@@ -1,0 +1,61 @@
+.mat-table {
+    width: 100%;
+    }
+.mat-elevation-z1{
+    width: fit-content;
+}
+.ellipsis-cell {
+    display: inline-block;
+  width: 100%; /* Ensures the link takes up the entire cell width */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 1rem;
+  }
+  
+  .ellipsis-link {
+    
+    width: 100%; /* Ensures link fills cell */
+  }
+  
+    .list-scheduler--title {
+    color: #4C4C4C;
+    font-family: Manrope;
+    font-size: 1.75rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 2rem;
+    margin-bottom: 3.25rem;
+    }
+    .mat-row, .mat-header-row {
+    display: flex;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(0, 0, 0, 0.12);
+    }
+    .mat-cell, .mat-header-cell {
+    flex: 1;
+    padding: 10px;
+    }
+    .list-scheduler--table{
+    margin: 2rem;
+    }
+    .mat-header{
+    background-color: #F7F7F7;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    text-align: left;
+    }
+    .list-scheduler--data{
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    text-align: left;
+    color: #808080;
+    }
+   
+      
+    
