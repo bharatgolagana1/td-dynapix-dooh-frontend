@@ -149,7 +149,7 @@ export class ListSchedulerComponent  implements OnInit,AfterViewInit{
       
     },
         
-    // Add more example users as needed
+  
   ];
   dataSource = new MatTableDataSource<Scheduler>(this.schedulers);
   displayedColumns: string[] = [ 'cycleTime', 'slotSize', 'videoUrls','screenId'];
