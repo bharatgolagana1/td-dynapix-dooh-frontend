@@ -4,13 +4,22 @@ import { CreateSchedulerComponent } from './components/create-scheduler/create-s
 import { ListSchedulerComponent } from './components/list-scheduler/list-scheduler.component';
 import { MaterialModule } from 'src/app/material.module';
 import { SchedulerRoutingModule } from './scheduler-routing.module';
+import { VideoThumbnailsListComponent } from './components/video-thumbnails-list/video-thumbnails-list.component';
+import { ImageCardsListComponent } from './components/image-cards-list/image-cards-list.component';
+import { SchedulerFormComponentComponent } from './components/scheduler-form-component/scheduler-form-component.component';
+import { VideoDialogComponent } from './components/video-dialog/video-dialog.component';
 
 @NgModule({
   declarations: [
     CreateSchedulerComponent,
-    ListSchedulerComponent
+    ListSchedulerComponent,
+    VideoThumbnailsListComponent,
+    ImageCardsListComponent,
+    SchedulerFormComponentComponent,
+    VideoDialogComponent
   ],
   imports: [CommonModule, MaterialModule,SchedulerRoutingModule],
-  exports: [CreateSchedulerComponent, ListSchedulerComponent,],
+  exports: [CreateSchedulerComponent, ListSchedulerComponent,VideoDialogComponent],
+ 
 })
 export class SchedulerModule {}
