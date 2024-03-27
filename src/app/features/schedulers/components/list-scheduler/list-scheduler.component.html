@@ -1,1 +1,49 @@
-<p>list-scheduler works!</p>
+<div class="list-scheduler--table">
+    <div class="list-scheduler--title">List Schedulers</div>
+    <div class="mat-elevation-z1">
+      <mat-table [dataSource]="dataSource">
+        <!-- Cycle Time Column -->
+        <ng-container matColumnDef="cycleTime">
+          <mat-header-cell *matHeaderCellDef>Cycle Time</mat-header-cell>
+          <mat-cell *matCellDef="let scheduler">{{
+            scheduler.cycleTime
+          }}</mat-cell>
+        </ng-container>
+        <!-- Slot Size Column -->
+        <ng-container matColumnDef="slotSize">
+          <mat-header-cell *matHeaderCellDef>Slot Size</mat-header-cell>
+          <mat-cell *matCellDef="let scheduler">{{
+            scheduler.slotSize
+          }}</mat-cell>
+        </ng-container>
+        <!-- Video Urls Column -->
+        <ng-container matColumnDef="videoUrls">
+          <mat-header-cell *matHeaderCellDef>Video Urls</mat-header-cell>
+          <mat-cell *matCellDef="let scheduler" class="ellipsis-cell">
+            <a
+              href="{{ scheduler.videoUrls }}"
+              target="_blank"
+              class="ellipsis-link"
+              >{{ scheduler.videoUrls }}</a
+            >
+          </mat-cell>
+        </ng-container>
+        <!-- screenId Column -->
+        <ng-container matColumnDef="screenId">
+          <mat-header-cell *matHeaderCellDef>Screen ID</mat-header-cell>
+          <mat-cell *matCellDef="let scheduler">{{
+            scheduler.screenId
+          }}</mat-cell>
+        </ng-container>
+        <mat-header-row
+          class="mat-header"
+          *matHeaderRowDef="displayedColumns"
+        ></mat-header-row>
+        <mat-row
+          class="list-scheduler--data"
+          *matRowDef="let row; columns: displayedColumns"
+        ></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[8]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
