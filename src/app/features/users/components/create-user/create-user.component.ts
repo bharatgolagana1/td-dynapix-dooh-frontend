@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {FormBuilder,FormGroup,Validators} from '@angular/forms';
 import { UserService } from '../../user.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
@@ -19,7 +20,8 @@ export class CreateUserComponent {
 
   isSubmitting: boolean = false;
 
-  constructor(private formBuilder:FormBuilder, private userService: UserService){
+
+  constructor(private formBuilder:FormBuilder, private userService: UserService ,private router: Router){
     this.createUserForm=this.formBuilder.group({
       firstName:['',[Validators.required]],
       lastName:['',[Validators.required]],
@@ -35,32 +37,17 @@ export class CreateUserComponent {
      });
   }
 
-  // onSubmit() {
-  //   this.isSubmitting = true;
-  //   console.log("form state", this.createUserForm )
-  //   if (this.createUserForm.valid) {
-  //     this.userService.createUser(this.createUserForm.value).subscribe(
-  //       (response) => {
-  //         console.log('User created successfully:', response);
-  //         // Reset form or do any other actions upon successful creation
-  //       },
-  //       (error) => {
-  //         console.error('Error creating user:', error);
-  //         // Handle error response from backend
-  //       }
-  //     );
-  //   }
-  // }
-
   onSubmit() {
     this.isSubmitting = true;
     console.log("form state", this.createUserForm )
     if (this.createUserForm.valid) {
+      this.router.navigate(['/users']);
         this.userService.createUser(this.createUserForm.value).subscribe(
             (response) => {
                 console.log('User created successfully:', response);
                 // Reset form or do any other actions upon successful creation
                 this.isSubmitting = false; // Turn off the spinner
+                
             },
             (error) => {
                 console.error('Error creating user:', error);

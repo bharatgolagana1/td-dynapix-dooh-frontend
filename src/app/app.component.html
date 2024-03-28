@@ -9,16 +9,9 @@
     <mat-nav-list>
       <a mat-list-item (click)="toggleSubNav('dashboard')" class="parent-link">
         <span class="dashboard--title"><app-svg-icon iconName="dashboard" color="primary" style="margin-right: 6px;"/> Dashboard</span>
-        <div class="expand-icon-container">
-          <mat-icon *ngIf="isSubNavOpen('dashboard')">expand_less</mat-icon>
-          <mat-icon *ngIf="!isSubNavOpen('dashboard')">expand_more</mat-icon>
-        </div>
+     
       </a>
-      <mat-nav-list *ngIf="isSubNavOpen('dashboard')">
-        <a mat-list-item routerLink="/dashboard/sublink1">Sublink 1</a>
-        <a mat-list-item routerLink="/dashboard/sublink2">Sublink 2</a>
-        <!-- Add more sublinks as needed -->
-      </mat-nav-list>
+     
 
       <a mat-list-item (click)="toggleSubNav('users')" class="parent-link">
         <span class="dashboard--title"> <img class="users-logo--image" src="assets/images/users.svg" alt="logo"> Users</span>
