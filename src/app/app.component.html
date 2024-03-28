@@ -29,7 +29,7 @@
       </a>
       <mat-nav-list *ngIf="isSubNavOpen('users')">
         <a mat-list-item routerLink="/users/create">Create Users</a>
-        <a mat-list-item routerLink="/users/sublink2">Sublink 2</a>
+        <a mat-list-item routerLink="/users/sublink2">Update Users</a>
         <!-- Add more sublinks as needed -->
       </mat-nav-list>
 
@@ -41,8 +41,8 @@
         </div>
       </a>
       <mat-nav-list *ngIf="isSubNavOpen('schedulers')">
-        <a mat-list-item routerLink="/schedulers/createScheduler">Sublink 1</a>
-        <a mat-list-item routerLink="/schedulers/sublink2">Sublink 2</a>
+        <a mat-list-item routerLink="/schedulers/createScheduler">Create Scheduler</a>
+        <a mat-list-item routerLink="/schedulers/playScheduler">Play</a>
         <!-- Add more sublinks as needed -->
       </mat-nav-list>
     </mat-nav-list>

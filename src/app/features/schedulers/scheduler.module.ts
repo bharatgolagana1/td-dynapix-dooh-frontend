@@ -10,6 +10,8 @@ import { SchedulerFormComponentComponent } from './components/scheduler-form-com
 import { VideoDialogComponent } from './components/video-dialog/video-dialog.component';
 import { FormsModule } from '@angular/forms';
 import {ReactiveFormsModule} from '@angular/forms';
+import { VgApiService } from '@videogular/ngx-videogular/core';
+import { PlaySchedulerComponent } from './components/play-scheduler/play-scheduler.component';
 @NgModule({
   declarations: [
     CreateSchedulerComponent,
@@ -17,7 +19,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     VideoThumbnailsListComponent,
     ImageCardsListComponent,
     SchedulerFormComponentComponent,
-    VideoDialogComponent
+    VideoDialogComponent,
+    PlaySchedulerComponent
   ],
   imports: [CommonModule, MaterialModule,SchedulerRoutingModule,FormsModule,ReactiveFormsModule ],
   exports: [CreateSchedulerComponent, ListSchedulerComponent,VideoDialogComponent],

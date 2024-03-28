@@ -19,13 +19,13 @@
   }
   
     .list-scheduler--title {
-    color: #4C4C4C;
-    font-family: Manrope;
-    font-size: 1.75rem;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 2rem;
-    margin-bottom: 3.25rem;
+      color: #757fef;
+      font-family: Manrope;
+      font-size: 1.75rem;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 2rem;
+      margin-bottom: 2rem;
     }
     .mat-row, .mat-header-row {
     display: flex;
@@ -40,14 +40,16 @@
     .list-scheduler--table{
     margin: 2rem;
     }
-    .mat-header{
-    background-color: #F7F7F7;
-    font-family: Arial;
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 16px;
-    text-align: left;
-    }
+      .mat-header{
+      background-color: #F7F7F7;
+      font-family: Arial;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 16px;
+      text-align: left;
+      color: #757fef;
+      }
+
     .list-scheduler--data{
     font-family: Arial;
     font-size: 12px;

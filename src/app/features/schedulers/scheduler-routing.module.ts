@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CreateSchedulerComponent } from './components/create-scheduler/create-scheduler.component';
 import { ListSchedulerComponent } from './components/list-scheduler/list-scheduler.component';
+import { PlaySchedulerComponent } from './components/play-scheduler/play-scheduler.component';
 
 const routes: Routes = [
 
@@ -12,6 +13,10 @@ const routes: Routes = [
     {
       path: 'createScheduler',
       component: CreateSchedulerComponent,
+    },
+    {
+      path: 'playScheduler',
+      component: PlaySchedulerComponent,
     },
    
   ];
