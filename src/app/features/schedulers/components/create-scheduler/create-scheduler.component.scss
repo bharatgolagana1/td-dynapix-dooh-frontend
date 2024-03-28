@@ -1,0 +1,53 @@
+.scheduler-image{
+    max-width: 50%;
+    max-height: 50%;
+}
+
+.card-container{
+    padding: 1.5rem;
+    display: flex;
+    gap: 2rem;
+    max-width:40rem;
+}
+
+.card-title{
+    padding-left: 1rem;
+}
+
+.create-scheduler-card{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+
+.scheduler-available--heading{
+    font-size: 1.5rem;
+    padding: 3rem 0rem 1rem 0rem;
+}
+
+.button{
+    margin-top: 2rem;
+    text-align: end;
+}
+
+.button-color{
+    background-color: antiquewhite;
+}
+.scheduler-card-font{
+    font-size: 0.7rem;
+}
+
+.scheduler-card-title{
+    font-size: 1rem;
+}
+
+.scheduler-card-location{
+    font-size: 0.6rem;
+}
+
+
+
+
+
+  

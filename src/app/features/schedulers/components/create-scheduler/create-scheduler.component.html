@@ -1,1 +1,57 @@
-<p>create-scheduler works!</p>
+<div style="padding: 2rem;">
+    <form [formGroup]="createSchedulerForm">
+    <div style="display:flex; gap: 2rem;">
+      <mat-form-field appearance="outline">
+        <mat-label>Cycle Time</mat-label>
+        <mat-select [(ngModel)]="selectedCycleTime" required formControlName="cycleTime">
+          <mat-option *ngFor="let option of option1" [value]="option.value" type="number">
+            {{ option.label }}
+          </mat-option>
+        </mat-select>
+        <mat-hint style="color: red;" *ngIf="createSchedulerForm.get('cycleTime')?.touched && createSchedulerForm.get('cycleTime')?.errors?.['required']">
+            Cycle Time is required
+           </mat-hint>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Slot Size</mat-label>
+        <mat-select [(ngModel)]="selectedSlotSize"  required formControlName="slotSize">
+          <mat-option *ngFor="let option of option2" [value]="option.value" type="number">
+            {{ option.label }}
+          </mat-option>
+        </mat-select>
+        <mat-hint style="color: red;" *ngIf="createSchedulerForm.get('slotSize')?.touched && createSchedulerForm.get('slotSize')?.errors?.['required']">
+            Slot Size is required
+           </mat-hint>
+      </mat-form-field>
+    </div>
+    </form>
+    
+  <div>
+    <div class="scheduler-available--heading">Available Content</div>
+   <app-video-thumbnails-list></app-video-thumbnails-list>
+  </div>
+
+
+   <div class="scheduler-available--heading">Available Screens</div>
+   <div class="create-scheduler-card">
+    <mat-card *ngFor="let a of examplecards" class="card-container">
+      <div style="display: flex;">
+        <mat-checkbox [(ngModel)]="a.selected" class="checkbox"></mat-checkbox>
+        <img src="../assets/icons/{{ a.screen }}.png" class="scheduler-image" />
+        <div class="card-title">
+          <div class="scheduler-card-title">{{ a.title }}</div>
+          <div class="scheduler-card-location">{{ a.location }}</div>
+          <div>
+            <div class="scheduler-card-font">{{ a.size }}</div>
+            <div class="scheduler-card-font">{{ a.sft }}</div>
+            <div class="scheduler-card-font">{{ a.availability }}</div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+  <div class="button">
+    <button mat-stroked-button color="primary" class="button-color">Create Scheduler</button>
+  </div>
+</div>

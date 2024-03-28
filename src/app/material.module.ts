@@ -14,7 +14,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 @NgModule({
   declarations: [],
   imports: [
@@ -34,7 +36,10 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatCardModule,
     MatRadioModule,
     MatAutocompleteModule,
-    MatSelectModule 
+    MatSelectModule,
+    MatDialogModule,
+    MatCheckboxModule 
+
   ],
   exports: [
     MatButtonModule,
@@ -53,7 +58,9 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatRadioModule,
     MatAutocompleteModule,
     MatPaginatorModule,
-    MatSelectModule 
+    MatSelectModule,
+    MatDialogModule,
+    MatCheckboxModule 
   ],
 })
 export class MaterialModule {}

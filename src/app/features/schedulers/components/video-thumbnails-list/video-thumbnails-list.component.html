@@ -1,0 +1,22 @@
+<div class="video-thumbnails-list--container">
+  <mat-card *ngFor="let video of videos" (click)="toggleSelection(video)">
+    <div class="card-overlay">
+      <button
+        mat-icon-button
+        (click)="openVideoDialog(video.videoUrl)"
+        class="video-thumbnails-list--play-btn"
+        style="background-color: black"
+      >
+        <mat-icon aria-label="Play button">play_arrow</mat-icon>
+      </button>
+    </div>
+    <img
+      style="width: 200px; height: 200px"
+      [src]="video.thumbnailUrl"
+      alt="Video Thumbnail"
+    />
+    <mat-icon class="selected-icon" *ngIf="isSelected(video)" aria-hidden="true"
+      >done</mat-icon
+    >
+  </mat-card>
+</div>
