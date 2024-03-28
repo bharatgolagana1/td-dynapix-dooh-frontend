@@ -10,6 +10,7 @@ export class SchedulerService {
   }
 
   private apiUrl = 'http://localhost:3001/scheduler';
+  screenId = '123';
 
   constructor(private http: HttpClient) {}
 
@@ -18,4 +19,8 @@ export class SchedulerService {
     return this.http.post<any>(this.apiUrl, schedulerData);
   }
   
+
+  getScheduleByScreenId(screenIdName:string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}?screenId=${screenIdName}`, );
+  }
 }
