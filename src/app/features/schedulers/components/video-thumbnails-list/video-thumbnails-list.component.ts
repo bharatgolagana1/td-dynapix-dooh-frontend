@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { VideoDialogComponent } from '../video-dialog/video-dialog.component';
 
-interface Video {
+export interface Video {
   id: string;
   title: string;
   thumbnailUrl: string;
@@ -148,7 +148,7 @@ const videosList: Video[] = [
   styleUrls: ['./video-thumbnails-list.component.scss'],
 })
 export class VideoThumbnailsListComponent {
-  @Output() selectedVideosChanged = new EventEmitter<Video[]>();
+  @Output() selectedVideosChange: EventEmitter<Video[] | string[]> = new EventEmitter<Video[] | string[]>();
 
   public videos: Video[] = [];
   public selectedVideos: Video[] = [];
@@ -171,7 +171,7 @@ export class VideoThumbnailsListComponent {
       this.selectedVideos.splice(index, 1);
     }
     console.log('final selected videos', this.selectedVideos);
-    this.selectedVideosChanged.emit(this.selectedVideos);
+    this.selectedVideosChange.emit(this.selectedVideos);
   }
 
   isSelected(video: any): boolean {
