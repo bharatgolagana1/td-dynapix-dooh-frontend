@@ -16,6 +16,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 @NgModule({
   declarations: [],
   imports: [
@@ -37,6 +38,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatAutocompleteModule,
     MatSelectModule,
     MatDialogModule,
+    MatCheckboxModule 
+
   ],
   exports: [
     MatButtonModule,
@@ -57,6 +60,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatPaginatorModule,
     MatSelectModule,
     MatDialogModule,
+    MatCheckboxModule 
   ],
 })
 export class MaterialModule {}
