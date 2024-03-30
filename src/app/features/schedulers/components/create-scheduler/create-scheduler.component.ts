@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SchedulerService } from '../scheduler.service';
 import {FormArray, FormBuilder,FormGroup,Validators} from '@angular/forms';
 import { Video } from '../video-thumbnails-list/video-thumbnails-list.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-create-scheduler',
   templateUrl: './create-scheduler.component.html',
@@ -131,7 +132,7 @@ export class CreateSchedulerComponent {
   }
 
   createSchedulerForm:FormGroup;
-  constructor(private formBuilder:FormBuilder,private schedulerService: SchedulerService) {
+  constructor(private formBuilder:FormBuilder,private schedulerService: SchedulerService,private router: Router) {
     this.createSchedulerForm=this.formBuilder.group({
       cycleTime:['',[Validators.required]],
       slotSize:['',[Validators.required]],
@@ -151,25 +152,29 @@ export class CreateSchedulerComponent {
   createSchedulers(): void {
     if (this.createSchedulerForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
-
+  
       // Log the form data
       console.log('Form Data:', this.createSchedulerForm.value);
-
+  
       this.schedulerService.createScheduler(this.createSchedulerForm.value)
         .subscribe(
           (response) => {
             console.log('Scheduler created successfully:', response);
-            // Optionally, reset form fields or perform other actions upon success
-            this.isSubmitting = false;
+            // Navigate to the '/schedulers' route upon successful creation
+            this.router.navigate(['/schedulers']);
           },
           (error) => {
             console.error('Error creating scheduler:', error);
             // Optionally, display an error message to the user
-            this.isSubmitting = false;
           }
-        );
+        )
+        .add(() => {
+          // This block executes regardless of success or error
+          this.isSubmitting = false;
+        });
     } else {
       // Handle form validation errors or submission in progress
+      this.isSubmitting = false;
     }
   }
   }

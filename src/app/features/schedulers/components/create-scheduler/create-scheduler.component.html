@@ -83,14 +83,13 @@
       </div>
     </div>
   </form>
-  <div class="button">
-    <button
-      mat-raised-button
-      color="primary"
-      [disabled]="createSchedulerForm.invalid || isSubmitting"
-      (click)="createSchedulers()"
-    >
-      Create Scheduler
+  <div class="button" [class.disabled]="createSchedulerForm.invalid || isSubmitting">
+    <button mat-raised-button color="primary" [disabled]="createSchedulerForm.invalid || isSubmitting" (click)="createSchedulers()">
+      <span *ngIf="!isSubmitting">Create Scheduler</span>
+      <span *ngIf="isSubmitting">
+        <mat-spinner diameter="20" color="accent"></mat-spinner>
+      </span>
     </button>
   </div>
+  
 </div>
