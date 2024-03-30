@@ -11,6 +11,7 @@ export class SchedulerService {
 
   private apiUrl = 'http://ec2-13-211-129-217.ap-southeast-2.compute.amazonaws.com:3001/scheduler';
   screenId = '123';
+  private tenantId = '123456';
 
   constructor(private http: HttpClient) {}
 
@@ -23,4 +24,7 @@ export class SchedulerService {
   getScheduleByScreenId(screenIdName:string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}?screenId=${screenIdName}`, );
   }
+  getSchedulers(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}?tenantId=${this.tenantId}`, );
+}
 }
