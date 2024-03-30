@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class CreateSchedulerComponent {
   cycleTime: number = 0;
   slotSize: number = 0;
-  screenIds = '';
+  screenIds: number = 0;
   videoUrls: string = '';
 
   selectedCycleTime!: string;
@@ -114,7 +114,7 @@ export class CreateSchedulerComponent {
     const schedulerData = {
       cycleTime: this.cycleTime,
       slotSize: this.slotSize,
-      screenIds: this.screenIds.split(',').map(id => id.trim()),
+      screenIds: this.screenIds,
       videoUrls: this.videoUrls.split(',').map(url => url.trim())
     };
 
