@@ -30,6 +30,14 @@ const routes: Routes = [
         (m) => m.SchedulerModule
       ),
   },
+  {
+    path: AppRoutePaths.media,
+    loadChildren: () =>
+      import('./features/media/media.module').then(
+        (m) => m.MediaModule
+      ),
+  },
+  
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

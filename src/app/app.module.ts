@@ -14,6 +14,7 @@ import { MaterialModule } from './material.module';
 import { CoreModule } from './core/core.module';
 import { DashboardModule } from './features/dashboard/dashboard.module';
 import { UsersModule } from './features/users/users.module';
+import { MediaModule } from './features/media/media.module';
 
 
 import { SchedulerModule } from './features/schedulers/scheduler.module';
@@ -35,6 +36,7 @@ import { SchedulerModule } from './features/schedulers/scheduler.module';
     CoreModule,
     DashboardModule,
     UsersModule,
+    MediaModule,
     SchedulerModule
   ],
   providers: [],
