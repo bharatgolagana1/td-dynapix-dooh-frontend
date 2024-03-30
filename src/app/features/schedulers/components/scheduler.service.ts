@@ -9,7 +9,8 @@ export class SchedulerService {
     throw new Error('Method not implemented.');
   }
 
-  private apiUrl = 'http://localhost:3001/scheduler';
+  private apiUrl = 'http://ec2-13-211-129-217.ap-southeast-2.compute.amazonaws.com:3001/scheduler';
+  screenId = '123';
 
   constructor(private http: HttpClient) {}
 
@@ -18,4 +19,8 @@ export class SchedulerService {
     return this.http.post<any>(this.apiUrl, schedulerData);
   }
   
+
+  getScheduleByScreenId(screenIdName:string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}?screenId=${screenIdName}`, );
+  }
 }
