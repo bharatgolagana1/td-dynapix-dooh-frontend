@@ -3,6 +3,8 @@ import { SchedulerService } from '../scheduler.service';
 import {FormArray, FormBuilder,FormGroup,Validators} from '@angular/forms';
 import { Video } from '../video-thumbnails-list/video-thumbnails-list.component';
 import { Router } from '@angular/router';
+import { NotificationService } from 'src/app/core/services/notification.service';
+
 @Component({
   selector: 'app-create-scheduler',
   templateUrl: './create-scheduler.component.html',
@@ -132,7 +134,7 @@ export class CreateSchedulerComponent {
   }
 
   createSchedulerForm:FormGroup;
-  constructor(private formBuilder:FormBuilder,private schedulerService: SchedulerService,private router: Router) {
+  constructor(private notificationService: NotificationService,private formBuilder:FormBuilder,private schedulerService: SchedulerService,private router: Router,) {
     this.createSchedulerForm=this.formBuilder.group({
       cycleTime:['',[Validators.required]],
       slotSize:['',[Validators.required]],
@@ -160,7 +162,7 @@ export class CreateSchedulerComponent {
         .subscribe(
           (response) => {
             console.log('Scheduler created successfully:', response);
-            // Navigate to the '/schedulers' route upon successful creation
+            this.notificationService.showNotification('Scheduler created successfully', 'success');
             this.router.navigate(['/schedulers']);
           },
           (error) => {
