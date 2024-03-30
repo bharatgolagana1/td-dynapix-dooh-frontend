@@ -38,6 +38,18 @@
         <a mat-list-item routerLink="/schedulers/playScheduler">Play</a>
         <!-- Add more sublinks as needed -->
       </mat-nav-list>
+      
+      <a mat-list-item (click)="toggleSubNav('media')" class="parent-link">
+        <span class="dashboard--title"><img class="users-logo--image" src="assets/images/media.svg" alt="logo">Media</span>
+        <div class="expand-icon-container">
+          <mat-icon *ngIf="isSubNavOpen('media')">expand_less</mat-icon>
+          <mat-icon *ngIf="!isSubNavOpen('media')">expand_more</mat-icon>
+        </div>
+      </a>
+      <mat-nav-list *ngIf="isSubNavOpen('media')">
+        <a mat-list-item routerLink="/media/uploadmedia">Upload Media</a>
+        <!-- Add more sublinks as needed -->
+      </mat-nav-list>
     </mat-nav-list>
   </mat-sidenav>
 

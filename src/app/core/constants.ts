@@ -14,5 +14,6 @@ export enum AppRoutePaths {
   dashboardWrapper = ' dashboard-wrapper',
   campaign = 'campaign',
   transcripts = 'transcripts',
-  schedulers = 'schedulers'
+  schedulers = 'schedulers',
+  media = 'media'
 }
