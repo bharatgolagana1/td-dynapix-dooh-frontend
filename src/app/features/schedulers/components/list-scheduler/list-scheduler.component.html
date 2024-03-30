@@ -20,20 +20,36 @@
       <ng-container matColumnDef="videoUrls">
         <mat-header-cell *matHeaderCellDef>Video Urls</mat-header-cell>
         <mat-cell *matCellDef="let scheduler" class="ellipsis-cell">
-          <a
-            href="{{ scheduler.videoUrls }}"
-            target="_blank"
-            class="ellipsis-link"
-            >{{ scheduler.videoUrls }}</a
+          <ng-container
+            *ngIf="scheduler.videoUrls && scheduler.videoUrls.length > 0"
           >
+            <ng-container *ngFor="let video of scheduler.videoUrls">
+              <a
+                href="{{ video.videoUrl }}"
+                target="_blank"
+                class="ellipsis-link"
+                >{{ video.videoUrl }}</a
+              >
+              <br />
+            </ng-container>
+          </ng-container>
         </mat-cell>
       </ng-container>
-      <!-- screenId Column -->
+
+      <!-- ScreenId Column -->
       <ng-container matColumnDef="screenId">
         <mat-header-cell *matHeaderCellDef>Screen ID</mat-header-cell>
-        <mat-cell *matCellDef="let scheduler">{{
-          scheduler.screenId
-        }}</mat-cell>
+        <mat-cell *matCellDef="let scheduler" class="ellipsis-cells">
+          <ng-container
+            *ngIf="scheduler.screenIds && scheduler.screenIds.length > 0"
+          >
+            <ng-container
+              *ngFor="let screenId of scheduler.screenIds; let last = last"
+            >
+              {{ screenId }}{{ !last ? ", " : "" }}
+            </ng-container>
+          </ng-container>
+        </mat-cell>
       </ng-container>
 
       <mat-header-row
@@ -45,6 +61,9 @@
         *matRowDef="let row; columns: displayedColumns"
       ></mat-row>
     </mat-table>
-    <mat-paginator [pageSizeOptions]="[4,5,6,7,8,9,10]" showFirstLastButtons></mat-paginator>
+    <mat-paginator
+      [pageSizeOptions]="[2, 5, 10, 25, 50, 100]"
+      showFirstLastButtons
+    ></mat-paginator>
   </div>
 </div>
