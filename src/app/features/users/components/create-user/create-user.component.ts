@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormBuilder,FormGroup,Validators} from '@angular/forms';
 import { UserService } from '../../user.service';
 import { Router } from '@angular/router';
+import { NotificationService } from 'src/app/core/services/notification.service';
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
@@ -21,7 +22,7 @@ export class CreateUserComponent {
   isSubmitting: boolean = false;
 
 
-  constructor(private formBuilder:FormBuilder, private userService: UserService ,private router: Router){
+  constructor(private notificationService: NotificationService ,private formBuilder:FormBuilder, private userService: UserService ,private router: Router){
     this.createUserForm=this.formBuilder.group({
       firstName:['',[Validators.required]],
       lastName:['',[Validators.required]],
@@ -45,6 +46,7 @@ export class CreateUserComponent {
         this.userService.createUser(this.createUserForm.value).subscribe(
             (response) => {
                 console.log('User created successfully:', response);
+                this.notificationService.showNotification('User created successfully', 'success');
                 // Reset form or do any other actions upon successful creation
                 this.isSubmitting = false; // Turn off the spinner
                 
