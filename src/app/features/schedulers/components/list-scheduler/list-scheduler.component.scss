@@ -59,5 +59,10 @@
     color: #808080;
     }
    
-      
+    .ellipsis-cells {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    
     

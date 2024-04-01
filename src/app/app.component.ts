@@ -5,6 +5,7 @@ interface SubNavState {
   dashboard: boolean;
   users: boolean;
   schedulers: boolean;
+  media : boolean;
 }
 
 @Component({
@@ -18,6 +19,7 @@ export class AppComponent {
     dashboard: false,
     users: false,
     schedulers: false,
+    media:false
   };
 
   constructor(private router: Router) {}
