@@ -58,13 +58,8 @@
     <div>
       <div class="scheduler-available--heading">Available Screens</div>
       <div class="create-scheduler-card">
-        <mat-card *ngFor="let a of screenCards" class="card-container">
+        <mat-card *ngFor="let a of screenCards" class="card-container" >
           <div style="display: flex">
-            <mat-checkbox
-              (change)="toggleScreenSelection(a.id, $event.checked)"
-              [checked]="a.selected"
-              class="checkbox"
-            ></mat-checkbox>
             <img
               src="../assets/icons/{{ a.screen }}.png"
               class="scheduler-image"
@@ -78,6 +73,11 @@
                 <div class="scheduler-card-font">{{ a.availability }}</div>
               </div>
             </div>
+            <mat-checkbox
+            (change)="toggleScreenSelection(a.id, $event.checked)"
+            [checked]="a.selected"
+            class="checkbox"
+          ></mat-checkbox>
           </div>
         </mat-card>
       </div>
