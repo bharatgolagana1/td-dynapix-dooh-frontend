@@ -10,6 +10,7 @@ export class SchedulerService {
   }
 
   private apiUrl = 'http://ec2-13-211-129-217.ap-southeast-2.compute.amazonaws.com:3001/scheduler';
+  private media = 'http://localhost:3001/media';
   screenId = '123';
   private tenantId = '123456';
 
@@ -27,4 +28,9 @@ export class SchedulerService {
   getSchedulers(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}?tenantId=${this.tenantId}`, );
 }
+
+getVideos(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.media}?tenantId=${this.tenantId}`, );
+}
+
 }
