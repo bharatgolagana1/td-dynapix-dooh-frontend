@@ -4,7 +4,6 @@ import {FormArray, FormBuilder,FormGroup,Validators} from '@angular/forms';
 import { Video } from '../video-thumbnails-list/video-thumbnails-list.component';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/core/services/notification.service';
-
 @Component({
   selector: 'app-create-scheduler',
   templateUrl: './create-scheduler.component.html',
@@ -15,14 +14,11 @@ export class CreateSchedulerComponent {
   slotSize: number = 0;
   screenIds: number = 0;
   videoUrls: string = '';
-
   selectedCycleTime!: string;
   selectedSlotSize!: string;
-
   isSubmitting: boolean = false;
   selectedVideos: string[] | Video[] = [];
   selectedScreenIds= [];
-
   option1 = [
     { label: '5', value: 5 },
     { label: '10', value: 10 },
@@ -37,7 +33,6 @@ export class CreateSchedulerComponent {
     { label: '55', value: 55 },
     { label: '60', value: 60 },
   ];
-
   option2 = [
     { label: '1', value: 1 },
     { label: '2', value: 2 },
@@ -45,7 +40,6 @@ export class CreateSchedulerComponent {
     { label: '4', value: 4 },
     { label: '5', value: 5 },
   ];
-
   screenCards = [
     {
       id: '1',
@@ -57,51 +51,42 @@ export class CreateSchedulerComponent {
       availability: 'Next Available Date: 12th July 2023',
       selected: false
     },
-
     {
       id: '2',
-      title: '4 Road Junction',
+      title: 'Arya Nagar Road, Kanpur',
       screen: 'scheduler',
-      location: '1995 Marathali, Bangalore',
-      size: 'Size: 30*20',
-      sft: 'SFT: 600',
-      availability: 'Next Available Date: 12th July 2023',
+      location: '8/10 Arya Nagar Kanpur',
+      size: 'Size: 20*20',
+      sft: 'SFT: 400',
+      availability: 'Next Available Date: 29th July 2023',
       selected: false
     },
-
     {
       id: '3',
-      title: '4 Road Junction',
+      title: 'Beach Road, Vizag',
       screen: 'scheduler',
-      location: '1995 Marathali, Bangalore',
+      location: 'vikas nagar, Vizag',
       size: 'Size: 30*20',
       sft: 'SFT: 600',
-      availability: 'Next Available Date: 12th July 2023',
+      availability: 'Next Available Date: 15th July 2023',
       selected: false
     },
-
     {
       id: '4',
-      title: '4 Road Junction',
+      title: 'Gajuwaka Junction',
       screen: 'scheduler',
-      location: '1995 Marathali, Bangalore',
+      location: 'Oldgajuwaka, Andhrapradesh',
       size: 'Size: 30*20',
       sft: 'SFT: 600',
-      availability: 'Next Available Date: 12th July 2023',
+      availability: 'Next Available Date: 19th July 2023',
       selected: false
     },
-   
   ];
-
   toggleCheckbox(card: any) {
     card.selected = !card.selected;
   }
-
-
-
   toggleScreenSelection(screenId: string, checked: boolean): void {
     const selectedScreenIds = this.createSchedulerForm.get('selectedScreenIds') as FormArray;
-
     if (checked) {
       selectedScreenIds.push(this.formBuilder.control(screenId));
     } else {
@@ -109,9 +94,6 @@ export class CreateSchedulerComponent {
       selectedScreenIds.removeAt(index);
     }
   }
-
-
-
   createScheduler() {
     const schedulerData = {
       cycleTime: this.cycleTime,
@@ -119,7 +101,6 @@ export class CreateSchedulerComponent {
       screenIds: this.screenIds,
       videoUrls: this.videoUrls.split(',').map(url => url.trim())
     };
-
     this.schedulerService.createScheduler(schedulerData)
       .subscribe(
         (response) => {
@@ -132,7 +113,6 @@ export class CreateSchedulerComponent {
         }
       );
   }
-
   createSchedulerForm:FormGroup;
   constructor(private notificationService: NotificationService,private formBuilder:FormBuilder,private schedulerService: SchedulerService,private router: Router,) {
     this.createSchedulerForm=this.formBuilder.group({
@@ -142,22 +122,36 @@ export class CreateSchedulerComponent {
       selectedScreenIds: this.formBuilder.array([])
     })
   }
-
-
-  receiveSelectedVideos(selectedVideos:Video[]| string[]): void {
+  receiveSelectedVideos(selectedVideos: Video[] | string[]): void {
     this.selectedVideos = selectedVideos;
     // Update the form control value
     this.createSchedulerForm.patchValue({
       selectedVideos: this.selectedVideos
     });
+    // Check if the selected number of videos exceeds slot size
+    const selectedVideosCount = Array.isArray(selectedVideos) ? selectedVideos.length : 0;
+    const slotSize = this.createSchedulerForm.value.slotSize;
+    const cycleTime=this.createSchedulerForm.value.cycleTime
+    const totalSlots = (cycleTime * 60) / slotSize;
+    console.log("total video", selectedVideos.length, totalSlots)
+        // Check if the number of videos matches the number of slots
+        if (selectedVideosCount> totalSlots) {
+      this.notificationService.showNotification('Selected number of videos exceeds slot size', 'error');
+    }
   }
   createSchedulers(): void {
     if (this.createSchedulerForm.valid && !this.isSubmitting) {
+      const selectedVideosCount = this.createSchedulerForm.value.selectedVideos.length;
+      const slotSize = this.createSchedulerForm.value.slotSize;
+      const cycleTime = this.createSchedulerForm.value.cycleTime;
+      if (selectedVideosCount > slotSize || selectedVideosCount % cycleTime !== 0) {
+        // Notify user about the mismatch
+        this.notificationService.showNotification('Selected number of videos does not match slot size or cycle time', 'error');
+        return;
+      }
       this.isSubmitting = true;
-  
       // Log the form data
       console.log('Form Data:', this.createSchedulerForm.value);
-  
       this.schedulerService.createScheduler(this.createSchedulerForm.value)
         .subscribe(
           (response) => {
@@ -167,22 +161,13 @@ export class CreateSchedulerComponent {
           },
           (error) => {
             console.error('Error creating scheduler:', error);
-            // Optionally, display an error message to the user
           }
         )
         .add(() => {
-          // This block executes regardless of success or error
           this.isSubmitting = false;
         });
     } else {
-      // Handle form validation errors or submission in progress
       this.isSubmitting = false;
     }
   }
   }
-
-  
-
-  
-  
-
