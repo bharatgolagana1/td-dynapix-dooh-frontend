@@ -10,6 +10,7 @@ export class SchedulerService {
   }
 
   private apiUrl = 'http://ec2-13-211-129-217.ap-southeast-2.compute.amazonaws.com:3001/scheduler';
+  private localApiUrl = 'http://localhost:3001/scheduler';
   private media = 'http://localhost:3001/media';
   screenId = '123';
   private tenantId = '123456';
@@ -18,7 +19,7 @@ export class SchedulerService {
 
   createScheduler(schedulerData: any): Observable<any> {
     console.log('Creating user:', schedulerData);
-    return this.http.post<any>(this.apiUrl, schedulerData);
+    return this.http.post<any>(this.localApiUrl, schedulerData);
   }
   
 
