@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { SchedulerService } from '../scheduler.service';
-import {FormArray, FormBuilder,FormGroup,Validators} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Video } from '../video-thumbnails-list/video-thumbnails-list.component';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/core/services/notification.service';
 @Component({
   selector: 'app-create-scheduler',
   templateUrl: './create-scheduler.component.html',
-  styleUrls: ['./create-scheduler.component.scss']
+  styleUrls: ['./create-scheduler.component.scss'],
 })
 export class CreateSchedulerComponent {
   cycleTime: number = 0;
@@ -18,7 +18,7 @@ export class CreateSchedulerComponent {
   selectedSlotSize!: string;
   isSubmitting: boolean = false;
   selectedVideos: string[] | Video[] = [];
-  selectedScreenIds= [];
+  selectedScreenIds = [];
   option1 = [
     { label: '5', value: 5 },
     { label: '10', value: 10 },
@@ -49,7 +49,7 @@ export class CreateSchedulerComponent {
       size: 'Size: 30*20',
       sft: 'SFT: 600',
       availability: 'Next Available Date: 12th July 2023',
-      selected: false
+      selected: false,
     },
     {
       id: '2',
@@ -59,7 +59,7 @@ export class CreateSchedulerComponent {
       size: 'Size: 20*20',
       sft: 'SFT: 400',
       availability: 'Next Available Date: 29th July 2023',
-      selected: false
+      selected: false,
     },
     {
       id: '3',
@@ -69,7 +69,7 @@ export class CreateSchedulerComponent {
       size: 'Size: 30*20',
       sft: 'SFT: 600',
       availability: 'Next Available Date: 15th July 2023',
-      selected: false
+      selected: false,
     },
     {
       id: '4',
@@ -79,18 +79,22 @@ export class CreateSchedulerComponent {
       size: 'Size: 30*20',
       sft: 'SFT: 600',
       availability: 'Next Available Date: 19th July 2023',
-      selected: false
+      selected: false,
     },
   ];
   toggleCheckbox(card: any) {
     card.selected = !card.selected;
   }
   toggleScreenSelection(screenId: string, checked: boolean): void {
-    const selectedScreenIds = this.createSchedulerForm.get('selectedScreenIds') as FormArray;
+    const selectedScreenIds = this.createSchedulerForm.get(
+      'selectedScreenIds'
+    ) as FormArray;
     if (checked) {
       selectedScreenIds.push(this.formBuilder.control(screenId));
     } else {
-      const index = selectedScreenIds.controls.findIndex(x => x.value === screenId);
+      const index = selectedScreenIds.controls.findIndex(
+        (x) => x.value === screenId
+      );
       selectedScreenIds.removeAt(index);
     }
   }
@@ -99,64 +103,104 @@ export class CreateSchedulerComponent {
       cycleTime: this.cycleTime,
       slotSize: this.slotSize,
       screenIds: this.screenIds,
-      videoUrls: this.videoUrls.split(',').map(url => url.trim())
+      videoUrls: this.videoUrls.split(',').map((url) => url.trim()),
     };
-    this.schedulerService.createScheduler(schedulerData)
-      .subscribe(
-        (response) => {
-          console.log('Scheduler created successfully:', response);
-          // Handle success message or redirect to another page
-        },
-        (error) => {
-          console.error('Error creating scheduler:', error);
-          // Handle error message
-        }
-      );
+    this.schedulerService.createScheduler(schedulerData).subscribe(
+      (response) => {
+        console.log('Scheduler created successfully:', response);
+        // Handle success message or redirect to another page
+      },
+      (error) => {
+        console.error('Error creating scheduler:', error);
+        // Handle error message
+      }
+    );
   }
-  createSchedulerForm:FormGroup;
-  constructor(private notificationService: NotificationService,private formBuilder:FormBuilder,private schedulerService: SchedulerService,private router: Router,) {
-    this.createSchedulerForm=this.formBuilder.group({
-      cycleTime:['',[Validators.required]],
-      slotSize:['',[Validators.required]],
-      selectedVideos: [[],[Validators.required] ],
-      selectedScreenIds: this.formBuilder.array([])
-    })
+  createSchedulerForm: FormGroup;
+  constructor(
+    private notificationService: NotificationService,
+    private formBuilder: FormBuilder,
+    private schedulerService: SchedulerService,
+    private router: Router
+  ) {
+    this.createSchedulerForm = this.formBuilder.group({
+      cycleTime: ['', [Validators.required]],
+      slotSize: ['', [Validators.required]],
+      selectedVideos: [[], [Validators.required]],
+      selectedScreenIds: this.formBuilder.array([]),
+    });
   }
-  receiveSelectedVideos(selectedVideos: Video[] | string[]): void {
-    this.selectedVideos = selectedVideos;
+  receiveSelectedVideos(selectedVideos: any[]): void {
+    // Map the received video objects to extract only the video URLs
+    this.selectedVideos = selectedVideos.map((video) => video);
     // Update the form control value
     this.createSchedulerForm.patchValue({
-      selectedVideos: this.selectedVideos
+      selectedVideos: this.selectedVideos,
     });
     // Check if the selected number of videos exceeds slot size
-    const selectedVideosCount = Array.isArray(selectedVideos) ? selectedVideos.length : 0;
+    const selectedVideosCount = this.selectedVideos.length;
     const slotSize = this.createSchedulerForm.value.slotSize;
-    const cycleTime=this.createSchedulerForm.value.cycleTime
+    const cycleTime = this.createSchedulerForm.value.cycleTime;
     const totalSlots = (cycleTime * 60) / slotSize;
-    console.log("total video", selectedVideos.length, totalSlots)
-        // Check if the number of videos matches the number of slots
-        if (selectedVideosCount> totalSlots) {
-      this.notificationService.showNotification('Selected number of videos exceeds slot size', 'error');
+
+    // Check if the number of videos matches the number of slots
+    if (selectedVideosCount > totalSlots) {
+      this.notificationService.showNotification(
+        'Selected number of videos exceeds slot size',
+        'error'
+      );
     }
   }
   createSchedulers(): void {
     if (this.createSchedulerForm.valid && !this.isSubmitting) {
-      const selectedVideosCount = this.createSchedulerForm.value.selectedVideos.length;
+      const selectedVideosCount =
+        this.createSchedulerForm.value.selectedVideos.length;
       const slotSize = this.createSchedulerForm.value.slotSize;
       const cycleTime = this.createSchedulerForm.value.cycleTime;
-      if (selectedVideosCount > slotSize || selectedVideosCount % cycleTime !== 0) {
+      if (
+        selectedVideosCount > slotSize ||
+        selectedVideosCount % cycleTime !== 0
+      ) {
         // Notify user about the mismatch
-        this.notificationService.showNotification('Selected number of videos does not match slot size or cycle time', 'error');
+        this.notificationService.showNotification(
+          'Selected number of videos does not match slot size or cycle time',
+          'error'
+        );
         return;
       }
+      const selectedVideos = this.selectedVideos.map((video: any) => {
+        return {
+          id: video._id, // Assuming _id field corresponds to the id in the backend schema
+          title: video.title,
+          thumbnailUrl: video.thumbnailUrl,
+          duration: video.duration,
+          uploadTime: video.uploadTime,
+          views: '', // Assuming this data is not available in the frontend or optional
+          author: video.author,
+          videoUrl: video.videoUrl,
+          description: video.description,
+          subscriber: video.subscriber,
+          isLive: video.isLive,
+        };
+      });
+      const schedulerData = {
+        cycleTime: this.createSchedulerForm.value.cycleTime,
+        slotSize: this.createSchedulerForm.value.slotSize,
+        screenIds: this.createSchedulerForm.value.selectedScreenIds,
+        selectedVideos,
+      };
       this.isSubmitting = true;
       // Log the form data
       console.log('Form Data:', this.createSchedulerForm.value);
-      this.schedulerService.createScheduler(this.createSchedulerForm.value)
+      this.schedulerService
+        .createScheduler(schedulerData)
         .subscribe(
           (response) => {
             console.log('Scheduler created successfully:', response);
-            this.notificationService.showNotification('Scheduler created successfully', 'success');
+            this.notificationService.showNotification(
+              'Scheduler created successfully',
+              'success'
+            );
             this.router.navigate(['/schedulers']);
           },
           (error) => {
@@ -170,4 +214,4 @@ export class CreateSchedulerComponent {
       this.isSubmitting = false;
     }
   }
-  }
+}

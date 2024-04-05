@@ -1,1 +1,17 @@
-<p>upload-media works!</p>
+<div style="margin: 1.2rem; display: flex; flex-direction: column; ">
+  <mat-form-field appearance="outline" style="width: 20rem;">
+    <mat-label>Upload Media</mat-label>
+    <ngx-mat-file-input
+      (change)="onFileSelected($event)"
+      placeholder="Basic Input"
+    ></ngx-mat-file-input>
+  </mat-form-field>
+</div>
+<button style="padding-left: 1rem;" mat-button (click)="upload()">Upload</button>
+<div *ngFor="let file of files">
+  <p>{{ file.file.name }}</p>
+  <mat-progress-bar
+    mode="determinate"
+    [value]="file.progress"
+  ></mat-progress-bar>
+</div>
