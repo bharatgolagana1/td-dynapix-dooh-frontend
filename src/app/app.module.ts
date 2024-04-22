@@ -15,7 +15,7 @@ import { CoreModule } from './core/core.module';
 import { DashboardModule } from './features/dashboard/dashboard.module';
 import { UsersModule } from './features/users/users.module';
 import { MediaModule } from './features/media/media.module';
-
+import { ScreensModule } from './features/screens/screens.module';
 
 import { SchedulerModule } from './features/schedulers/scheduler.module';
 @NgModule({
@@ -37,7 +37,8 @@ import { SchedulerModule } from './features/schedulers/scheduler.module';
     DashboardModule,
     UsersModule,
     MediaModule,
-    SchedulerModule
+    SchedulerModule,
+    ScreensModule 
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -22,6 +22,10 @@ import {VgControlsModule} from '@videogular/ngx-videogular/controls';
 import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
 import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
+
 @NgModule({
   declarations: [],
   imports: [
@@ -48,8 +52,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
-    MatSnackBarModule 
-  
+    MatSnackBarModule,
+    MatSlideToggleModule,
+    DragDropModule
 
   ],
   exports: [
@@ -76,7 +81,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
-    MatSnackBarModule 
+    MatSnackBarModule,
+    MatSlideToggleModule,
+    DragDropModule
   ],
 })
 export class MaterialModule {}

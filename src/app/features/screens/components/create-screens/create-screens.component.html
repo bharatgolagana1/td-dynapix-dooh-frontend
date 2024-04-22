@@ -1,0 +1,91 @@
+<form [formGroup]="screenForm" (ngSubmit)="onSubmit()" (drop)="onFileDropped($event)" (dragover)="onDragOver($event)" enctype="multipart/form-data">
+    <div style="padding: 2rem 2rem 0rem 2rem;">
+      <div style="margin-bottom: 3rem;">
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none" #fileInput name="screenImage">
+
+      <div class="drop-area" (click)="fileInput.click()" (drop)="onFileDropped($event)" (dragover)="onDragOver($event)">
+        <p>Drag & Drop or Click to Upload Image</p>
+        <!-- Image container -->
+        <!-- <img *ngIf="selectedFile" [src]="getImageSrc()" alt="Uploaded Image"> -->
+        <img *ngIf="imageSrc" [src]="imageSrc" alt="Uploaded Image">
+
+      </div>
+    </div>
+   <div class="row">
+    <mat-form-field class="form-field">
+      <mat-label>screenName</mat-label>
+      <textarea matInput formControlName="ScreenName" required></textarea>
+    </mat-form-field>
+    
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Address</mat-label>
+      <input matInput formControlName="Address" required>
+    </mat-form-field>
+    
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Size</mat-label>
+      <input matInput formControlName="Size" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>SFT</mat-label>
+      <input matInput formControlName="SFT" required>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>NextAvailableDate</mat-label>
+      <input matInput formControlName="NextAvailableDate" value="15-04-2024" required>
+    </mat-form-field>    
+    <mat-form-field appearance="outline" class="form-field">
+        <mat-label>localIP</mat-label>
+        <input matInput formControlName="localIP">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>MACID</mat-label>
+        <input matInput formControlName="MACID">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>lastHeartbeat</mat-label>
+        <input matInput formControlName="lastHeartbeat" >
+      </mat-form-field>
+      </div>
+
+      <div class="row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>upTime</mat-label>
+        <input matInput formControlName="upTime">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>inSyncStatus</mat-label>
+        <input matInput formControlName="inSyncStatus" >
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>hardwareVersion</mat-label>
+        <input matInput formControlName="hardwareVersion" >
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>softwareVersion</mat-label>
+        <input matInput formControlName="softwareVersion" >
+      </mat-form-field>
+      </div>
+
+      <div class="row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>locationCoordinates</mat-label>
+        <input matInput formControlName="locationCoordinates">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>rebootFlag</mat-label>
+        <input matInput formControlName="rebootFlag">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>liveMonitoringAddress</mat-label>
+        <input matInput formControlName="liveMonitoringAddress">
+      </mat-form-field>
+      </div>
+    <!-- Add other form fields similarly -->
+    <button mat-raised-button color="primary" type="submit">Create Screen</button>
+</div>
+  </form>

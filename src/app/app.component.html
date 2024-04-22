@@ -38,6 +38,18 @@
         <a mat-list-item routerLink="/schedulers/playScheduler">Play</a>
         <!-- Add more sublinks as needed -->
       </mat-nav-list>
+
+      <a mat-list-item (click)="toggleSubNav('screens')" class="parent-link">
+        <span class="dashboard--title"><img class="users-logo--image" src="assets/icons/screen.svg" alt="logo">Screens</span>
+        <div class="expand-icon-container">
+          <mat-icon *ngIf="isSubNavOpen('screens')">expand_less</mat-icon>
+          <mat-icon *ngIf="!isSubNavOpen('screens')">expand_more</mat-icon>
+        </div>
+      </a>
+      <mat-nav-list *ngIf="isSubNavOpen('screens')">
+        <a mat-list-item routerLink="/screens/createScreens">Create screens</a>
+        <!-- Add more sublinks as needed -->
+      </mat-nav-list>
       
       <a mat-list-item (click)="toggleSubNav('media')" class="parent-link">
         <span class="dashboard--title"><img class="users-logo--image" src="assets/images/media.svg" alt="logo">Media</span>

@@ -37,6 +37,14 @@ const routes: Routes = [
         (m) => m.MediaModule
       ),
   },
+
+  {
+    path: AppRoutePaths.screens,
+    loadChildren: () =>
+      import('./features/screens/screens.module').then(
+        (m) => m.ScreensModule
+      ),
+  },
   
 ];
 @NgModule({
