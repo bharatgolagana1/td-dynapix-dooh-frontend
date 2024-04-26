@@ -6,6 +6,7 @@ interface SubNavState {
   users: boolean;
   schedulers: boolean;
   media : boolean;
+  screen:boolean
 }
 
 @Component({
@@ -19,7 +20,8 @@ export class AppComponent {
     dashboard: false,
     users: false,
     schedulers: false,
-    media:false
+    media:false,
+    screen:false
   };
 
   constructor(private router: Router) {}

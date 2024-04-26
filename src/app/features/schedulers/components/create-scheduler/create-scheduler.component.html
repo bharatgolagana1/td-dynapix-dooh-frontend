@@ -72,12 +72,13 @@
                 <div class="scheduler-card-font">{{ a.sft }}</div>
                 <div class="scheduler-card-font">{{ a.availability }}</div>
               </div>
+             
             </div>
             <mat-checkbox
-            (change)="toggleScreenSelection(a.id, $event.checked)"
-            [checked]="a.selected"
-            class="checkbox"
-          ></mat-checkbox>
+              (change)="toggleScreenSelection(a.id, $event.checked)"
+              [checked]="a.selected"
+              class="checkbox"
+            ></mat-checkbox>
           </div>
         </mat-card>
       </div>
