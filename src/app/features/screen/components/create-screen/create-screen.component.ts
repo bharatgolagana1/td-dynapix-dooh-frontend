@@ -42,7 +42,7 @@ coordinateValidator() {
     if (!value || value.trim() === '') {
       return null; // Allow empty value
     }
-    const regex = /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6},\s*-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}$/; // Regular expression for latitude,longitude
+    const regex = /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6},\s*-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}$/;
     if (!regex.test(value)) {
       return { invalidCoordinate: true };
     }
@@ -68,12 +68,12 @@ onSubmit() {
     formData.append('softwareVersion', this.softwareVersion);
     formData.append('locationCoordinates', this.screenForm.value.locationCoordinates);
     formData.append('screenStatus', this.screenForm.value.screenStatus);
-    formData.append('rebootFlag', this.rebootFlag); // Convert to string 'true' or 'false'
+    formData.append('rebootFlag', this.rebootFlag); 
     
   // Append image files
   if (this.imageFiles && this.imageFiles.length > 0) {
     for (let i = 0; i < this.imageFiles.length; i++) {
-      formData.append('imageFiles', this.imageFiles[i]); // Append each file individually
+      formData.append('imageFiles', this.imageFiles[i]); 
     }
   }
 
@@ -99,7 +99,7 @@ onFileSelected(event: any): void {
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     this.imageFiles.push(file);
-    this.fileUrls.push(this.createObjectURL(file)); // Store URL for each file
+    this.fileUrls.push(this.createObjectURL(file));
   }
 }
 onFileDropped(event: DragEvent): void {
@@ -110,7 +110,7 @@ onFileDropped(event: DragEvent): void {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       this.imageFiles.push(file);
-      this.fileUrls.push(this.createObjectURL(file)); // Store URL for each file
+      this.fileUrls.push(this.createObjectURL(file)); 
     }
   }
 }
