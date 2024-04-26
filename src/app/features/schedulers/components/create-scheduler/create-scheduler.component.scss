@@ -7,8 +7,8 @@
     padding: 1.5rem;
     display: flex;
     gap: 2rem;
-    max-width:40rem;
-    height: 10rem;
+    width: 20rem;
+  
 }
 
 .card-title{
@@ -16,12 +16,16 @@
 }
 
 .create-scheduler-card{
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-}
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        gap: 16px;
+    }
 
 
+.mat-card {
+        position: relative;
+      }
 .scheduler-available--heading{
     padding: 3rem 0rem 1rem 0rem;
     color: #757fef;

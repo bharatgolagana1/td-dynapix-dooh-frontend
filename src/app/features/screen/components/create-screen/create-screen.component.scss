@@ -1,0 +1,51 @@
+.create-screen--content{
+    display: grid;
+    grid-gap: 8px 24px;
+    max-width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 2rem 0;
+    }
+  .image-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+    .drop-area {
+      display: flex;
+      flex-direction: column;
+      border: 0.1rem dashed #757fef;
+      border-radius: 0.2rem;
+      padding: 2rem;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background: #fafbfb;
+    }
+    
+    .drop-area img {
+      max-width:7rem;
+      max-height:7rem; 
+    }
+    
+    .drop-area p {
+      margin: 0; 
+    }
+.Browse-file--content{
+display: flex;
+align-items: center;
+justify-content: center;
+-webkit-text-fill-color: #757fef;
+padding: 0.5rem;
+border-radius: 0.5rem;
+}
+
+.footer-button{
+  display: flex;
+justify-content: flex-end;
+align-items: center;
+gap: 8px;
+flex: 1 0 0;
+}
