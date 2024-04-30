@@ -43,7 +43,7 @@ export class CreateSchedulerComponent implements OnInit {
     { label: '5', value: 5 },
   ];
   screenCards: any[] = [];
-  showAPILoader = false;
+  showAPILoader: boolean  = true;
   toggleCheckbox(card: any) {
     card.selected = !card.selected;
   }
@@ -72,7 +72,7 @@ export class CreateSchedulerComponent implements OnInit {
       error => {
         console.error('Error fetching screens:', error);
         this.showAPILoader = true // Hide loader in case of error
-        this.loaderService.hideLoader(); // Hide loader
+        this.loaderService.showLoader(); // Hide loader
       }
     );
   }
