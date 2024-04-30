@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SideNavComponent } from './features/side-nav/side-nav.component';
@@ -17,6 +16,7 @@ import { UsersModule } from './features/users/users.module';
 import { MediaModule } from './features/media/media.module';
 import { ScreenModule } from './features/screen/screen.module';
 import { SchedulerModule } from './features/schedulers/scheduler.module';
+
 @NgModule({
   declarations: [
     AppComponent,

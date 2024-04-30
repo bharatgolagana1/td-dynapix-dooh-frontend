@@ -14,6 +14,7 @@ export class SchedulerService {
   private media = 'http://localhost:3001/media';
   screenId = '123';
   private tenantId = '123456';
+  private screens ='http://localhost:3001/screen'
 
   constructor(private http: HttpClient) {}
 
@@ -34,4 +35,7 @@ getVideos(): Observable<any[]> {
   return this.http.get<any[]>(`${this.media}?tenantId=${this.tenantId}`, );
 }
 
+getScreensForTenant(): Observable<any> {
+  return this.http.get<any>(`${this.screens}/api/screens`);
+}
 }
