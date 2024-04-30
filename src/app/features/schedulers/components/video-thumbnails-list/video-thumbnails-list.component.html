@@ -20,3 +20,8 @@
     >
   </mat-card>
 </div>
+<div *ngIf="showAPILoader" class="enquiry-update--loader">
+  <!-- Loader HTML -->
+  <mat-spinner diameter="50" color="primary"></mat-spinner>
+  <div>Content Loading...</div>
+</div>
