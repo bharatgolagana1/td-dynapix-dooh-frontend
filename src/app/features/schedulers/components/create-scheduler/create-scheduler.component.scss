@@ -1,19 +1,17 @@
 .scheduler-image{
-    max-width: 50%;
-    max-height: 50%;
+    width: 5rem;
+    height: 5rem;
 }
 
 .card-container{
     padding: 1.5rem;
     display: flex;
     gap: 2rem;
-    width: 20rem;
-  
+    box-shadow: none;
+    border-radius: 0.3rem;
 }
 
-.card-title{
-    padding-left: 1rem;
-}
+
 
 .create-scheduler-card{
         display: flex;

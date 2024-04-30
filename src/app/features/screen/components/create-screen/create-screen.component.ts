@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ScreenService } from '../../screen.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-create-screen',
   templateUrl: './create-screen.component.html',
@@ -23,7 +24,8 @@ export class CreateScreenComponent {
   softwareVersion: string ='1.2.3';
   rebootFlag: string ='true';
 
-  constructor(private formBuilder: FormBuilder,private screenService: ScreenService,private notificationService: NotificationService) {  
+
+  constructor(private formBuilder: FormBuilder,private router: Router,private screenService: ScreenService,private notificationService: NotificationService) {  
   this.screenForm = this.formBuilder.group({
     screenName: new FormControl('',[Validators.required]),
     address: new FormControl('',[Validators.required]),
@@ -52,6 +54,7 @@ coordinateValidator() {
 
 onSubmit() {
   if (this.screenForm.valid) {
+    
     const formData = new FormData();
     formData.append('tenantId', this.tenantId); // Add tenantId here
     formData.append('screenName', this.screenForm.value.screenName);
@@ -82,6 +85,7 @@ onSubmit() {
         console.log('Screen created successfully:', response);
         // Handle success
         this.notificationService.showNotification('Screen created successfully', 'success');
+        this.router.navigate(['/schedulers/createScheduler']);
       },
       error => {
         console.error('Error creating screen:', error);
