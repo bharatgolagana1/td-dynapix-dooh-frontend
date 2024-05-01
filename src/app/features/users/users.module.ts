@@ -8,10 +8,14 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './user.service';
+import { DeleteConfirmationDialogComponent } from './components/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { EditUserDialogComponent } from './components/edit-user-dialog/edit-user-dialog.component';
 @NgModule({
   declarations: [
     CreateUserComponent,
-    ListUserComponent
+    ListUserComponent,
+    DeleteConfirmationDialogComponent,
+    EditUserDialogComponent
   ],
   imports: [CommonModule, MaterialModule,UsersRoutingModule,ReactiveFormsModule,FormsModule, HttpClientModule  ],
   providers: [UserService],

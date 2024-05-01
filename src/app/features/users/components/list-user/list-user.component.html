@@ -1,5 +1,9 @@
 <div class="list-user--table">
-  <mat-form-field
+
+  <div class="list-user--title">List Users</div>
+  <div class="mat-elevation-z1">
+
+    <mat-form-field
     appearance="outline"
     [style.fontSize.px]="14"
     class="matform-full-width"
@@ -12,8 +16,10 @@
       class="search-input"
     />
   </mat-form-field>
-  <div class="mat-elevation-z1">
+
+    <!-- Table -->
     <mat-table [dataSource]="dataSource">
+      <!-- Columns -->
       <!-- User Name Column -->
       <ng-container matColumnDef="userName">
         <mat-header-cell *matHeaderCellDef>User Name</mat-header-cell>
@@ -56,6 +62,26 @@
         <mat-cell *matCellDef="let user">{{ user.updatedAt | date }}</mat-cell>
       </ng-container>
 
+     <!--update-user-->
+     <ng-container matColumnDef="edit">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let user">
+        <button mat-icon-button (click)="editUser(user)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+      <!--delete-user-->
+      <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <button mat-icon-button (click)="deleteUser(user)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container> 
+
       <mat-header-row
         class="mat-header"
         *matHeaderRowDef="displayedColumns"
@@ -70,9 +96,8 @@
       [pageSize]="pageSize"
       [pageIndex]="pageIndex"
       (page)="onPageChange($event)"
-      [pageSizeOptions]="[2, 5, 10, 25, 50, 100]"
+      [pageSizeOptions]="[ 5, 10, 25, 50, 100]"
       showFirstLastButtons
-    >
-    </mat-paginator>
+    ></mat-paginator>
   </div>
 </div>

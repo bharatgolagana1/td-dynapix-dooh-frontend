@@ -32,7 +32,6 @@ export class CreateUserComponent {
       employeeNo:['',[Validators.required]],
       userName:['',[Validators.required]],
       email:['',[Validators.required,Validators.email]],
-      password:['',[Validators.required]],
       role:[this.defaultRole,[Validators.required]],
       profile:[this.defaultProfile,[Validators.required]],
      });

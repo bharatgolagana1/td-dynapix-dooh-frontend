@@ -1,0 +1,83 @@
+.edit-dialog-header {
+    display: flex;
+}
+
+.edit-user-main-container {
+    padding: 3.5rem 0;
+    padding-left: 2.1rem;
+}
+
+.edit-user-title {
+    color: #757fef;
+    font-family: Manrope;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 2rem;
+    margin: 1rem;
+    flex: 1 0 0;
+}
+
+.edit-user-content {
+    background: #fafbfb;
+    border-radius: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+}
+
+.section-title-main {
+    display: flex;
+    justify-content: space-between;
+}
+
+.section-title-txt {
+    font-weight: 700;
+    font-size: 20px;
+    color: #757fef;
+}
+
+.edit-user-section-grid {
+    display: grid;
+    grid-gap: 8px 24px;
+    max-width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 2rem 0;
+}
+
+::ng-deep .ngx-dropzone.ngx-dropzone-preview {
+    align-items: center;
+    border-radius: 5px;
+    display: flex;
+    gap: 2rem;
+    margin: 10px;
+    max-width: 1500px;
+    max-height: 140px;
+    padding: 0px 20px;
+    position: relative;
+}
+
+.edit-user-gender--content {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-user-section--content {
+    padding: 2rem 0;
+}
+
+.footer {
+    display: flex;
+    padding: 24px 32px;
+    align-items: center;
+    gap: 24px;
+    align-self: stretch;
+}
+
+.footer-button {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    flex: 1 0 0;
+}
