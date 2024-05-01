@@ -1,14 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { SchedulerService } from '../scheduler.service';
-
-export interface Scheduler {
-  cycleTime: number;
-  slotSize: number;
-  videoUrls: string;
-  screenId: number;
-}
 
 @Component({
   selector: 'app-list-scheduler',
@@ -20,22 +13,30 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['cycleTime', 'slotSize', 'videoUrls', 'screenId'];
   dataSource!: MatTableDataSource<any>; // Update Scheduler to any
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  
-  constructor(private schedulerService: SchedulerService) {}
+  totalItems: number = 0; // Define totalItems property
+  pageSize: number = 10; // Define pageSize property
+
+  constructor(private schedulerService: SchedulerService) { }
 
   ngOnInit(): void {
-    this.schedulerService.getSchedulers().subscribe((schedulersList: any) => {
-      
-      if (schedulersList.schedules.length > 0) {
-        console.log("list,",schedulersList.schedules )
-        this.schedulers = schedulersList.schedules;
-        this.dataSource = new MatTableDataSource<any>(schedulersList.schedules); 
-        this.dataSource.paginator = this.paginator;
+    this.getPaginatedSchedulers(0, this.pageSize);
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  getPaginatedSchedulers(pageIndex: number, pageSize: number): void {
+    this.schedulerService.getSchedulers(pageIndex, pageSize).subscribe((response: any) => {
+      if (response.schedules.length > 0) {
+        this.schedulers = response.schedules;
+        this.dataSource = new MatTableDataSource<any>(response.schedules);
+        this.totalItems = response.totalSchedulesCount; // Assign total count to totalItems
       }
     });
   }
 
-  ngAfterViewInit(): void {
-    
+  onPageChange(event: any): void {
+    this.getPaginatedSchedulers(event.pageIndex, event.pageSize);
   }
 }
