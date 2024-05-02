@@ -22,7 +22,7 @@ export class ListUserComponent implements OnInit {
   dataSource!: MatTableDataSource<User>;
   totalUsers: number = 0;
   pageIndex: number = 0;
-  pageSize: number = 0;
+  pageSize: number = 10;
   searchValue: string = '';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -33,7 +33,7 @@ export class ListUserComponent implements OnInit {
     this.loadUsers();
   }
 
-  loadUsers(pageIndex: number = 0): void {
+  loadUsers(pageIndex: number = 0,pageSize: number=0): void {
     this.userService.getUsers(pageIndex + 1, this.pageSize, this.searchValue).subscribe((usersList: any) => {
       this.dataSource = new MatTableDataSource<User>(usersList.users);
       this.totalUsers = usersList.totalUsers;
