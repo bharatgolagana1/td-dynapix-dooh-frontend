@@ -66,12 +66,13 @@
 
   <mat-sidenav-content>
     <mat-toolbar color="primary" class="election-campaign-toolbar">
-      <div style="display: flex; align-items: center">
+      <div class="toolbar-header" >
         <button mat-icon-button (click)="sidenav.toggle()" class="profile-btn">
           <mat-icon>menu</mat-icon>
         </button>
         <span>Digital DOOH</span>
       </div>
+       
       <app-profile-button
         [imageUrl]="'assets/images/admin.jpg'"
         [name]="'Admin'"

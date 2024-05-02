@@ -1,0 +1,63 @@
+
+<div class="edit-dialog-header">
+<div class="edit-user-title">Update User</div>
+<div> <button mat-icon-button mat-dialog-close="true"><mat-icon>close</mat-icon></button></div>
+</div>
+<form [formGroup]="createUserForm" (ngSubmit)="onSubmit()">
+  <div class="edit-user-content">
+    <div class="section-title-main">
+      <div class="section-title-txt">User Info</div>
+    </div>
+    <div class="edit-user-section-grid">
+      <mat-form-field appearance="outline" [style.fontSize.px]="14">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" placeholder="First name" required />
+        <mat-error *ngIf="createUserForm.get('firstName')?.invalid && createUserForm.get('firstName')?.touched">
+          First name is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" [style.fontSize.px]="14">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" placeholder="Last name" required />
+        <mat-error *ngIf="createUserForm.get('lastName')?.invalid && createUserForm.get('lastName')?.touched">
+          Last name is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" [style.fontSize.px]="14">
+        <mat-label>User Name</mat-label>
+        <input matInput formControlName="userName" placeholder="User name" required />
+        <mat-error *ngIf="createUserForm.get('userName')?.invalid && createUserForm.get('userName')?.touched">
+          User name is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" [style.fontSize.px]="14">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" placeholder="Email" required />
+        <mat-error *ngIf="createUserForm.get('email')?.hasError('required')">
+          Email is required
+        </mat-error>
+        <mat-error *ngIf="createUserForm.get('email')?.hasError('email')">
+          Please enter a valid email address
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
+        <mat-label>Role</mat-label>
+        <mat-select required formControlName="role" [value]="roles">
+          <mat-option *ngFor="let role of roles"  [value]="role">
+            {{role}}
+          </mat-option>
+        </mat-select>
+        <mat-hint style="color: red;" *ngIf="createUserForm.get('role')?.touched && createUserForm.get('role')?.errors?.['required']">
+          Role is required
+        </mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions class="footer">
+    <div class="footer-button">
+      <button type="submit" mat-raised-button color="primary" [disabled]="createUserForm.invalid" >
+       update
+      </button>
+    </div>
+  </div>
+</form>
