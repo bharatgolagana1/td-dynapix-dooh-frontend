@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import {ReactiveFormsModule} from '@angular/forms';
 import { VgApiService } from '@videogular/ngx-videogular/core';
 import { PlaySchedulerComponent } from './components/play-scheduler/play-scheduler.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 @NgModule({
   declarations: [
     CreateSchedulerComponent,
@@ -22,7 +23,7 @@ import { PlaySchedulerComponent } from './components/play-scheduler/play-schedul
     VideoDialogComponent,
     PlaySchedulerComponent
   ],
-  imports: [CommonModule, MaterialModule,SchedulerRoutingModule,FormsModule,ReactiveFormsModule ],
+  imports: [CommonModule, MaterialModule,SchedulerRoutingModule,FormsModule,ReactiveFormsModule,SlickCarouselModule],
   exports: [CreateSchedulerComponent, ListSchedulerComponent,VideoDialogComponent],
  
 })
