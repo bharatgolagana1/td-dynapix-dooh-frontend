@@ -64,7 +64,7 @@
       </div>
       <div class="create-scheduler-card">
         <mat-card *ngFor="let a of screenCards" class="card-container" >
-          <div class="create-scheduler-card-content">
+          <div style="display: flex;flex-direction: row;gap: 0.5rem;">
             <div>
               <img [src]="a.imageUrls[0]" class="scheduler-image" (click)="openImageDialog(a)"/>
             </div>
