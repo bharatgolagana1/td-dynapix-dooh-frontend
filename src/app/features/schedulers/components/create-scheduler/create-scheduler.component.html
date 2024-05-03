@@ -63,10 +63,10 @@
         <div>Screens Loading...</div>
       </div>
       <div class="create-scheduler-card">
-        <mat-card *ngFor="let a of screenCards" class="card-container" (click)="openImageDialog(a)">
+        <mat-card *ngFor="let a of screenCards" class="card-container" >
           <div style="display: flex;flex-direction: row;gap: 0.5rem;">
             <div style="display: flex;gap: 0.5rem;">
-              <img [src]="a.imageUrls[0]" class="scheduler-image" /> <!-- Display only the first image -->
+              <img [src]="a.imageUrls[0]" class="scheduler-image" (click)="openImageDialog(a)" /> <!-- Display only the first image -->
             </div>
             <div>
               <div class="scheduler-card-title">{{ a.screenName }}</div>
