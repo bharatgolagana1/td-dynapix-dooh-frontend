@@ -1,0 +1,30 @@
+.image-cards-list-container{
+  padding: 1rem;
+  }
+  .carousel-container {
+      width: calc(80% + 10px); 
+      margin: auto;
+      overflow: hidden; 
+    }
+    
+    .carousel-item {
+      margin-right: 10px;
+      float: left; 
+    }
+    
+    .dialog-image {
+      width: 100%;
+      height: auto;
+    }
+    
+    :host ::ng-deep {
+      .slick-prev:before,
+      .slick-next:before {
+        color: #424242 !important;
+        opacity: 1 !important;
+      }
+    }
+  .image-cards-list-footer{
+    display: flex;
+    justify-content: flex-end;
+  }

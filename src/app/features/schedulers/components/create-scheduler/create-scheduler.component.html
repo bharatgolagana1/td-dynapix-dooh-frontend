@@ -55,21 +55,18 @@
   ></app-video-thumbnails-list>
     </div>
 
-    <div>
+ <div>
       <div class="scheduler-available--heading">Available Screens</div>
       <div *ngIf="showAPILoader" class="enquiry-update--loader">
         <!-- Loader HTML -->
         <mat-spinner diameter="50" color="primary"></mat-spinner>
-        <div>Loading...</div>
+        <div>Screens Loading...</div>
       </div>
       <div class="create-scheduler-card">
-        <mat-card *ngFor="let a of screenCards" class="card-container">
+        <mat-card *ngFor="let a of screenCards" class="card-container" >
           <div style="display: flex;flex-direction: row;gap: 0.5rem;">
-            <!-- Use another ngFor loop to display all images -->
-            <div style="display: flex;gap: 0.5rem;">
-            <ng-container  *ngFor="let imageUrl of a.imageUrls">
-              <img [src]="imageUrl" class="scheduler-image" />
-            </ng-container>
+            <div>
+              <img [src]="a.imageUrls[0]" class="scheduler-image" (click)="openImageDialog(a)"/>
             </div>
             <div>
               <div class="scheduler-card-title">{{ a.screenName }}</div>

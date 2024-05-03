@@ -5,6 +5,8 @@ import { Video } from '../video-thumbnails-list/video-thumbnails-list.component'
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ImageCardsListComponent } from '../image-cards-list/image-cards-list.component';
 
 @Component({
   selector: 'app-create-scheduler',
@@ -76,7 +78,16 @@ export class CreateSchedulerComponent implements OnInit {
       }
     );
   }
+  openImageDialog(card: any): void {
+    const dialogRef = this.dialog.open(ImageCardsListComponent, {
+      width: '80%', // Adjust the width as needed
+      data: { images: card.imageUrls }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
   createScheduler() {
     const schedulerData = {
       cycleTime: this.cycleTime,
@@ -101,7 +112,8 @@ export class CreateSchedulerComponent implements OnInit {
     private formBuilder: FormBuilder,
     private schedulerService: SchedulerService,
     private router: Router,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private dialog: MatDialog
   
   ) {
     this.createSchedulerForm = this.formBuilder.group({
