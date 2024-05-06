@@ -14,6 +14,7 @@ import { ImageCardsListComponent } from '../image-cards-list/image-cards-list.co
   styleUrls: ['./create-scheduler.component.scss'],
 })
 export class CreateSchedulerComponent implements OnInit {
+  dateRange: FormGroup; 
   cycleTime: number = 0;
   slotSize: number = 0;
   screenIds: number = 0;
@@ -122,6 +123,10 @@ export class CreateSchedulerComponent implements OnInit {
       selectedVideos: [[], [Validators.required]],
       selectedScreenIds: this.formBuilder.array([]),
     });
+    this.dateRange = this.formBuilder.group({
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+    });
   }
   receiveSelectedVideos(selectedVideos: any[]): void {
     // Map the received video objects to extract only the video URLs
@@ -146,6 +151,7 @@ export class CreateSchedulerComponent implements OnInit {
   }
   createSchedulers(): void {
     if (this.createSchedulerForm.valid && !this.isSubmitting) {
+
       const selectedVideosCount =
         this.createSchedulerForm.value.selectedVideos.length;
       const slotSize = this.createSchedulerForm.value.slotSize;
@@ -180,31 +186,30 @@ export class CreateSchedulerComponent implements OnInit {
         cycleTime: this.createSchedulerForm.value.cycleTime,
         slotSize: this.createSchedulerForm.value.slotSize,
         screenIds: this.createSchedulerForm.value.selectedScreenIds,
-        selectedVideos,
+        selectedVideos: this.selectedVideos,
+        startDate: this.dateRange.value.startDate,
+        endDate: this.dateRange.value.endDate,
       };
+  
       this.isSubmitting = true;
-      // Log the form data
-      console.log('Form Data:', this.createSchedulerForm.value);
-      this.schedulerService
-        .createScheduler(schedulerData)
-        .subscribe(
-          (response) => {
-            console.log('Scheduler created successfully:', response);
-            this.notificationService.showNotification(
-              'Scheduler created successfully',
-              'success'
-            );
-            this.router.navigate(['/schedulers']);
-          },
-          (error) => {
-            console.error('Error creating scheduler:', error);
-          }
-        )
-        .add(() => {
-          this.isSubmitting = false;
-        });
+      this.schedulerService.createScheduler(schedulerData).subscribe(
+        (response) => {
+          console.log('Scheduler created successfully:', response);
+          this.notificationService.showNotification(
+            'Scheduler created successfully',
+            'success'
+          );
+          this.router.navigate(['/schedulers']);
+        },
+        (error) => {
+          console.error('Error creating scheduler:', error);
+        }
+      ).add(() => {
+        this.isSubmitting = false;
+      });
     } else {
       this.isSubmitting = false;
     }
   }
+  
 }

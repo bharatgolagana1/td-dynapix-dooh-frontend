@@ -2,6 +2,19 @@
   <div class="list-scheduler--title">List Schedulers</div>
   <div class="mat-elevation-z1">
     <mat-table [dataSource]="dataSource">
+
+      <!-- Start Date Column -->
+      <ng-container matColumnDef="startDate">
+        <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
+        <mat-cell *matCellDef="let scheduler">{{ scheduler.startDate }}</mat-cell>
+      </ng-container>
+
+      <!-- End Date Column -->
+      <ng-container matColumnDef="endDate">
+        <mat-header-cell *matHeaderCellDef>End Date</mat-header-cell>
+        <mat-cell *matCellDef="let scheduler">{{ scheduler.endDate }}</mat-cell>
+      </ng-container>
+
       <!-- Cycle Time Column -->
       <ng-container matColumnDef="cycleTime">
         <mat-header-cell *matHeaderCellDef>Cycle Time</mat-header-cell>
@@ -51,6 +64,17 @@
           </ng-container>
         </mat-cell>
       </ng-container>
+
+<!-- Add delete button column -->
+      <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let scheduler">
+          <button mat-icon-button (click)="deleteScheduler(scheduler)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
 
       <mat-header-row
         class="mat-header"
