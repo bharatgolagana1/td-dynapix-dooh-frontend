@@ -1,45 +1,57 @@
 .mat-table {
-width: 100%;
-}
-.list-user--title {
-color: #757fef;
-font-family: Manrope;
-font-size: 1.75rem;
-font-style: normal;
-font-weight: 600;
-line-height: 2rem;
-margin-bottom: 3.25rem;
-}
-.mat-row, .mat-header-row {
-display: flex;
-border-bottom-width: 1px;
-border-bottom-style: solid;
-border-bottom-color: rgba(0, 0, 0, 0.12);
-}
-.mat-cell, .mat-header-cell {
-flex: 1;
-padding: 10px;
-}
-.list-user--table{
-margin: 2rem;
-}
-.mat-header{
-background-color: #F7F7F7;
-font-family: Arial;
-font-size: 12px;
-font-weight: 600;
-line-height: 16px;
-text-align: left;
-color: #757fef;
-}
-.list-users--data{
-font-family: Arial;
-font-size: 12px;
-font-weight: 600;
-line-height: 16px;
-text-align: left;
-color: #808080;
-}
-.mat-mdc-icon-button {
+    width: 100%;
+    }
+    .list-user--title {
     color: #757fef;
-}
+    font-family: Manrope;
+    font-size: 1.75rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 2rem;
+    margin-bottom: 3.25rem;
+    }
+    .mat-row, .mat-header-row {
+    display: flex;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(0, 0, 0, 0.12);
+    }
+    .mat-cell, .mat-header-cell {
+    flex: 1;
+    padding: 10px;
+    }
+    .list-user--table{
+    margin: 2rem;
+    }
+    .mat-header{
+    background-color: #F7F7F7;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    text-align: left;
+    color: #757fef;
+    }
+    .list-users--data{
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    text-align: left;
+    color: #808080;
+    }
+    .mat-mdc-icon-button {
+        color: #757fef;
+    }
+    .user-not-found-message {
+        padding: 12px;
+        background-color: #e7f0fd; 
+        color: #1e488f; 
+        border: 1px solid #bbd3fb;
+        border-radius: 8px;
+        margin-top: 10px;
+        font-size: 14px;
+        text-align: center;
+      }
+      
+    

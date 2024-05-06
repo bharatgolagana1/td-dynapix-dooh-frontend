@@ -1,21 +1,24 @@
 <div class="list-user--table">
-
   <div class="list-user--title">List Users</div>
   <div class="mat-elevation-z1">
-
     <mat-form-field
-    appearance="outline"
-    [style.fontSize.px]="14"
-    class="matform-full-width"
-  >
-    <mat-label>Search</mat-label>
-    <input
-      type="text"
-      matInput
-      (input)="onSearch($event)"
-      class="search-input"
-    />
-  </mat-form-field>
+      appearance="outline"
+      [style.fontSize.px]="14"
+      class="matform-full-width"
+    >
+      <mat-label>Search</mat-label>
+      <input
+        type="text"
+        matInput
+        (input)="onSearch($event)"
+        class="search-input"
+      />
+    </mat-form-field>
+
+    <!-- User not found message -->
+    <div *ngIf="userNotFoundMessage" class="user-not-found-message">
+      {{ userNotFoundMessage }}
+    </div>
 
     <!-- Table -->
     <mat-table [dataSource]="dataSource">
@@ -62,17 +65,17 @@
         <mat-cell *matCellDef="let user">{{ user.updatedAt | date }}</mat-cell>
       </ng-container>
 
-     <!--update-user-->
-     <ng-container matColumnDef="edit">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let user">
-        <button mat-icon-button (click)="editUser(user)">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
+      <!-- Edit User Column -->
+      <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <button mat-icon-button (click)="editUser(user)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
 
-      <!--delete-user-->
+      <!-- Delete User Column -->
       <ng-container matColumnDef="delete">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let user">
@@ -80,7 +83,7 @@
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>
-      </ng-container> 
+      </ng-container>
 
       <mat-header-row
         class="mat-header"
@@ -91,13 +94,15 @@
         *matRowDef="let row; columns: displayedColumns"
       ></mat-row>
     </mat-table>
+
     <mat-paginator
       [length]="totalUsers"
       [pageSize]="pageSize"
       [pageIndex]="pageIndex"
       (page)="onPageChange($event)"
-      [pageSizeOptions]="[ 5, 10, 25, 50, 100]"
+      [pageSizeOptions]="pageSizeOptions"
       showFirstLastButtons
-    ></mat-paginator>
+    >
+    </mat-paginator>
   </div>
 </div>

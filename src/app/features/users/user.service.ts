@@ -25,14 +25,16 @@ export class UserService {
 }
   
 
-  getUsers(pageIndex: number, pageSize: number, search: string): Observable<any> {
-    const params = new HttpParams()
-      .set('tenantId', this.tenantId)
-      .set('pageIndex', pageIndex.toString())
-      .set('pageSize', pageSize.toString())
-      .set('search', search);
-      return this.http.get<any[]>(`${this.apiUrl}?tenantId=${this.tenantId}`);
-  }
+getUsers(pageIndex: number, pageSize: number, search: string): Observable<any> {
+  const params = new HttpParams()
+    .set('tenantId', this.tenantId)
+    .set('pageIndex', pageIndex.toString())
+    .set('pageSize', pageSize.toString())
+    .set('search', search);
+
+  return this.http.get<any[]>(`${this.localAPIUrl}`, { params });
+}
+
 
 
 
