@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { VideoDialogComponent } from '../video-dialog/video-dialog.component';
 import { SchedulerService } from '../scheduler.service';
+import { LoaderService } from 'src/app/core/services/loader.service';
 export interface Video {
   id: string;
   title: string;
@@ -27,8 +28,10 @@ export class VideoThumbnailsListComponent {
 
   public videos: any[] = [];
   public selectedVideos: Video[] = [];
-  constructor(private dialog: MatDialog,private schedulerService:SchedulerService) {}
+  showAPILoader: boolean = true; // Show loader initially
+  constructor(private dialog: MatDialog,private schedulerService:SchedulerService,private loaderService: LoaderService) {}
   ngOnInit(): void {
+    this.loaderService.showLoader(); // Show loader
     this.schedulerService.getVideos().subscribe((videosList: any[]) => {
       if (Array.isArray(videosList) && videosList.length > 0) {
         // Filter out objects that have the expected videoUrl property
@@ -46,9 +49,10 @@ export class VideoThumbnailsListComponent {
       } else {
         console.error("Invalid video list format:", videosList);
       }
+      this.showAPILoader = false; // Hide loader when data is fetched
+      this.loaderService.hideLoader(); // Hide loader
     });
   }
-  
 
   openVideoDialog(videoUrl: string): void {
     this.dialog.open(VideoDialogComponent, {
