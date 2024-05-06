@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SchedulerService {
+
   private apiUrl = 'http://ec2-13-211-129-217.ap-southeast-2.compute.amazonaws.com:3001/scheduler';
   private localApiUrl = 'http://localhost:3001/scheduler';
   private media = 'http://localhost:3001/media';
@@ -33,5 +34,10 @@ export class SchedulerService {
 
   getScreensForTenant(): Observable<any> {
     return this.http.get<any>(`${this.screens}/api/screens`);
+  }
+
+  deleteScheduler(scheduler: any): Observable<any> {
+    console.log('Deleting user:', scheduler);
+    return this.http.delete<any[]>(`${this.localApiUrl}/${scheduler._id}`); 
   }
 }

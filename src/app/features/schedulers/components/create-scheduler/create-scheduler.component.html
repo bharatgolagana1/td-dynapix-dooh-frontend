@@ -46,7 +46,27 @@
           Cycle Time is required
         </mat-hint>
       </mat-form-field>
-    </div>
+
+
+     
+      <mat-form-field appearance="outline">
+        <mat-label>Date Range</mat-label>
+        <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker">
+          <input matStartDate formControlName="startDate" placeholder="Start Date">
+          <input matEndDate formControlName="endDate" placeholder="End Date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+        <mat-hint style="color: red" *ngIf="dateRange.get('startDate')?.touched && dateRange.get('startDate')?.errors?.['required']">
+          Start Date is required
+        </mat-hint>
+        <mat-hint style="color: red" *ngIf="dateRange.get('endDate')?.touched && dateRange.get('endDate')?.errors?.['required']">
+          End Date is required
+        </mat-hint>
+      </mat-form-field>
+      </div>
+      
+  
 
     <div>
       <div class="scheduler-available--heading">Available Content</div>

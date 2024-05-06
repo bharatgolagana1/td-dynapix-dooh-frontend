@@ -1,7 +1,19 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { SchedulerService } from '../scheduler.service';
+import { SchedulerService} from '../scheduler.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SchedulerDeleteComponent } from '../scheduler-delete/scheduler-delete.component';
+import { NotificationService } from 'src/app/core/services/notification.service';
+export interface Scheduler {
+  id: number;
+  cycleTime: number;
+  slotSize: number;
+  videoUrls: string;
+  screenId: number;
+  startDate: string;
+  endDate: string; 
+}
 
 @Component({
   selector: 'app-list-scheduler',
@@ -10,13 +22,13 @@ import { SchedulerService } from '../scheduler.service';
 })
 export class ListSchedulerComponent implements OnInit, AfterViewInit {
   schedulers: any[] = [];
-  displayedColumns: string[] = ['cycleTime', 'slotSize', 'videoUrls', 'screenId'];
-  dataSource!: MatTableDataSource<any>; // Update Scheduler to any
+  displayedColumns: string[] = ['cycleTime', 'slotSize', 'videoUrls', 'screenId', 'startDate', 'endDate','delete'];
+  dataSource!: MatTableDataSource<any>; 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  totalItems: number = 0; // Define totalItems property
-  pageSize: number = 10; // Define pageSize property
+  totalItems: number = 0; 
+  pageSize: number = 10; 
 
-  constructor(private schedulerService: SchedulerService) { }
+  constructor(private schedulerService: SchedulerService, private dialog: MatDialog,private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.getPaginatedSchedulers(0, this.pageSize);
@@ -31,7 +43,7 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
       if (response.schedules.length > 0) {
         this.schedulers = response.schedules;
         this.dataSource = new MatTableDataSource<any>(response.schedules);
-        this.totalItems = response.totalSchedulesCount; // Assign total count to totalItems
+        this.totalItems = response.totalSchedulesCount; 
       }
     });
   }
@@ -39,4 +51,31 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
   onPageChange(event: any): void {
     this.getPaginatedSchedulers(event.pageIndex, event.pageSize);
   }
+
+  
+  deleteScheduler(scheduler: any): void {
+    const dialogRef = this.dialog.open(SchedulerDeleteComponent, {
+      width: '400px',
+      data: { scheduler }
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.schedulerService.deleteScheduler(scheduler).subscribe(
+          () => {
+            this.notificationService.showNotification('Scheduler deleted successfully.', 'success');
+            this.getPaginatedSchedulers(this.paginator.pageIndex, this.paginator.pageSize);
+          },
+          (error: any) => {
+            console.error('Error deleting scheduler:', error);
+            this.notificationService.showNotification('Failed to delete scheduler. Please try again.', 'error');
+          }
+        );
+      }
+    });
+  }
+  
+  
+
+
 }
