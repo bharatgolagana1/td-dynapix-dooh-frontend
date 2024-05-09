@@ -6,7 +6,7 @@
 }
 .ellipsis-cell {
     display: inline-block;
-  width: 100%; /* Ensures the link takes up the entire cell width */
+  width: 100%; 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -15,7 +15,7 @@
   
   .ellipsis-link {
     
-    width: 100%; /* Ensures link fills cell */
+    width: 100%; 
   }
   
     .list-scheduler--title {

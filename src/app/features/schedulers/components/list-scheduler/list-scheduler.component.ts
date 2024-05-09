@@ -74,8 +74,4 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  
-  
-
-
 }
