@@ -35,19 +35,23 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+    if (this.dataSource) {
+      this.dataSource.paginator = this.paginator;
+    }
   }
+  
 
   getPaginatedSchedulers(pageIndex: number, pageSize: number): void {
     this.schedulerService.getSchedulers(pageIndex, pageSize).subscribe((response: any) => {
       if (response.schedules.length > 0) {
         this.schedulers = response.schedules;
         this.dataSource = new MatTableDataSource<any>(response.schedules);
+        this.dataSource.paginator = this.paginator; 
         this.totalItems = response.totalSchedulesCount; 
       }
     });
   }
-
+  
   onPageChange(event: any): void {
     this.getPaginatedSchedulers(event.pageIndex, event.pageSize);
   }
