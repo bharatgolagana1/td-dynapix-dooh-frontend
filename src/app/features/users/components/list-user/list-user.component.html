@@ -1,21 +1,19 @@
 <div class="list-user--table">
-
   <div class="list-user--title">List Users</div>
   <div class="mat-elevation-z1">
-
     <mat-form-field
-    appearance="outline"
-    [style.fontSize.px]="14"
-    class="matform-full-width"
-  >
-    <mat-label>Search</mat-label>
-    <input
-      type="text"
-      matInput
-      (input)="onSearch($event)"
-      class="search-input"
-    />
-  </mat-form-field>
+      appearance="outline"
+      [style.fontSize.px]="14"
+      class="matform-full-width"
+    >
+      <mat-label>Search</mat-label>
+      <input
+        type="text"
+        matInput
+        (input)="onSearch($event)"
+        class="search-input"
+      />
+    </mat-form-field>
 
     <!-- Table -->
     <mat-table [dataSource]="dataSource">
@@ -41,13 +39,17 @@
       <!-- Email Column -->
       <ng-container matColumnDef="email">
         <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.email }}</mat-cell>
+        <mat-cell *matCellDef="let user" class="ellipsis-cell">{{
+          user.email
+        }}</mat-cell>
       </ng-container>
 
       <!-- Role Column -->
       <ng-container matColumnDef="role">
         <mat-header-cell *matHeaderCellDef>Role</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.role }}</mat-cell>
+        <mat-cell *matCellDef="let user" class="ellipsis-cell">{{
+          user.role
+        }}</mat-cell>
       </ng-container>
 
       <!-- Created At Column -->
@@ -62,15 +64,15 @@
         <mat-cell *matCellDef="let user">{{ user.updatedAt | date }}</mat-cell>
       </ng-container>
 
-     <!--update-user-->
-     <ng-container matColumnDef="edit">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let user">
-        <button mat-icon-button (click)="editUser(user)">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
+      <!--update-user-->
+      <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <button mat-icon-button (click)="editUser(user)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
 
       <!--delete-user-->
       <ng-container matColumnDef="delete">
@@ -80,7 +82,7 @@
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>
-      </ng-container> 
+      </ng-container>
 
       <mat-header-row
         class="mat-header"
@@ -96,7 +98,7 @@
       [pageSize]="pageSize"
       [pageIndex]="pageIndex"
       (page)="onPageChange($event)"
-      [pageSizeOptions]="[ 5, 10, 25, 50, 100]"
+      [pageSizeOptions]="[5, 10, 25, 50, 100]"
       showFirstLastButtons
     ></mat-paginator>
   </div>

@@ -2,11 +2,12 @@
   <div class="list-scheduler--title">List Schedulers</div>
   <div class="mat-elevation-z1">
     <mat-table [dataSource]="dataSource">
-
       <!-- Start Date Column -->
       <ng-container matColumnDef="startDate">
         <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
-        <mat-cell *matCellDef="let scheduler">{{ scheduler.startDate }}</mat-cell>
+        <mat-cell *matCellDef="let scheduler">{{
+          scheduler.startDate
+        }}</mat-cell>
       </ng-container>
 
       <!-- End Date Column -->
@@ -52,7 +53,7 @@
       <!-- ScreenId Column -->
       <ng-container matColumnDef="screenId">
         <mat-header-cell *matHeaderCellDef>Screen ID</mat-header-cell>
-        <mat-cell *matCellDef="let scheduler" class="ellipsis-cells">
+        <mat-cell *matCellDef="let scheduler" class="ellipsis-cell">
           <ng-container
             *ngIf="scheduler.screenIds && scheduler.screenIds.length > 0"
           >
@@ -65,7 +66,7 @@
         </mat-cell>
       </ng-container>
 
-<!-- Add delete button column -->
+      <!-- Add delete button column -->
       <ng-container matColumnDef="delete">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let scheduler">
@@ -74,7 +75,6 @@
           </button>
         </mat-cell>
       </ng-container>
-
 
       <mat-header-row
         class="mat-header"
