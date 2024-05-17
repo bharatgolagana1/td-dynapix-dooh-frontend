@@ -44,7 +44,14 @@
     .mat-mdc-icon-button {
         color: #757fef;
     }
-    .ellipsis-cell {
+    .user-not-found-message {
+        padding: 12px;
+        color: #1e488f; 
+        margin-top: 10px;
+        font-size: 14px;
+        text-align: center;
+      }
+      .ellipsis-cell {
         display: inline-block;
       width: 100%; 
       white-space: nowrap;
@@ -52,3 +59,8 @@
       text-overflow: ellipsis;
       padding-top: 1rem;
       }
+      .list-user--table.disabled {
+        pointer-events: none; 
+        opacity: 0.6; 
+      }
+      

@@ -1,105 +1,117 @@
 <div class="list-user--table">
   <div class="list-user--title">List Users</div>
+  <mat-form-field
+    appearance="outline"
+    [style.fontSize.px]="14"
+    class="matform-full-width"
+  >
+    <mat-label class="small-label">Search</mat-label>
+    <input
+      type="text"
+      matInput
+      (input)="onSearch($event)"
+      class="search-input"
+    />
+    <button mat-icon-button matSuffix aria-label="Search" class="small-icon">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
   <div class="mat-elevation-z1">
-    <mat-form-field
-      appearance="outline"
-      [style.fontSize.px]="14"
-      class="matform-full-width"
-    >
-      <mat-label>Search</mat-label>
-      <input
-        type="text"
-        matInput
-        (input)="onSearch($event)"
-        class="search-input"
-      />
-    </mat-form-field>
+    <div *ngIf="!userNotFoundMessage">
+      <mat-table [dataSource]="dataSource">
+        <!-- Columns -->
+        <!-- User Name Column -->
+        <ng-container matColumnDef="userName">
+          <mat-header-cell *matHeaderCellDef>User Name</mat-header-cell>
+          <mat-cell *matCellDef="let user">{{ user.userName }}</mat-cell>
+        </ng-container>
 
-    <!-- Table -->
-    <mat-table [dataSource]="dataSource">
-      <!-- Columns -->
-      <!-- User Name Column -->
-      <ng-container matColumnDef="userName">
-        <mat-header-cell *matHeaderCellDef>User Name</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.userName }}</mat-cell>
-      </ng-container>
+        <!-- First Name Column -->
+        <ng-container matColumnDef="firstName">
+          <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
+          <mat-cell *matCellDef="let user">{{ user.firstName }}</mat-cell>
+        </ng-container>
 
-      <!-- First Name Column -->
-      <ng-container matColumnDef="firstName">
-        <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.firstName }}</mat-cell>
-      </ng-container>
+        <!-- Last Name Column -->
+        <ng-container matColumnDef="lastName">
+          <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
+          <mat-cell *matCellDef="let user">{{ user.lastName }}</mat-cell>
+        </ng-container>
 
-      <!-- Last Name Column -->
-      <ng-container matColumnDef="lastName">
-        <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.lastName }}</mat-cell>
-      </ng-container>
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+          <mat-cell *matCellDef="let user" class="ellipsis-cell">{{
+            user.email
+          }}</mat-cell>
+        </ng-container>
 
-      <!-- Email Column -->
-      <ng-container matColumnDef="email">
-        <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-        <mat-cell *matCellDef="let user" class="ellipsis-cell">{{
-          user.email
-        }}</mat-cell>
-      </ng-container>
+        <!-- Role Column -->
+        <ng-container matColumnDef="role">
+          <mat-header-cell *matHeaderCellDef>Role</mat-header-cell>
+          <mat-cell *matCellDef="let user" class="ellipsis-cell">{{
+            user.role
+          }}</mat-cell>
+        </ng-container>
 
-      <!-- Role Column -->
-      <ng-container matColumnDef="role">
-        <mat-header-cell *matHeaderCellDef>Role</mat-header-cell>
-        <mat-cell *matCellDef="let user" class="ellipsis-cell">{{
-          user.role
-        }}</mat-cell>
-      </ng-container>
+        <!-- Created At Column -->
+        <ng-container matColumnDef="createdAt">
+          <mat-header-cell *matHeaderCellDef>Created At</mat-header-cell>
+          <mat-cell *matCellDef="let user">{{
+            user.createdAt | date
+          }}</mat-cell>
+        </ng-container>
 
-      <!-- Created At Column -->
-      <ng-container matColumnDef="createdAt">
-        <mat-header-cell *matHeaderCellDef>Created At</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.createdAt | date }}</mat-cell>
-      </ng-container>
+        <!-- Updated At Column -->
+        <ng-container matColumnDef="updatedAt">
+          <mat-header-cell *matHeaderCellDef>Updated At</mat-header-cell>
+          <mat-cell *matCellDef="let user">{{
+            user.updatedAt | date
+          }}</mat-cell>
+        </ng-container>
 
-      <!-- Updated At Column -->
-      <ng-container matColumnDef="updatedAt">
-        <mat-header-cell *matHeaderCellDef>Updated At</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.updatedAt | date }}</mat-cell>
-      </ng-container>
+        <!--update-user-->
+        <ng-container matColumnDef="edit">
+          <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
+          <mat-cell *matCellDef="let user">
+            <button mat-icon-button (click)="editUser(user)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
 
-      <!--update-user-->
-      <ng-container matColumnDef="edit">
-        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let user">
-          <button mat-icon-button (click)="editUser(user)">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </mat-cell>
-      </ng-container>
+        <!--delete-user-->
+        <ng-container matColumnDef="delete">
+          <mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
+          <mat-cell *matCellDef="let user">
+            <button mat-icon-button (click)="deleteUser(user)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
 
-      <!--delete-user-->
-      <ng-container matColumnDef="delete">
-        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let user">
-          <button mat-icon-button (click)="deleteUser(user)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </mat-cell>
-      </ng-container>
+        <mat-header-row
+          class="mat-header"
+          *matHeaderRowDef="displayedColumns"
+        ></mat-header-row>
+        <mat-row
+          class="list-users--data"
+          *matRowDef="let row; columns: displayedColumns"
+        ></mat-row>
+      </mat-table>
+      <mat-paginator
+        [length]="totalUsers"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        (page)="onPageChange($event)"
+        [pageSizeOptions]="pageSizeOptions"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
 
-      <mat-header-row
-        class="mat-header"
-        *matHeaderRowDef="displayedColumns"
-      ></mat-header-row>
-      <mat-row
-        class="list-users--data"
-        *matRowDef="let row; columns: displayedColumns"
-      ></mat-row>
-    </mat-table>
-    <mat-paginator
-      [length]="totalUsers"
-      [pageSize]="pageSize"
-      [pageIndex]="pageIndex"
-      (page)="onPageChange($event)"
-      [pageSizeOptions]="[5, 10, 25, 50, 100]"
-      showFirstLastButtons
-    ></mat-paginator>
+    <div *ngIf="userNotFoundMessage" class="user-not-found-message">
+      {{ userNotFoundMessage }}
+      <div></div>
+    </div>
   </div>
 </div>
