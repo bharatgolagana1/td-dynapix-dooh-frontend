@@ -1,9 +1,8 @@
-
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { UserService } from '../../user.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.component';
@@ -26,45 +25,53 @@ export interface User {
 })
 export class ListUserComponent implements OnInit, OnDestroy {
   users: User[] = [];
-  displayedColumns: string[] = ['userName', 'firstName', 'lastName', 'email', 'role', 'createdAt', 'updatedAt','edit','delete'];
+  displayedColumns: string[] = ['userName', 'firstName', 'lastName', 'email', 'role', 'createdAt', 'updatedAt', 'edit', 'delete'];
   dataSource!: MatTableDataSource<User>;
   totalUsers: number = 0;
   pageIndex: number = 0;
   pageSize: number = 10;
   searchValue: string = '';
+  pageSizeOptions: number[] = [5, 10, 25, 50, 100]; 
+  userNotFoundMessage: string = '';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  private userCreatedSubscription: Subscription = new Subscription;
+  private userCreatedSubscription: Subscription = new Subscription();
 
-
-  constructor(private userService: UserService , private dialog: MatDialog ,private notificationService: NotificationService) { }
+  constructor(private userService: UserService, private dialog: MatDialog, private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.loadUsers();
   }
 
-  loadUsers(pageIndex: number = 0,pageSize: number=0): void {
-    this.userService.getUsers(pageIndex + 1, this.pageSize, this.searchValue).subscribe((usersList: any) => {
-      this.dataSource = new MatTableDataSource<User>(usersList.users);
-      this.users = usersList.users;
-      this.users.sort((a, b) => (a.updatedAt > b.updatedAt ? -1 : 1));
-      this.totalUsers = usersList.totalUsers;
-      this.pageIndex = usersList.pageIndex - 1;
-      this.dataSource.paginator = this.paginator;
-    });
+  loadUsers(pageIndex: number = 0): void {
+    const actualPageSize = this.pageSize > 0 ? this.pageSize : 10; 
+
+    this.userService.getUsers(pageIndex, actualPageSize, this.searchValue)
+      .subscribe((usersList: any) => {
+        this.users = usersList.users;
+        this.totalUsers = usersList.totalUsers;
+        this.pageIndex = pageIndex; 
+        this.dataSource = new MatTableDataSource<User>(this.users);
+        this.dataSource.paginator = this.paginator;
+
+        
+        if (this.users.length === 0 && this.searchValue !== '') {
+          this.userNotFoundMessage = 'User not found.';
+        } else {
+          this.userNotFoundMessage = '';
+        }
+      });
   }
 
   onPageChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
     this.loadUsers(event.pageIndex);
   }
 
   onSearch(event: any): void {
     this.searchValue = event.target.value.trim().toLowerCase();
-    this.loadUsers();
-    this.userCreatedSubscription = this.userService.userCreated().subscribe(() => {
-    this.loadUsers();
-    });
+    this.loadUsers(); 
   }
 
   ngOnDestroy(): void {
@@ -114,5 +121,3 @@ export class ListUserComponent implements OnInit, OnDestroy {
     });
   }
 }
-
-
