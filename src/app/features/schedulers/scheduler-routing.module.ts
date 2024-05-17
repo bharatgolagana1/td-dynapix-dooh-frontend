@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CreateSchedulerComponent } from './components/create-scheduler/create-scheduler.component';
 import { ListSchedulerComponent } from './components/list-scheduler/list-scheduler.component';
 import { PlaySchedulerComponent } from './components/play-scheduler/play-scheduler.component';
+import { UpdateScreenComponent } from './components/update-screen/update-screen.component';
 
 const routes: Routes = [
 
@@ -18,6 +19,10 @@ const routes: Routes = [
       path: 'playScheduler',
       component: PlaySchedulerComponent,
     },
+    {
+      path: 'updateScreen/:id',
+      component: UpdateScreenComponent
+    }
    
   ];
 

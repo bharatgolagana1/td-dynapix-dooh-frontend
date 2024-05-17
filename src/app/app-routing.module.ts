@@ -44,6 +44,13 @@ const routes: Routes = [
         (m) => m.ScreenModule
       ),
   },
+  {
+    path: AppRoutePaths.updateScreen,
+    loadChildren: () =>
+      import('./features/schedulers/scheduler.module').then(
+        (m) => m.SchedulerModule
+      ),
+  }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
