@@ -1,9 +1,11 @@
-.scheduler-image{
-    width: 5rem;
-    height: 5rem;
+.create-scheduler-card{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 16px;
 }
 
-.card-container{
+.create-scheduler-card--container{
     padding: 1.5rem;
     display: flex;
     gap: 2rem;
@@ -11,16 +13,17 @@
     border-radius: 0.3rem;
 }
 
+.create-scheduler-card--content{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
 
-
-.create-scheduler-card{
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        gap: 16px;
+.create-scheduler-card--image{
+        width: 5rem;
+        height: 5rem;
     }
-
-
+    
 .mat-card {
         position: relative;
       }
@@ -40,11 +43,7 @@
     text-align: end;
 }
 
-.scheduler-card-font{
-    font-size: 0.7rem;
-}
-
-.scheduler-card-title{
+.create-scheduler-card--name{
     font-size: 15px;
     font-weight: 550;
     line-height: 16px;
@@ -54,15 +53,22 @@
     
 }
 
-.scheduler-card-location{
+.create-scheduler-card--address{
     font-size: 0.8rem;
     color: #5C5C5C;
     font-family: Arial;
     text-align: left;
 }
 
+.create-scheduler-card--subcontent{
+    font-size: 0.7rem;
+}
 
-
+.create-scheduler-card--actions{
+    display: flex;
+    justify-content:flex-end;
+    align-items: center;
+}
 
 
   

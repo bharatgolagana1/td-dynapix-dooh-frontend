@@ -40,4 +40,18 @@ export class SchedulerService {
     console.log('Deleting user:', scheduler);
     return this.http.delete<any[]>(`${this.localApiUrl}/${scheduler._id}`); 
   }
+
+  deleteScreen(id: string): Observable<any> {
+    return this.http.delete(`${this.screens}/${id}`);
+  }
+  
+  updateScreen(id: string, formData: FormData) {
+    const url = `${this.screens}/${id}`;
+    return this.http.put(url, formData);
+  }
+
+  getScreenDetails(screenId: string): Observable<any> {
+    const url = `${this.screens}/${screenId}`;
+    return this.http.get<any>(url);
+  }
 }

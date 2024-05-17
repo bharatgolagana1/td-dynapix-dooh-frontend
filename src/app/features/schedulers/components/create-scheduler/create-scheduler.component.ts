@@ -7,7 +7,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ImageCardsListComponent } from '../image-cards-list/image-cards-list.component';
-
+import { DeleteScreenComponent } from '../delete-screen/delete-screen.component';
 @Component({
   selector: 'app-create-scheduler',
   templateUrl: './create-scheduler.component.html',
@@ -89,6 +89,43 @@ export class CreateSchedulerComponent implements OnInit {
       console.log('The dialog was closed');
     });
   }
+
+  editScreen(screenId: string) {
+    // Navigate to the edit screen component with the screenId as a parameter
+    this.router.navigate(['/updateScreen', screenId]);
+  }
+
+  deleteScreen(screenId: string) {
+    const dialogRef = this.dialog.open(DeleteScreenComponent, {
+      width: '250px',
+      data: { screenId: screenId }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Assuming you have a service to handle API calls for screen deletion
+        this.schedulerService.deleteScreen(screenId).subscribe(() => {
+          console.log('Screen deleted');
+  
+          // Find the index of the deleted screen in your screenCards array
+          const index = this.screenCards.findIndex(card => card._id === screenId);
+  
+          // If the screen is found, remove it from the array
+          if (index !== -1) {
+            this.screenCards.splice(index, 1);
+          }
+  
+          // Alternatively, you can reload data if needed
+          // this.loadScreenCards();
+        }, error => {
+          console.error('Error deleting screen:', error);
+          // Handle error if necessary
+        });
+      }
+    });
+  }
+  
+  
   createScheduler() {
     const schedulerData = {
       cycleTime: this.cycleTime,

@@ -83,30 +83,48 @@
         <div>Screens Loading...</div>
       </div>
       <div class="create-scheduler-card">
-        <mat-card *ngFor="let a of screenCards" class="card-container" >
-          <div style="display: flex;flex-direction: row;gap: 0.5rem;">
+        <mat-card *ngFor="let a of screenCards" class="create-scheduler-card--container" >
+          <div class="create-scheduler-card--content">
             <div>
-              <img [src]="a.imageUrls[0]" class="scheduler-image" (click)="openImageDialog(a)"/>
+              <img [src]="a.imageUrls[0]" class="create-scheduler-card--image" (click)="openImageDialog(a)"/>
             </div>
             <div>
-              <div class="scheduler-card-title">{{ a.screenName }}</div>
-              <div class="scheduler-card-location">{{ a.address }}</div>
+              <div class="create-scheduler-card--name">{{ a.screenName }}</div>
+              <div class="create-scheduler-card--address">{{ a.address }}</div>
               <div>
-                <div class="scheduler-card-font">Size: {{ a.size }}</div>
-                <div class="scheduler-card-font">SFT: {{ a.SFT }}</div>
-                <div class="scheduler-card-font">Next Available Date: {{ a.NextAvailableDate }}</div>
+                <div class="create-scheduler-card--subcontent">Size: {{ a.size }}</div>
+                <div class="create-scheduler-card--subcontent">SFT: {{ a.SFT }}</div>
+                <div class="create-scheduler-card--subcontent">Next Available Date: {{ a.NextAvailableDate }}</div>
               </div>
             </div>
-            <mat-checkbox
-              (change)="toggleScreenSelection(a.ID, $event.checked)"
-              [checked]="a.selected"
-              class="checkbox"
-            ></mat-checkbox>
+            <div class="create-scheduler-card--actions">
+            <div>
+              <button mat-icon-button (click)="editScreen(a._id)">
+                <img src="assets/images/edit.svg" />
+              </button>
+            </div>
+
+            <div>
+              <button mat-icon-button (click)="deleteScreen(a._id)">
+                <img src="assets/images/delete.svg"/>
+              </button>
+            </div>
+
+            <div>
+              <mat-checkbox
+                (change)="toggleScreenSelection(a._id, $event.checked)"
+                [checked]="a.selected"
+                class="checkbox"
+                color="primary"
+              ></mat-checkbox>
+            </div>
+            </div>
           </div>
+          
         </mat-card>
       </div>
 
-    </div>
+ </div>
     
     
   </form>
