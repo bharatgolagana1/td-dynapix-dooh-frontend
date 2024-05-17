@@ -24,7 +24,6 @@ export class EditUserDialogComponent {
       firstName: [data.user.firstName, Validators.required],
       lastName: [data.user.lastName, Validators.required],
       userName: [data.user.userName, Validators.required],
-      email:[data.user.email,Validators.email],
       role:[data.user.role,[Validators.required]],
     });
   }

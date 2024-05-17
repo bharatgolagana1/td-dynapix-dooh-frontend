@@ -23,21 +23,18 @@ export class UserService {
     );
 }
   
+getUsers(pageIndex: number, pageSize: number, search: string, sortBy: string, sortOrder: string): Observable<any> {
+  const params = new HttpParams()
+    .set('tenantId', this.tenantId)
+    .set('pageIndex', pageIndex.toString())
+    .set('pageSize', pageSize.toString())
+    .set('search', search)
+    .set('sortBy', sortBy)
+    .set('sortOrder', sortOrder);
 
- 
-    getUsers(pageIndex: number, pageSize: number, search: string): Observable<any> {
-      const params = new HttpParams()
-        .set('tenantId', this.tenantId)
-        .set('pageIndex', pageIndex.toString())
-        .set('pageSize', pageSize.toString())
-        .set('search', search);
-    
-      return this.http.get<any[]>(`${this.localAPIUrl}`, { params });
-    }
+  return this.http.get<any[]>(`${this.localAPIUrl}`, { params });
+}
 
-
-
-  
   userCreated(): Observable<void> {
     return this.userCreatedSubject.asObservable();
   }
