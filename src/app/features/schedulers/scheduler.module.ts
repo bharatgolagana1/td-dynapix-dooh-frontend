@@ -14,6 +14,8 @@ import { VgApiService } from '@videogular/ngx-videogular/core';
 import { PlaySchedulerComponent } from './components/play-scheduler/play-scheduler.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { SchedulerDeleteComponent } from './components/scheduler-delete/scheduler-delete.component';
+import { DeleteScreenComponent } from './components/delete-screen/delete-screen.component';
+import { UpdateScreenComponent } from './components/update-screen/update-screen.component';
 @NgModule({
   declarations: [
     CreateSchedulerComponent,
@@ -23,7 +25,9 @@ import { SchedulerDeleteComponent } from './components/scheduler-delete/schedule
     SchedulerFormComponentComponent,
     VideoDialogComponent,
     PlaySchedulerComponent,
-    SchedulerDeleteComponent
+    SchedulerDeleteComponent,
+    DeleteScreenComponent,
+    UpdateScreenComponent
   ],
   imports: [CommonModule, MaterialModule,SchedulerRoutingModule,FormsModule,ReactiveFormsModule,SlickCarouselModule],
   exports: [CreateSchedulerComponent, ListSchedulerComponent,VideoDialogComponent],

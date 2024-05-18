@@ -16,5 +16,6 @@ export enum AppRoutePaths {
   transcripts = 'transcripts',
   schedulers = 'schedulers',
   media = 'media',
-  screen = 'screen'
+  screen = 'screen',
+  updateScreen = 'updateScreen'
 }
