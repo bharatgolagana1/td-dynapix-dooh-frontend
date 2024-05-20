@@ -11,15 +11,17 @@
     <p class="Browse-file--content">or browse</p>
   </div>
 </div>
-<div class="upload-button-margin"> 
-<button class="upload-button" type="submit" mat-raised-button color="primary" (click)="upload()" [disabled]="!hasFilesToUpload()"s>Upload</button>
-<div *ngFor="let file of files; let i = index" style="margin-bottom: 2rem;">
-  <div class="cancel-button">
-    <video [src]="file.url" controls class="videosUpload-conatiner"></video>
-    <p class="upload-fileName">{{ file.file.name }}</p>
-    <button mat-icon-button (click)="cancelUpload(i)">
-      <mat-icon>cancel</mat-icon>
-    </button>
+<div class="upload-button-margin">
+  <button class="upload-button" type="submit" mat-raised-button color="primary" (click)="upload()" [disabled]="!hasFilesToUpload()">Upload</button>
+  <div *ngFor="let file of files; let i = index" class="file-container">
+    <div class="cancel-button">
+      <video [src]="file.url" controls class="videosUpload-container"></video>
+      <p class="upload-fileName">{{ file.file.name }}</p>
+      <mat-progress-bar mode="determinate" [value]="file.progress"></mat-progress-bar>
+      <p class="upload-progress">{{ file.progress }}%</p> <!-- Display upload progress -->
+      <button mat-icon-button (click)="cancelUpload(i)">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </div>
   </div>
-</div>
 </div>

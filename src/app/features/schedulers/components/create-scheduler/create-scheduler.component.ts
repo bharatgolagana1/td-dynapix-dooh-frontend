@@ -8,6 +8,8 @@ import { LoaderService } from 'src/app/core/services/loader.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ImageCardsListComponent } from '../image-cards-list/image-cards-list.component';
 import { DeleteScreenComponent } from '../delete-screen/delete-screen.component';
+import { DatePipe } from '@angular/common';
+
 @Component({
   selector: 'app-create-scheduler',
   templateUrl: './create-scheduler.component.html',
@@ -51,15 +53,11 @@ export class CreateSchedulerComponent implements OnInit {
     card.selected = !card.selected;
   }
   toggleScreenSelection(screenId: string, checked: boolean): void {
-    const selectedScreenIds = this.createSchedulerForm.get(
-      'selectedScreenIds'
-    ) as FormArray;
+    const selectedScreenIds = this.createSchedulerForm.get('selectedScreenIds') as FormArray;
     if (checked) {
       selectedScreenIds.push(this.formBuilder.control(screenId));
     } else {
-      const index = selectedScreenIds.controls.findIndex(
-        (x) => x.value === screenId
-      );
+      const index = selectedScreenIds.controls.findIndex(x => x.value === screenId);
       selectedScreenIds.removeAt(index);
     }
   }
@@ -79,6 +77,7 @@ export class CreateSchedulerComponent implements OnInit {
       }
     );
   }
+
   openImageDialog(card: any): void {
     const dialogRef = this.dialog.open(ImageCardsListComponent, {
       width: '80%', // Adjust the width as needed
@@ -127,12 +126,19 @@ export class CreateSchedulerComponent implements OnInit {
   
   
   createScheduler() {
+    const datePipe = new DatePipe('en-US');
+    const formattedStartDate = datePipe.transform(this.dateRange.value.startDate, 'dd-MM-yyyy');
+    const formattedEndDate = datePipe.transform(this.dateRange.value.endDate, 'dd-MM-yyyy');
+
     const schedulerData = {
       cycleTime: this.cycleTime,
       slotSize: this.slotSize,
       screenIds: this.screenIds,
       videoUrls: this.videoUrls.split(',').map((url) => url.trim()),
+      startDate: formattedStartDate,
+      endDate: formattedEndDate
     };
+
     this.schedulerService.createScheduler(schedulerData).subscribe(
       (response) => {
         console.log('Scheduler created successfully:', response);
@@ -144,6 +150,7 @@ export class CreateSchedulerComponent implements OnInit {
       }
     );
   }
+
   createSchedulerForm: FormGroup;
   constructor(
     private notificationService: NotificationService,
@@ -152,7 +159,6 @@ export class CreateSchedulerComponent implements OnInit {
     private router: Router,
     private loaderService: LoaderService,
     private dialog: MatDialog
-  
   ) {
     this.createSchedulerForm = this.formBuilder.group({
       cycleTime: ['', [Validators.required]],
@@ -160,25 +166,22 @@ export class CreateSchedulerComponent implements OnInit {
       selectedVideos: [[], [Validators.required]],
       selectedScreenIds: this.formBuilder.array([]),
     });
+
     this.dateRange = this.formBuilder.group({
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
     });
   }
+
   receiveSelectedVideos(selectedVideos: any[]): void {
-    // Map the received video objects to extract only the video URLs
-    this.selectedVideos = selectedVideos.map((video) => video);
-    // Update the form control value
+    this.selectedVideos = selectedVideos.map(video => video);
     this.createSchedulerForm.patchValue({
       selectedVideos: this.selectedVideos,
     });
-    // Check if the selected number of videos exceeds slot size
     const selectedVideosCount = this.selectedVideos.length;
     const slotSize = this.createSchedulerForm.value.slotSize;
     const cycleTime = this.createSchedulerForm.value.cycleTime;
     const totalSlots = (cycleTime * 60) / slotSize;
-
-    // Check if the number of videos matches the number of slots
     if (selectedVideosCount > totalSlots) {
       this.notificationService.showNotification(
         'Selected number of videos exceeds slot size',
@@ -186,48 +189,56 @@ export class CreateSchedulerComponent implements OnInit {
       );
     }
   }
+
+  onDateChange(): void {
+    const datePipe = new DatePipe('en-US');
+    const formattedStartDate = datePipe.transform(this.dateRange.value.startDate, 'dd-MM-yyyy');
+    const formattedEndDate = datePipe.transform(this.dateRange.value.endDate, 'dd-MM-yyyy');
+    this.dateRange.patchValue({
+      startDate: formattedStartDate,
+      endDate: formattedEndDate,
+    });
+  }
+
   createSchedulers(): void {
     if (this.createSchedulerForm.valid && !this.isSubmitting) {
-
-      const selectedVideosCount =
-        this.createSchedulerForm.value.selectedVideos.length;
+      const selectedVideosCount = this.createSchedulerForm.value.selectedVideos.length;
       const slotSize = this.createSchedulerForm.value.slotSize;
       const cycleTime = this.createSchedulerForm.value.cycleTime;
-      if (
-        selectedVideosCount > slotSize ||
-        selectedVideosCount % cycleTime !== 0
-      ) {
-        // Notify user about the mismatch
+      if (selectedVideosCount > slotSize || selectedVideosCount % cycleTime !== 0) {
         this.notificationService.showNotification(
           'Selected number of videos does not match slot size or cycle time',
           'error'
         );
         return;
       }
-      const selectedVideos = this.selectedVideos.map((video: any) => {
-        return {
-          id: video._id, // Assuming _id field corresponds to the id in the backend schema
-          title: video.title,
-          thumbnailUrl: video.thumbnailUrl,
-          duration: video.duration,
-          uploadTime: video.uploadTime,
-          views: '', // Assuming this data is not available in the frontend or optional
-          author: video.author,
-          videoUrl: video.videoUrl,
-          description: video.description,
-          subscriber: video.subscriber,
-          isLive: video.isLive,
-        };
-      });
+      const selectedVideos = this.selectedVideos.map((video: any) => ({
+        id: video._id, // Assuming _id field corresponds to the id in the backend schema
+        title: video.title,
+        thumbnailUrl: video.thumbnailUrl,
+        duration: video.duration,
+        uploadTime: video.uploadTime,
+        views: '', // Assuming this data is not available in the frontend or optional
+        author: video.author,
+        videoUrl: video.videoUrl,
+        description: video.description,
+        subscriber: video.subscriber,
+        isLive: video.isLive,
+      }));
+
+      const datePipe = new DatePipe('en-US');
+      const formattedStartDate = datePipe.transform(this.dateRange.value.startDate, 'dd-MM-yyyy');
+      const formattedEndDate = datePipe.transform(this.dateRange.value.endDate, 'dd-MM-yyyy');
+
       const schedulerData = {
         cycleTime: this.createSchedulerForm.value.cycleTime,
         slotSize: this.createSchedulerForm.value.slotSize,
         screenIds: this.createSchedulerForm.value.selectedScreenIds,
         selectedVideos: this.selectedVideos,
-        startDate: this.dateRange.value.startDate,
-        endDate: this.dateRange.value.endDate,
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
       };
-  
+
       this.isSubmitting = true;
       this.schedulerService.createScheduler(schedulerData).subscribe(
         (response) => {
@@ -248,5 +259,4 @@ export class CreateSchedulerComponent implements OnInit {
       this.isSubmitting = false;
     }
   }
-  
 }

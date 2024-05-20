@@ -2,11 +2,16 @@ import { Component } from '@angular/core';
 import { MediaService } from '../../media.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { UploadSuccessDialogComponent } from '../upload-success-dialog/upload-success-dialog.component';
+import { Subscription } from 'rxjs';
+
 interface UploadFile {
   file: File;
   progress: number;
   url?: string;
-  thumbnail?: string; // Add thumbnail property
+  thumbnail?: string;
+  uploadSubscription?: Subscription; // Add subscription to allow canceling
 }
 
 @Component({
@@ -17,7 +22,12 @@ interface UploadFile {
 export class UploadMediaComponent {
   files: UploadFile[] = [];
 
-  constructor(private mediaService: MediaService, private notificationService:NotificationService,private router: Router,) {}
+  constructor(
+    private mediaService: MediaService,
+    private notificationService: NotificationService,
+    private router: Router,
+    private dialog: MatDialog
+  ) {}
 
   onFileSelected(event: any) {
     const fileList: FileList = event.target.files;
@@ -39,8 +49,8 @@ export class UploadMediaComponent {
       const file = fileList.item(i);
       if (file) {
         const thumbnail = await this.generateThumbnail(file);
-        const url = URL.createObjectURL(file); // Create object URL for video
-        this.files.push({ file, progress: 0, url, thumbnail }); // Include thumbnail in the UploadFile object
+        const url = URL.createObjectURL(file);
+        this.files.push({ file, progress: 0, url, thumbnail });
       }
     }
   }
@@ -50,15 +60,12 @@ export class UploadMediaComponent {
       const video = document.createElement('video');
       video.preload = 'metadata';
       video.onloadedmetadata = () => {
-        // Set the width and height for the thumbnail
         const canvas = document.createElement('canvas');
-        canvas.width = 120; // Set your desired thumbnail width
+        canvas.width = 120;
         canvas.height = (canvas.width / video.videoWidth) * video.videoHeight;
         const ctx = canvas.getContext('2d');
         if (ctx) {
-          // Draw the video frame onto the canvas
           ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-          // Get the thumbnail as a base64 encoded URL
           const thumbnailUrl = canvas.toDataURL('image/jpeg');
           resolve(thumbnailUrl);
         } else {
@@ -71,43 +78,59 @@ export class UploadMediaComponent {
       video.src = URL.createObjectURL(file);
     });
   }
-  
 
   async upload() {
     try {
       for (const uploadFile of this.files) {
-        const progress = await this.mediaService.uploadMedia(uploadFile.file);
-  
-        uploadFile.progress = progress;
-  
-        if (progress === 100) {
-          uploadFile.url = uploadFile.thumbnail;
-        }
-      }
-  
-      const allFilesUploaded = this.files.every(file => file.progress === 100);
-  
-      if (allFilesUploaded) {
-        this.notificationService.showNotification('Media uploaded successfully', 'success');
-        this.router.navigate(['/createScheduler']);
+        const uploadSubscription = this.mediaService.uploadMedia(uploadFile.file).subscribe({
+          next: (progress) => {
+            uploadFile.progress = progress;
+            if (progress === 100) {
+              uploadFile.url = uploadFile.thumbnail;
+            }
+          },
+          error: (error) => {
+            console.error('Error uploading files:', error);
+            this.notificationService.showNotification('Error uploading files', 'error');
+          },
+          complete: () => {
+            const allFilesUploaded = this.files.every(file => file.progress === 100);
+            if (allFilesUploaded) {
+              this.openSuccessDialog();
+            }
+          }
+        });
+        uploadFile.uploadSubscription = uploadSubscription;
       }
     } catch (error) {
       console.error('Error uploading files:', error);
       this.notificationService.showNotification('Error uploading files', 'error');
     }
   }
-  
-  
+
   cancelUpload(index: number) {
     if (index >= 0 && index < this.files.length) {
+      const uploadFile = this.files[index];
+      if (uploadFile.uploadSubscription) {
+        uploadFile.uploadSubscription.unsubscribe();
+      }
       this.files.splice(index, 1);
     }
   }
 
+  openSuccessDialog() {
+    const dialogRef = this.dialog.open(UploadSuccessDialogComponent, {
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      setTimeout(() => {
+        this.router.navigate(['/createScheduler']);
+      }, 3000);
+    });
+  }
 
   hasFilesToUpload(): boolean {
     return this.files.length > 0;
   }
-  
-
 }
