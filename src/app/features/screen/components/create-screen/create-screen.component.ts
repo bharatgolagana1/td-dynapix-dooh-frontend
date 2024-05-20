@@ -34,6 +34,9 @@ export class CreateScreenComponent {
     NextAvailableDate: new FormControl('2024-05-01',[Validators.required]), // Set default date
     locationCoordinates: ['', [Validators.required, this.coordinateValidator()]],
     screenStatus: new FormControl('Active', [Validators.required]),
+    companyName: new FormControl(''),
+    heightFromGround: new FormControl(''),
+    indoorOutdoor: new FormControl(''),
     imageFiles:  ['']
   });
 }
@@ -53,32 +56,32 @@ coordinateValidator() {
 }
 
 onSubmit() {
+  
   if (this.screenForm.valid) {
-    
+
     const formData = new FormData();
-    formData.append('tenantId', this.tenantId); // Add tenantId here
+    formData.append('tenantId', this.tenantId);
     formData.append('screenName', this.screenForm.value.screenName);
     formData.append('address', this.screenForm.value.address);
     formData.append('size', this.screenForm.value.size);
     formData.append('SFT', this.screenForm.value.SFT);
-    formData.append('ID', this.screenForm.value.ID);
     formData.append('localIP', this.localIP);
     formData.append('MACID', this.MACID);
-    formData.append('lastHeartbeat', this.lastHeartbeat); // Handle null case
-    formData.append('upTime', this.upTime);
-    formData.append('inSyncStatus', this.inSyncStatus);
-    formData.append('hardwareVersion', this.hardwareVersion);
-    formData.append('softwareVersion', this.softwareVersion);
+    formData.append('lastHeartbeat', this.lastHeartbeat ? this.lastHeartbeat : '');
+    formData.append('upTime', this.upTime ? this.upTime : '');
+    formData.append('inSyncStatus', this.inSyncStatus ? this.inSyncStatus : '');
+    formData.append('hardwareVersion', this.hardwareVersion ? this.hardwareVersion : '');
+    formData.append('softwareVersion', this.softwareVersion ? this.softwareVersion : '');
     formData.append('locationCoordinates', this.screenForm.value.locationCoordinates);
     formData.append('screenStatus', this.screenForm.value.screenStatus);
-    formData.append('rebootFlag', this.rebootFlag); 
-    
-  // Append image files
-  if (this.imageFiles && this.imageFiles.length > 0) {
-    for (let i = 0; i < this.imageFiles.length; i++) {
-      formData.append('imageFiles', this.imageFiles[i]); 
+    formData.append('rebootFlag', this.rebootFlag ? this.rebootFlag : '');
+
+    // Append image files
+    if (this.imageFiles && this.imageFiles.length > 0) {
+      for (let i = 0; i < this.imageFiles.length; i++) {
+        formData.append('imageFiles', this.imageFiles[i]);
+      }
     }
-  }
 
     this.screenService.createScreen(formData).subscribe(
       response => {
@@ -93,10 +96,11 @@ onSubmit() {
         // Handle error
       }
     );
-  } else {
-    // Form is invalid
   }
 }
+
+
+
 
 onFileSelected(event: any): void {
   const files = event.target.files;
@@ -133,6 +137,10 @@ createObjectURL(file: File): string {
     this.fileInput.nativeElement.click();
   }
   
+  removeFile(index: number): void {
+    this.imageFiles.splice(index, 1);
+    this.fileUrls.splice(index, 1);
+  }
   
 
 }

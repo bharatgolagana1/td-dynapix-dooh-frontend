@@ -10,4 +10,5 @@ export class ScreenService {
   createScreen(screenData: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}`, screenData);
   }
+  
 }
