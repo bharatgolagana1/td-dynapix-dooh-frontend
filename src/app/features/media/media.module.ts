@@ -8,14 +8,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { UploadMediaComponent } from './components/upload-media/upload-media.component';
 import { ListMediaComponent } from './components/list-media/list-media.component';
 import { MediaRoutingModule } from './media-routing.module';
+import { UploadSuccessDialogComponent } from './components/upload-success-dialog/upload-success-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
 
 @NgModule({
-  declarations: [UploadMediaComponent,ListMediaComponent
+  declarations: [UploadMediaComponent,ListMediaComponent, UploadSuccessDialogComponent
   ],
-  imports: [CommonModule, MaterialModule,MediaRoutingModule ],
+  imports: [CommonModule, MaterialModule,MediaRoutingModule,MatDialogModule ],
   providers: [],
   exports: [ ListMediaComponent , UploadMediaComponent, ],
 })

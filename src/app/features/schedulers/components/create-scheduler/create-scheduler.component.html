@@ -51,7 +51,7 @@
      
       <mat-form-field appearance="outline">
         <mat-label>Date Range</mat-label>
-        <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker">
+        <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker" (dateChange)="onDateChange()">
           <input matStartDate formControlName="startDate" placeholder="Start Date">
           <input matEndDate formControlName="endDate" placeholder="End Date">
         </mat-date-range-input>
