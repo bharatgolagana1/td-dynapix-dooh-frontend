@@ -205,13 +205,6 @@ export class CreateSchedulerComponent implements OnInit {
       const selectedVideosCount = this.createSchedulerForm.value.selectedVideos.length;
       const slotSize = this.createSchedulerForm.value.slotSize;
       const cycleTime = this.createSchedulerForm.value.cycleTime;
-      if (selectedVideosCount > slotSize || selectedVideosCount % cycleTime !== 0) {
-        this.notificationService.showNotification(
-          'Selected number of videos does not match slot size or cycle time',
-          'error'
-        );
-        return;
-      }
       const selectedVideos = this.selectedVideos.map((video: any) => ({
         id: video._id, // Assuming _id field corresponds to the id in the backend schema
         title: video.title,
