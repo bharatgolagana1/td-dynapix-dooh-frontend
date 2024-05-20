@@ -1,3 +1,6 @@
+.media-upload-container{
+  margin: 2rem;
+}
 .drop-container {
   border: 0.2rem dashed #ccc;
   border-radius: 5px;
@@ -5,7 +8,15 @@
   text-align: center;
   cursor: pointer;
 }
-
+.media-upload--title {
+  color: #757fef;
+  font-family: Manrope;
+  font-size: 1.75rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2rem;
+  margin-bottom: 2rem;
+}
 .drop-container p {
   margin: 0;
 }
