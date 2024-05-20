@@ -14,8 +14,8 @@ export class CreateUserComponent {
   genders = ['female', 'male', 'others'];
   identificationTypes = ['Internal User','Custom','Agent'];
   defaultTypes: string = 'Internal User';
-  roles = ['operationshead(coo)', 'operationsmanager', 'fieldtechnician', 'scheduler'];
-  defaultRole: string = 'scheduler';
+  roles = ['Operations Head(coo)', 'Operations Manager', 'Field Technician', 'Scheduler'];
+  defaultRole: string = 'Scheduler';
   profiles = ['Chief Executive Officer (CEO)','Chief Operating Officer (COO)','Chief Financial Officer (CFO)'];
   defaultProfile: string = 'Chief Financial Officer (CFO)';
 
