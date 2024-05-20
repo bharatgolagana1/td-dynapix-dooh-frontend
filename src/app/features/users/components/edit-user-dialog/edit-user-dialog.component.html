@@ -30,16 +30,6 @@
           User name is required
         </mat-error>
       </mat-form-field>
-      <mat-form-field appearance="outline" [style.fontSize.px]="14">
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="email" placeholder="Email" required />
-        <mat-error *ngIf="createUserForm.get('email')?.hasError('required')">
-          Email is required
-        </mat-error>
-        <mat-error *ngIf="createUserForm.get('email')?.hasError('email')">
-          Please enter a valid email address
-        </mat-error>
-      </mat-form-field>
       <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
         <mat-label>Role</mat-label>
         <mat-select required formControlName="role" [value]="roles">

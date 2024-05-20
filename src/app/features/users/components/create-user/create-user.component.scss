@@ -71,4 +71,12 @@ align-items: center;
 gap: 8px;
 flex: 1 0 0;
 }
-
+a{
+  text-decoration: none;
+  padding: 0.5rem;
+  color: #757fef;
+}
+.back-button--icon{
+  height: 16px;
+  font-size: 20px;
+}

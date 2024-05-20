@@ -100,12 +100,8 @@
             </div>
             <div mat-dialog-actions class="footer">
                 <div class="footer-button">
-                    <button type="submit" mat-raised-button color="primary" [disabled]="isSubmitting">
-                        <span *ngIf="!isSubmitting">Save</span>
-                        <span *ngIf="isSubmitting">
-                          <mat-spinner diameter="20" color="accent"></mat-spinner>
-                        </span>
-                      </button>
+                  <button mat-stroked-button color="primary"><a routerLink="/users"><mat-icon class="back-button--icon">arrow_back</mat-icon>back</a></button>
+                    <button type="submit" mat-raised-button color="primary" [disabled]="isSubmitting">Save</button>
                 </div>
              </div>
           </div>
