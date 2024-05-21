@@ -25,7 +25,7 @@ export class CreateSchedulerComponent implements OnInit {
   selectedSlotSize!: string;
   isSubmitting: boolean = false;
   selectedVideos: string[] | Video[] = [];
-  selectedScreenIds = [];
+  selectedScreenIds: string[] = [];
   option1 = [
     { label: '5', value: 5 },
     { label: '10', value: 10 },
@@ -53,12 +53,15 @@ export class CreateSchedulerComponent implements OnInit {
     card.selected = !card.selected;
   }
   toggleScreenSelection(screenId: string, checked: boolean): void {
-    const selectedScreenIds = this.createSchedulerForm.get('selectedScreenIds') as FormArray;
     if (checked) {
-      selectedScreenIds.push(this.formBuilder.control(screenId));
+      // Push the selected screen ID to the array
+      this.selectedScreenIds.push(screenId);
     } else {
-      const index = selectedScreenIds.controls.findIndex(x => x.value === screenId);
-      selectedScreenIds.removeAt(index);
+      // Remove the selected screen ID from the array
+      const index = this.selectedScreenIds.indexOf(screenId);
+      if (index !== -1) {
+        this.selectedScreenIds.splice(index, 1);
+      }
     }
   }
 
@@ -226,7 +229,7 @@ export class CreateSchedulerComponent implements OnInit {
       const schedulerData = {
         cycleTime: this.createSchedulerForm.value.cycleTime,
         slotSize: this.createSchedulerForm.value.slotSize,
-        screenIds: this.createSchedulerForm.value.selectedScreenIds,
+        selectedScreenIds: this.selectedScreenIds,
         selectedVideos: this.selectedVideos,
         startDate: formattedStartDate,
         endDate: formattedEndDate,

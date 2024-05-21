@@ -12,10 +12,15 @@ text-overflow: ellipsis;
 padding-top: 1rem;
 }
 
+.screenId-cell{
+  padding-top: 1rem;
+  max-width: 300px;
+}
 .ellipsis-link {
   
   width: 100%;
 }
+
 
   .list-scheduler--title {
     color: #757fef;

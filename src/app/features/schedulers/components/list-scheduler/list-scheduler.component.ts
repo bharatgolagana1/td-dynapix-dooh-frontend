@@ -9,8 +9,8 @@ export interface Scheduler {
   id: number;
   cycleTime: number;
   slotSize: number;
-  videoUrls: string;
-  screenId: number;
+  videoUrls: { videoUrl: string }[];
+  screenIds: number[];
   startDate: string;
   endDate: string; 
 }
@@ -21,14 +21,14 @@ export interface Scheduler {
   styleUrls: ['./list-scheduler.component.scss']
 })
 export class ListSchedulerComponent implements OnInit, AfterViewInit {
-  schedulers: any[] = [];
-  displayedColumns: string[] = ['cycleTime', 'slotSize', 'videoUrls', 'screenId', 'startDate', 'endDate','delete'];
-  dataSource!: MatTableDataSource<any>; 
+ schedulers: Scheduler[] = [];
+  displayedColumns: string[] = ['cycleTime', 'slotSize', 'videoUrls', 'screenId', 'startDate', 'endDate', 'delete'];
+  dataSource!: MatTableDataSource<Scheduler>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   totalItems: number = 0; 
   pageSize: number = 10; 
 
-  constructor(private schedulerService: SchedulerService, private dialog: MatDialog,private notificationService: NotificationService) { }
+  constructor(private schedulerService: SchedulerService, private dialog: MatDialog, private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.getPaginatedSchedulers(0, this.pageSize);
@@ -39,30 +39,28 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator = this.paginator;
     }
   }
-  
 
   getPaginatedSchedulers(pageIndex: number, pageSize: number): void {
     this.schedulerService.getSchedulers(pageIndex, pageSize).subscribe((response: any) => {
       if (response.schedules.length > 0) {
         this.schedulers = response.schedules;
-        this.dataSource = new MatTableDataSource<any>(response.schedules);
-        this.dataSource.paginator = this.paginator; 
-        this.totalItems = response.totalSchedulesCount; 
+        this.dataSource = new MatTableDataSource<Scheduler>(response.schedules);
+        this.dataSource.paginator = this.paginator;
+        this.totalItems = response.totalSchedulesCount;
       }
     });
   }
-  
+
   onPageChange(event: any): void {
     this.getPaginatedSchedulers(event.pageIndex, event.pageSize);
   }
 
-  
-  deleteScheduler(scheduler: any): void {
+  deleteScheduler(scheduler: Scheduler): void {
     const dialogRef = this.dialog.open(SchedulerDeleteComponent, {
       width: '400px',
       data: { scheduler }
     });
-  
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
         this.schedulerService.deleteScheduler(scheduler).subscribe(
@@ -78,8 +76,4 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  
-  
-
-
 }
