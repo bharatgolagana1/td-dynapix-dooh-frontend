@@ -2,6 +2,15 @@
   <div class="create-scheduler--title">New Scheduler</div>
   <form [formGroup]="createSchedulerForm">
     <div class="create-scheduler--content">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Scheduler Name</mat-label>
+        <input matInput formControlName="schedulerName">
+        <mat-hint *ngIf="createSchedulerForm.get('schedulerName')?.touched && createSchedulerForm.get('schedulerName')?.errors?.['required']" style="color: red">
+          Scheduler Name is required
+        </mat-hint>
+      </mat-form-field>
+
       <mat-form-field appearance="outline">
         <mat-label>Slot Size</mat-label>
         <mat-select
@@ -48,27 +57,23 @@
         </mat-hint>
       </mat-form-field>
 
-
-     
       <mat-form-field appearance="outline">
         <mat-label>Date Range</mat-label>
-        <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker" (dateChange)="onDateChange()">
-          <input matStartDate formControlName="startDate" placeholder="Start Date">
-          <input matEndDate formControlName="endDate" placeholder="End Date">
+        <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker" [dateFilter]="dateFilter">
+            <input matStartDate formControlName="startDate" placeholder="Start Date">
+            <input matEndDate formControlName="endDate" placeholder="End Date">
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
         <mat-hint style="color: red" *ngIf="dateRange.get('startDate')?.touched && dateRange.get('startDate')?.errors?.['required']">
-          Start Date is required
+            Start Date is required
         </mat-hint>
         <mat-hint style="color: red" *ngIf="dateRange.get('endDate')?.touched && dateRange.get('endDate')?.errors?.['required']">
-          End Date is required
+            End Date is required
         </mat-hint>
-      </mat-form-field>
+    </mat-form-field>
       </div>
       
-  
-
     <div>
       <div class="scheduler-available--heading">Available Content</div>
       <app-video-thumbnails-list

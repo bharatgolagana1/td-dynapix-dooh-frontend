@@ -2,6 +2,18 @@
   <div class="list-scheduler--title">List Schedulers</div>
   <div class="mat-elevation-z1">
     <mat-table [dataSource]="dataSource">
+
+    <!-- Add Scheduler Name column in the table -->
+<ng-container matColumnDef="schedulerName">
+  <mat-header-cell *matHeaderCellDef>Scheduler Name</mat-header-cell>
+  <mat-cell *matCellDef="let scheduler">{{ scheduler.schedulerName }}</mat-cell>
+</ng-container>
+
+<!-- Update the displayedColumns array to include schedulerName -->
+displayedColumns: string[] = ['schedulerName', 'cycleTime', 'slotSize', 'videoUrls', 'screenId', 'startDate', 'endDate', 'delete'];
+
+
+
       <!-- Start Date Column -->
       <ng-container matColumnDef="startDate">
         <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
