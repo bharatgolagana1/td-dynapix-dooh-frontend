@@ -99,26 +99,26 @@
               </div>
             </div>
             <div class="create-scheduler-card--actions">
-            <div>
-              <button mat-icon-button (click)="editScreen(a._id)">
-                <img src="assets/images/edit.svg" />
-              </button>
-            </div>
-
-            <div>
-              <button mat-icon-button (click)="deleteScreen(a._id)">
-                <img src="assets/images/delete.svg"/>
-              </button>
-            </div>
-
-            <div>
-              <mat-checkbox
-                (change)="toggleScreenSelection(a._id, $event.checked)"
-                [checked]="a.selected"
-                class="checkbox"
-                color="primary"
-              ></mat-checkbox>
-            </div>
+              <div>
+                <button mat-icon-button (click)="editScreen(a._id)">
+                  <img src="assets/images/edit.svg" />
+                </button>
+              </div>
+            
+              <div>
+                <button mat-icon-button (click)="deleteScreen(a._id)">
+                  <img src="assets/images/delete.svg"/>
+                </button>
+              </div>
+            
+              <div>
+                <mat-checkbox
+                  (change)="toggleScreenSelection(a._id, $event.checked)"
+                  [checked]="a.selected"
+                  class="checkbox"
+                  color="primary"
+                ></mat-checkbox>
+              </div>
             </div>
           </div>
           
