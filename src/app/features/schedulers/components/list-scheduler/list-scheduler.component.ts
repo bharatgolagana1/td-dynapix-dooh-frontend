@@ -22,7 +22,7 @@ export interface Scheduler {
 })
 export class ListSchedulerComponent implements OnInit, AfterViewInit {
  schedulers: Scheduler[] = [];
-  displayedColumns: string[] = ['cycleTime', 'slotSize', 'videoUrls', 'screenId', 'startDate', 'endDate', 'delete'];
+  displayedColumns: string[] = ['schedulerName','cycleTime', 'slotSize', 'videoUrls', 'screenId', 'startDate', 'endDate', 'delete'];
   dataSource!: MatTableDataSource<Scheduler>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   totalItems: number = 0; 

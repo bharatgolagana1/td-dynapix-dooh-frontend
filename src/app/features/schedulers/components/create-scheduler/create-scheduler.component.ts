@@ -133,7 +133,9 @@ export class CreateSchedulerComponent implements OnInit {
     const formattedStartDate = datePipe.transform(this.dateRange.value.startDate, 'dd-MM-yyyy');
     const formattedEndDate = datePipe.transform(this.dateRange.value.endDate, 'dd-MM-yyyy');
 
+    const schedulerName = this.createSchedulerForm.value.schedulerName;
     const schedulerData = {
+      schedulerName: schedulerName,
       cycleTime: this.cycleTime,
       slotSize: this.slotSize,
       screenIds: this.screenIds,
@@ -154,6 +156,18 @@ export class CreateSchedulerComponent implements OnInit {
     );
   }
 
+
+  dateFilter = function (a: Date | null): boolean {
+    const today = new Date();
+    if (a) {
+        const formattedToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const formattedDate = new Date(a.getFullYear(), a.getMonth(), a.getDate());
+
+        return formattedDate >= formattedToday; // Enable dates equal to or greater than today
+    }
+    return false;
+};
+
   createSchedulerForm: FormGroup;
   constructor(
     private notificationService: NotificationService,
@@ -164,6 +178,7 @@ export class CreateSchedulerComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.createSchedulerForm = this.formBuilder.group({
+      schedulerName: ['', Validators.required],
       cycleTime: ['', [Validators.required]],
       slotSize: ['', [Validators.required]],
       selectedVideos: [[], [Validators.required]],
@@ -208,6 +223,7 @@ export class CreateSchedulerComponent implements OnInit {
       const selectedVideosCount = this.createSchedulerForm.value.selectedVideos.length;
       const slotSize = this.createSchedulerForm.value.slotSize;
       const cycleTime = this.createSchedulerForm.value.cycleTime;
+      const schedulerName = this.createSchedulerForm.value.schedulerName;
       const selectedVideos = this.selectedVideos.map((video: any) => ({
         id: video._id, // Assuming _id field corresponds to the id in the backend schema
         title: video.title,
@@ -227,6 +243,7 @@ export class CreateSchedulerComponent implements OnInit {
       const formattedEndDate = datePipe.transform(this.dateRange.value.endDate, 'dd-MM-yyyy');
 
       const schedulerData = {
+        schedulerName: schedulerName,
         cycleTime: this.createSchedulerForm.value.cycleTime,
         slotSize: this.createSchedulerForm.value.slotSize,
         selectedScreenIds: this.selectedScreenIds,
