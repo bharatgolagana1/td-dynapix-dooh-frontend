@@ -1,0 +1,23 @@
+<div class="image-dialog--container">
+  <h2 mat-dialog-title>Images</h2>
+  <div mat-dialog-content class="carousel-container">
+    <ngx-slick-carousel
+      class="carousel"
+      #slickModal="slick-carousel"
+      [config]="slideConfig"
+    >
+      <div
+        ngxSlickItem
+        *ngFor="let imageUrl of data.images"
+        class="carousel-item"
+      >
+        <div class="image-wrapper">
+          <img [src]="imageUrl" class="dialog-image" />
+        </div>
+      </div>
+    </ngx-slick-carousel>
+  </div>
+  <div mat-dialog-actions class="image-dialog--footer">
+    <button mat-button mat-dialog-close>Ok</button>
+  </div>
+</div>

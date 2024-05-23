@@ -1,0 +1,44 @@
+.list-screen--container{
+    margin: 2rem;
+    }
+.list-screen--title{
+    color: #757fef;
+    font-family: Manrope;
+    font-size: 1.75rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 2rem;
+    margin-bottom: 2rem;
+}
+.list-screen--image{
+    padding: 0.5rem;
+}
+.user-not-found-message {
+    padding: 12px;
+    color: #1e488f; 
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+.mat-mdc-icon-button {
+    color: #757fef;
+}
+.mat-header-cell {
+    background-color: #F7F7F7 !important;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    text-align: left;
+    color: #757fef;
+  }
+  .mat-cell {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    text-align: left;
+    color: #808080;
+  }
+
+

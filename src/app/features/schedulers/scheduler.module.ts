@@ -15,7 +15,7 @@ import { PlaySchedulerComponent } from './components/play-scheduler/play-schedul
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { SchedulerDeleteComponent } from './components/scheduler-delete/scheduler-delete.component';
 import { DeleteScreenComponent } from './components/delete-screen/delete-screen.component';
-import { UpdateScreenComponent } from './components/update-screen/update-screen.component';
+
 @NgModule({
   declarations: [
     CreateSchedulerComponent,
@@ -27,7 +27,7 @@ import { UpdateScreenComponent } from './components/update-screen/update-screen.
     PlaySchedulerComponent,
     SchedulerDeleteComponent,
     DeleteScreenComponent,
-    UpdateScreenComponent
+    
   ],
   imports: [CommonModule, MaterialModule,SchedulerRoutingModule,FormsModule,ReactiveFormsModule,SlickCarouselModule],
   exports: [CreateSchedulerComponent, ListSchedulerComponent,VideoDialogComponent],

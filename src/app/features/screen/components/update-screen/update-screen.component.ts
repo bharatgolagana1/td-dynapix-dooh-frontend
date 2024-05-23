@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { SchedulerService } from '../scheduler.service';
+import { SchedulerService } from 'src/app/features/schedulers/components/scheduler.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Router } from '@angular/router';
 
@@ -160,4 +160,5 @@ export class UpdateScreenComponent implements OnInit  {
   createObjectURL(file: File): string {
     return URL.createObjectURL(file);
   }
+  
 }
