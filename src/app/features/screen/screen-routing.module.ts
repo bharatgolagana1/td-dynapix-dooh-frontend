@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { ListScreenComponent } from './components/list-screen/list-screen.component';
 import { CreateScreenComponent } from './components/create-screen/create-screen.component';
+import { UpdateScreenComponent } from './components/update-screen/update-screen.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,10 @@ const routes: Routes = [
     path: 'createScreens',
     component: CreateScreenComponent,
   },
+  {
+    path: 'updateScreen/:id',
+    component: UpdateScreenComponent
+  }
 ];
 
 @NgModule({

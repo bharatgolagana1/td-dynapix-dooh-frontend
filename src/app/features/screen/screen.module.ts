@@ -5,17 +5,24 @@ import { ListScreenComponent } from './components/list-screen/list-screen.compon
 import { ScreenRoutingModule } from './screen-routing.module';
 import { MaterialModule } from 'src/app/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ImageDialogComponent } from './components/image-dialog/image-dialog.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { UpdateScreenComponent } from './components/update-screen/update-screen.component';
+
 
 @NgModule({
   declarations: [
     CreateScreenComponent,
-    ListScreenComponent
+    ListScreenComponent,
+    ImageDialogComponent,
+    UpdateScreenComponent
   ],
   imports: [
     CommonModule,
     ScreenRoutingModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SlickCarouselModule,
   ],
   exports:[CreateScreenComponent,ListScreenComponent]
 })
