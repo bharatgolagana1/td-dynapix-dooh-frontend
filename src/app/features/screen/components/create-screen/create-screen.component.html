@@ -45,14 +45,24 @@
           </mat-hint>
         </mat-form-field>
         
-        <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
-          <mat-label>Size</mat-label>
-          <input matInput formControlName="size" required />
-          <mat-hint style="color: red;" *ngIf="screenForm.get('size')?.touched && screenForm.get('size')?.errors?.['required']">
-            Size is required
-          </mat-hint>
-        </mat-form-field>
-        
+        <div class="create-screen-size--content">
+          <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
+            <mat-label>Width</mat-label>
+            <input matInput formControlName="width" required type="number" (input)="updateSFT()" />
+            <mat-hint style="color: red;" *ngIf="screenForm.get('width')?.touched && screenForm.get('width')?.errors?.['required']">
+              Width is required
+            </mat-hint>
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
+            <mat-label>Height</mat-label>
+            <input matInput formControlName="height" required type="number" (input)="updateSFT()" />
+            <mat-hint style="color: red;" *ngIf="screenForm.get('height')?.touched && screenForm.get('height')?.errors?.['required']">
+              Height is required
+            </mat-hint>
+          </mat-form-field>
+      </div>
+
         <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
           <mat-label>SFT</mat-label>
           <input matInput formControlName="SFT" required />
@@ -85,20 +95,29 @@
 
         <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
           <mat-label>Company Name</mat-label>
-          <input matInput formControlName="companyName" />
+          <input matInput formControlName="companyName" required/>
+          <mat-hint style="color: red;" *ngIf="screenForm.get('companyName')?.touched && screenForm.get('companyName')?.errors?.['required']">
+            Company name is required
+          </mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
-          <mat-label>Height from Ground (meters)</mat-label>
-          <input matInput formControlName="heightFromGround" type="number" />
+          <mat-label>Bottom of the screen height from ground (meters)</mat-label>
+          <input matInput formControlName="bottomOfTheScreenHeightFromGround" type="number" required />
+          <mat-hint style="color: red;" *ngIf="screenForm.get('bottomOfTheScreenHeightFromGround')?.touched && screenForm.get('bottomOfTheScreenHeightFromGround')?.errors?.['required']">
+            Bottom Of The Screen Height From Ground is required
+          </mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
           <mat-label>Indoor or Outdoor</mat-label>
-          <mat-select formControlName="indoorOutdoor">
+          <mat-select formControlName="indoorOutdoor" required>
             <mat-option value="Indoor">Indoor</mat-option>
             <mat-option value="Outdoor">Outdoor</mat-option>
           </mat-select>
+          <mat-hint style="color: red;" *ngIf="screenForm.get('indoorOutdoor')?.touched && screenForm.get('indoorOutdoor')?.errors?.['required']">
+            Indoor outdoor is required
+          </mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
@@ -110,7 +129,7 @@
         </mat-form-field>
       </div>
       
-      <!-- Submit Button -->
+    
       <div class="create-screen-footer-content">
         <button mat-raised-button color="primary" type="submit">Create Screen</button>
       </div>
