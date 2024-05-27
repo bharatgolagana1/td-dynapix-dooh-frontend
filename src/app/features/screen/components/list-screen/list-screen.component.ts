@@ -4,6 +4,7 @@ import { ScreenService } from '../../screen.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-list-screen',
@@ -12,9 +13,8 @@ import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 })
 export class ListScreenComponent implements OnInit {
   screens: any[] = [];
-  displayedColumns: string[] = ['image', 'screenName', 'nextAvailableDate', 'size', 'SFT', 'actions'];
   page: number = 1;
-  limit: number = 10;
+  pageSize: number = 10; // Changed 'limit' to 'pageSize'
   total: number = 0;
   search: string = '';
 
@@ -36,7 +36,7 @@ export class ListScreenComponent implements OnInit {
   }
 
   loadScreens() {
-    this.screenService.listScreens(this.page, this.limit, this.search).subscribe(
+    this.screenService.listScreens(this.page, this.pageSize, this.search).subscribe(
       data => {
         this.screens = data.screens;
         this.total = data.total;
@@ -65,9 +65,9 @@ export class ListScreenComponent implements OnInit {
     this.router.navigate(['/updateScreen', screenId]);
   }
 
-  onPageChange(event: any) {
+  onPageChange(event: PageEvent) {
     this.page = event.pageIndex + 1;
-    this.limit = event.pageSize;
+    this.pageSize = event.pageSize;
     this.loadScreens();
   }
 

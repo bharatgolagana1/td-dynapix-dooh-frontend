@@ -76,21 +76,25 @@
       }}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="actions">
-      <mat-header-cell
-        *matHeaderCellDef
-        class="mat-header-cell"
-      ></mat-header-cell>
+    <ng-container matColumnDef="edit">
+      <mat-header-cell *matHeaderCellDef class="mat-header-cell">Edit</mat-header-cell>
       <mat-cell *matCellDef="let element">
         <button mat-icon-button (click)="editScreen(element._id)">
           <img src="assets/images/edit.svg" />
         </button>
-        <mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+      <mat-header-cell *matHeaderCellDef class="mat-header-cell">Delete</mat-header-cell>
+      <mat-cell *matCellDef="let element">
         <button mat-icon-button (click)="deleteScreen(element._id)">
           <img src="assets/images/delete.svg" />
         </button>
       </mat-cell>
     </ng-container>
+
+
 
     <mat-header-row
       *matHeaderRowDef="[
@@ -99,7 +103,9 @@
         'nextAvailableDate',
         'size',
         'SFT',
-        'actions'
+        'edit',
+        'delete',
+   
       ]"
     ></mat-header-row>
     <mat-row
@@ -111,16 +117,21 @@
           'nextAvailableDate',
           'size',
           'SFT',
-          'actions'
+          'edit',
+          'delete',
+        
         ]
       "
     ></mat-row>
-    <mat-paginator
-      [length]="total"
-      [pageSize]="limit"
-      [pageSizeOptions]="[5, 10, 20]"
-      (page)="onPageChange($event)"
-    >
-    </mat-paginator>
   </table>
+
+  <mat-paginator
+    *ngIf="total > 0"
+    [length]="total"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[2,5, 10, 20]"
+    (page)="onPageChange($event)"
+    showFirstLastButtons="true"
+  >
+  </mat-paginator>
 </div>
