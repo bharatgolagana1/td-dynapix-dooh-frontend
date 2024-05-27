@@ -47,7 +47,7 @@
         
         <div class="create-screen-size--content">
           <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
-            <mat-label>Width</mat-label>
+            <mat-label>Width (ft)</mat-label>
             <input matInput formControlName="width" required type="number" (input)="updateSFT()" />
             <mat-hint style="color: red;" *ngIf="screenForm.get('width')?.touched && screenForm.get('width')?.errors?.['required']">
               Width is required
