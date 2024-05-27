@@ -29,15 +29,19 @@ export class CreateScreenComponent {
   this.screenForm = this.formBuilder.group({
     screenName: new FormControl('',[Validators.required]),
     address: new FormControl('',[Validators.required]),
-    size: new FormControl('',[Validators.required]),
-    SFT: new FormControl('',[Validators.required]),
+    width: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
+    height: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
+    SFT: new FormControl({ value: '', disabled: true }, [Validators.required]),
     NextAvailableDate: new FormControl('2024-05-01',[Validators.required]), // Set default date
     locationCoordinates: ['', [Validators.required, this.coordinateValidator()]],
     screenStatus: new FormControl('Active', [Validators.required]),
-    companyName: new FormControl(''),
-    heightFromGround: new FormControl(''),
-    indoorOutdoor: new FormControl(''),
+    companyName: new FormControl('',[Validators.required]),
+    bottomOfTheScreenHeightFromGround: new FormControl('',[Validators.required]),
+    indoorOutdoor: new FormControl('',[Validators.required]),
     imageFiles:  ['']
+  });
+  this.screenForm.valueChanges.subscribe(() => {
+    this.updateSFT();
   });
 }
 
@@ -45,7 +49,7 @@ coordinateValidator() {
   return (control: { value: string }) => {
     const value = control.value;
     if (!value || value.trim() === '') {
-      return null; // Allow empty value
+      return null; 
     }
     const regex = /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6},\s*-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}$/;
     if (!regex.test(value)) {
@@ -55,28 +59,44 @@ coordinateValidator() {
   };
 }
 
-onSubmit() {
-  
-  if (this.screenForm.valid) {
 
+updateSFT() {
+  const width = this.screenForm.get('width')?.value;
+  const height = this.screenForm.get('height')?.value;
+
+  if (width && height && !isNaN(width) && !isNaN(height)) {
+    const sft = Number(width) * Number(height);
+    if (this.screenForm.get('SFT')?.value !== sft) {
+      this.screenForm.patchValue({ SFT: sft }, { emitEvent: false });
+    }
+  } else {
+    this.screenForm.patchValue({ SFT: '' }, { emitEvent: false });
+  }
+}
+
+onSubmit() {
+  if (this.screenForm.valid) {
     const formData = new FormData();
     formData.append('tenantId', this.tenantId);
     formData.append('screenName', this.screenForm.value.screenName);
     formData.append('address', this.screenForm.value.address);
-    formData.append('size', this.screenForm.value.size);
-    formData.append('SFT', this.screenForm.value.SFT);
+    formData.append('width', this.screenForm.value.width ? this.screenForm.value.width.toString() : '');
+    formData.append('height', this.screenForm.value.height ? this.screenForm.value.height.toString() : '');
+    formData.append('SFT', this.screenForm.value.SFT ? this.screenForm.value.SFT.toString() : '');
     formData.append('localIP', this.localIP);
     formData.append('MACID', this.MACID);
-    formData.append('lastHeartbeat', this.lastHeartbeat ? this.lastHeartbeat : '');
-    formData.append('upTime', this.upTime ? this.upTime : '');
-    formData.append('inSyncStatus', this.inSyncStatus ? this.inSyncStatus : '');
-    formData.append('hardwareVersion', this.hardwareVersion ? this.hardwareVersion : '');
-    formData.append('softwareVersion', this.softwareVersion ? this.softwareVersion : '');
+    formData.append('companyName', this.screenForm.value.companyName);
+    formData.append('bottomOfTheScreenHeightFromGround', this.screenForm.value.bottomOfTheScreenHeightFromGround ? this.screenForm.value.bottomOfTheScreenHeightFromGround.toString() : '');
+    formData.append('indoorOutdoor', this.screenForm.value.indoorOutdoor);
+    formData.append('lastHeartbeat', this.lastHeartbeat);
+    formData.append('upTime', this.upTime);
+    formData.append('inSyncStatus', this.inSyncStatus);
+    formData.append('hardwareVersion', this.hardwareVersion);
+    formData.append('softwareVersion', this.softwareVersion);
     formData.append('locationCoordinates', this.screenForm.value.locationCoordinates);
     formData.append('screenStatus', this.screenForm.value.screenStatus);
-    formData.append('rebootFlag', this.rebootFlag ? this.rebootFlag : '');
+    formData.append('rebootFlag', this.rebootFlag);
 
-    // Append image files
     if (this.imageFiles && this.imageFiles.length > 0) {
       for (let i = 0; i < this.imageFiles.length; i++) {
         formData.append('imageFiles', this.imageFiles[i]);
@@ -86,21 +106,16 @@ onSubmit() {
     this.screenService.createScreen(formData).subscribe(
       response => {
         console.log('Screen created successfully:', response);
-        // Handle success
         this.notificationService.showNotification('Screen created successfully', 'success');
         this.router.navigate(['/schedulers/createScheduler']);
       },
       error => {
         console.error('Error creating screen:', error);
         this.notificationService.showNotification('Screen is not created', 'error');
-        // Handle error
       }
     );
   }
 }
-
-
-
 
 onFileSelected(event: any): void {
   const files = event.target.files;

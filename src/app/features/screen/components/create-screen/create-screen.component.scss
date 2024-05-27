@@ -81,6 +81,12 @@
   background-color: transparent;
 }
 
+.create-screen-size--content{
+  display: flex;
+  min-width: 100%;
+  gap: 0.5rem;
+}
+
 .create-screen-footer-content {
   display: flex;
   justify-content: flex-end;
