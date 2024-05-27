@@ -10,11 +10,10 @@ export class ScreenService {
   private apiUrl = 'http://localhost:3001/screen'; 
 
   constructor(private http: HttpClient) { }
-
-  listScreens(page: number, limit: number, search: string): Observable<any> {
+  listScreens(page: number, pageSize: number, search: string): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
-      .set('limit', limit.toString());
+      .set('pageSize', pageSize.toString());
 
     if (search) {
       params = params.set('search', search);
