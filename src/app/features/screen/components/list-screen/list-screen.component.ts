@@ -5,6 +5,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { MatDialog } from '@angular/material/dialog';
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
+import { DeleteScreenListComponent } from '../delete-screen-list/delete-screen-list.component';
 
 @Component({
   selector: 'app-list-screen',
@@ -14,9 +15,10 @@ import { PageEvent } from '@angular/material/paginator';
 export class ListScreenComponent implements OnInit {
   screens: any[] = [];
   page: number = 1;
-  pageSize: number = 10; // Changed 'limit' to 'pageSize'
+  pageSize: number = 10;
   total: number = 0;
   search: string = '';
+  isLoading: boolean = false;
 
   constructor(
     private screenService: ScreenService,
@@ -36,32 +38,45 @@ export class ListScreenComponent implements OnInit {
   }
 
   loadScreens() {
+    this.isLoading = true;
     this.screenService.listScreens(this.page, this.pageSize, this.search).subscribe(
       data => {
         this.screens = data.screens;
         this.total = data.total;
+        this.isLoading = false;
       },
       error => {
         console.error('Error fetching screens:', error);
+        this.isLoading = false;
       }
     );
   }
 
   deleteScreen(id: string) {
-    this.screenService.deleteScreen(id).subscribe(
-      response => {
-        this.notificationService.showNotification('Screen deleted successfully', 'success');
-        this.loadScreens(); // Refresh the list
-      },
-      error => {
-        console.error('Error deleting screen:', error);
-        this.notificationService.showNotification('Error deleting screen', 'error');
+    const dialogRef = this.dialog.open(DeleteScreenListComponent, {
+      width: '400px',
+      data: { id: id }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.isLoading = true;
+        this.screenService.deleteScreen(id).subscribe(
+          response => {
+            this.notificationService.showNotification('Screen deleted successfully', 'success');
+            this.loadScreens(); 
+          },
+          error => {
+            console.error('Error deleting screen:', error);
+            this.notificationService.showNotification('Error deleting screen', 'error');
+            this.isLoading = false;
+          }
+        );
       }
-    );
+    });
   }
 
   editScreen(screenId: string) {
-    // Navigate to the edit screen component with the screenId as a parameter
     this.router.navigate(['/updateScreen', screenId]);
   }
 
@@ -73,7 +88,7 @@ export class ListScreenComponent implements OnInit {
 
   onSearchChange(event: any) {
     this.search = event.target.value;
-    this.page = 1; // Reset to first page on new search
+    this.page = 1;
     this.loadScreens();
   }
 }

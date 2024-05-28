@@ -1,44 +1,38 @@
 <div class="list-scheduler--table">
   <div class="list-scheduler--title">List Schedulers</div>
   <div class="mat-elevation-z1">
-    <mat-table [dataSource]="dataSource">
 
-    <!-- Add Scheduler Name column in the table -->
+    <div *ngIf="isLoading" class="spinner-container">
+      <mat-spinner diameter="70"></mat-spinner>
+      <div>list-scheduler loading...</div>
+    </div>
+    <mat-table [dataSource]="dataSource" *ngIf="!isLoading">
+
 <ng-container matColumnDef="schedulerName">
   <mat-header-cell *matHeaderCellDef>Scheduler Name</mat-header-cell>
   <mat-cell *matCellDef="let scheduler">{{ scheduler.schedulerName }}</mat-cell>
 </ng-container>
 
-<!-- Update the displayedColumns array to include schedulerName -->
-displayedColumns: string[] = ['schedulerName', 'cycleTime', 'slotSize', 'videoUrls', 'screenId', 'startDate', 'endDate', 'delete'];
-
-
-
-      <!-- Start Date Column -->
       <ng-container matColumnDef="startDate">
         <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
         <mat-cell *matCellDef="let scheduler">{{ scheduler.startDate }}</mat-cell>
       </ng-container>
 
-      <!-- End Date Column -->
       <ng-container matColumnDef="endDate">
         <mat-header-cell *matHeaderCellDef>End Date</mat-header-cell>
         <mat-cell *matCellDef="let scheduler">{{ scheduler.endDate }}</mat-cell>
       </ng-container>
 
-      <!-- Cycle Time Column -->
       <ng-container matColumnDef="cycleTime">
         <mat-header-cell *matHeaderCellDef>Cycle Time</mat-header-cell>
         <mat-cell *matCellDef="let scheduler">{{ scheduler.cycleTime }}</mat-cell>
       </ng-container>
 
-      <!-- Slot Size Column -->
       <ng-container matColumnDef="slotSize">
         <mat-header-cell *matHeaderCellDef>Slot Size</mat-header-cell>
         <mat-cell *matCellDef="let scheduler">{{ scheduler.slotSize }}</mat-cell>
       </ng-container>
 
-      <!-- Video Urls Column -->
       <ng-container matColumnDef="videoUrls">
         <mat-header-cell *matHeaderCellDef>Video Urls</mat-header-cell>
         <mat-cell *matCellDef="let scheduler" class="ellipsis-cell">
@@ -51,7 +45,6 @@ displayedColumns: string[] = ['schedulerName', 'cycleTime', 'slotSize', 'videoUr
         </mat-cell>
       </ng-container>
 
-      <!-- ScreenId Column -->
       <ng-container matColumnDef="screenId">
         <mat-header-cell *matHeaderCellDef>Screen ID</mat-header-cell>
         <mat-cell *matCellDef="let scheduler" class="screenId-cell">
@@ -63,7 +56,6 @@ displayedColumns: string[] = ['schedulerName', 'cycleTime', 'slotSize', 'videoUr
         </mat-cell>
       </ng-container>
 
-      <!-- Add delete button column -->
       <ng-container matColumnDef="delete">
         <mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
         <mat-cell *matCellDef="let scheduler">
@@ -77,10 +69,10 @@ displayedColumns: string[] = ['schedulerName', 'cycleTime', 'slotSize', 'videoUr
       <mat-row class="list-scheduler--data" *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
 
-    <!-- Pagination -->
     <mat-paginator
       [length]="totalItems"
       [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
       [pageSizeOptions]="[2, 5, 10, 25, 50, 100]"
       (page)="onPageChange($event)"
       showFirstLastButtons>
