@@ -110,13 +110,13 @@ onSubmit() {
       response => {
         console.log('Screen created successfully:', response);
         this.notificationService.showNotification('Screen created successfully', 'success');
-        this.loaderService.hideLoader();  // Hide loader
+        this.loaderService.hideLoader();  
         this.router.navigate(['/schedulers/createScheduler']);
       },
       error => {
         console.error('Error creating screen:', error);
         this.notificationService.showNotification('Screen is not created', 'error');
-        this.loaderService.hideLoader();  // Hide loader
+        this.loaderService.hideLoader();  
       }
     );
   }
