@@ -1,13 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEventType, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable,throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MediaService {
+  private localApiUrl = 'http://localhost:3001/media';
   constructor(private http: HttpClient) {}
+
+  getCategories(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.localApiUrl}/categories`);
+  }
+
+  getCompanyNames(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.localApiUrl}/companyNames`);
+  }
 
   uploadMedia(file: File): Observable<number> {
     const formData = new FormData();

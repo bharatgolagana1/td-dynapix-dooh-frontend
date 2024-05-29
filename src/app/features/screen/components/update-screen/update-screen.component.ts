@@ -17,6 +17,7 @@ export class UpdateScreenComponent implements OnInit  {
   screenForm: FormGroup;
   imageFiles: File[] = [];
   fileUrls: string[] = [];
+  isLoading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -56,7 +57,6 @@ export class UpdateScreenComponent implements OnInit  {
           locationCoordinates: screen.locationCoordinates,
           screenStatus: screen.screenStatus
         });
-        // Load images
         this.loadImages(screen.imageUrls);
       },
       error => {
@@ -70,7 +70,6 @@ export class UpdateScreenComponent implements OnInit  {
     this.fileUrls = imageUrls;
   }
   removeImage(index: number): void {
-    // Remove the image URL and corresponding file from arrays
     this.fileUrls.splice(index, 1);
     this.imageFiles.splice(index, 1);
   }
@@ -79,7 +78,7 @@ export class UpdateScreenComponent implements OnInit  {
     return (control: { value: string }) => {
       const value = control.value;
       if (!value || value.trim() === '') {
-        return null; // Allow empty value
+        return null; 
       }
       const regex = /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6},\s*-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}$/;
       if (!regex.test(value)) {
@@ -91,6 +90,7 @@ export class UpdateScreenComponent implements OnInit  {
 
   onSubmit() {
     if (this.screenForm.valid) {
+      this.isLoading = true;
       const formData = new FormData();
       formData.append('screenName', this.screenForm.value.screenName);
       formData.append('address', this.screenForm.value.address);
@@ -99,8 +99,6 @@ export class UpdateScreenComponent implements OnInit  {
       formData.append('NextAvailableDate', this.screenForm.value.NextAvailableDate);
       formData.append('locationCoordinates', this.screenForm.value.locationCoordinates);
       formData.append('screenStatus', this.screenForm.value.screenStatus);
-  
-      // Append image files
       if (this.imageFiles && this.imageFiles.length > 0) {
         for (let i = 0; i < this.imageFiles.length; i++) {
           formData.append('imageFiles', this.imageFiles[i]);
@@ -112,14 +110,15 @@ export class UpdateScreenComponent implements OnInit  {
           console.log('Screen updated successfully:', response);
           this.notificationService.showNotification('Screen updated successfully', 'success');
           this.router.navigate(['/schedulers/createScheduler']);
+          this.isLoading = false; 
         },
         error => {
           console.error('Error updating screen:', error);
           this.notificationService.showNotification('Error updating screen', 'error');
+          this.isLoading = false; 
         }
       );
     } else {
-      // Form is invalid, handle validation errors
     }
   }
 

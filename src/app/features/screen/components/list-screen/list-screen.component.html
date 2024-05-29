@@ -10,27 +10,36 @@
       (input)="onSearchChange($event)"
       class="search-input"
     />
-    <button mat-icon-button matSuffix aria-label="Search" class="small-icon">
+    <button mat-icon-button matSuffix aria-label="Search">
       <mat-icon>search</mat-icon>
     </button>
   </mat-form-field>
 
+<<<<<<< HEAD
   <div *ngIf="isLoading" class="spinner-container">
     <mat-spinner diameter="70"></mat-spinner>
     <div>list-screens loading....</div>
   </div>
 
   <div *ngIf="!isLoading && !screens.length" class="user-not-found-message">
+=======
+  <div *ngIf="!screens.length && !isLoading" class="user-not-found-message">
+>>>>>>> 80bae6e (all-new-changes)
     No screens found
   </div>
-
+  <div *ngIf="isLoading" class="spinner">
+    <mat-spinner diameter="24" color="primary"></mat-spinner>
+  </div>
   <table
+<<<<<<< HEAD
     *ngIf="!isLoading && screens.length"
+=======
+    *ngIf="screens.length && !isLoading"
+>>>>>>> 80bae6e (all-new-changes)
     mat-table
     [dataSource]="screens"
     class="mat-elevation-z1"
   >
-    <!-- Column definitions -->
     <ng-container matColumnDef="image">
       <mat-header-cell *matHeaderCellDef class="mat-header-cell">Screen</mat-header-cell>
       <mat-cell *matCellDef="let element" class="mat-cell">

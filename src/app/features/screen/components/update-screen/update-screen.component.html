@@ -6,7 +6,6 @@
   enctype="multipart/form-data"
 >
   <div class="update-screen-main--container">
-    <!-- Image Upload -->
     <div>
       <input
         type="file"
@@ -47,7 +46,6 @@
       </div>
     </div>
 
-    <!-- Screen Details -->
     <div class="update-screen--content">
       <mat-form-field
         appearance="outline"
@@ -168,14 +166,21 @@
       </mat-form-field>
     </div>
 
-    <!-- Submit Button -->
     <div class="update-screen-footer-content">
       <button
         mat-raised-button
         class="update-screen-footer-button"
         type="submit"
+        [disabled]="isLoading"
       >
-        Update Screen
+        <div *ngIf="isLoading; else buttonContent">
+          <mat-spinner
+            class="spinner-container"
+            diameter="24"
+            color="primary"
+          ></mat-spinner>
+        </div>
+        <ng-template #buttonContent> Update Screen </ng-template>
       </button>
     </div>
   </div>

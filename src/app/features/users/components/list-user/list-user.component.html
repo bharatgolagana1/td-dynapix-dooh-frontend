@@ -1,86 +1,86 @@
 <div class="list-user--table">
   <div class="list-user--title">List Users</div>
   <div class="list-users--search">
-    <div  class="users--search">
-  <mat-form-field
-    appearance="outline"
-    [style.fontSize.px]="14"
-   >
-    <mat-label class="small-label">Search</mat-label>
-    <input
-      type="text"
-      matInput
-      (input)="onSearch($event)"
-      class="search-input"
-    />
-    <button mat-icon-button matSuffix aria-label="Search" class="small-icon">
-      <mat-icon>search</mat-icon>
-    </button>
-  </mat-form-field>
+    <div class="users--search">
+      <mat-form-field appearance="outline" [style.fontSize.px]="14">
+        <mat-label class="small-label">Search</mat-label>
+        <input
+          type="text"
+          matInput
+          (input)="onSearch($event)"
+          class="search-input"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          aria-label="Search"
+          class="small-icon"
+        >
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
     </div>
-  <div class="list-user--create-button">
-    <button  mat-raised-button color="primary"><a routerLink="/create">Create User</a></button>
-  </div>
+
+    <div class="list-user--create-button">
+      <button mat-raised-button color="primary">
+        <a routerLink="/create">Create User</a>
+      </button>
+    </div>
   </div>
   <div *ngIf="isLoading" class="spinner-container">
+<<<<<<< HEAD
     <mat-spinner diameter="70"></mat-spinner>
     <div>list-users loading...</div>
+=======
+    <mat-spinner diameter="24" color="primary"></mat-spinner>
+  </div>
+  <div *ngIf="userNotFoundMessage" class="user-not-found-message">
+    {{ userNotFoundMessage }}
+>>>>>>> 80bae6e (all-new-changes)
   </div>
   <div class="mat-elevation-z1">
     <div *ngIf="!userNotFoundMessage">
-      <mat-table *ngIf="!isLoading" class="mat-elevation-z1" [dataSource]="dataSource">
-        <!-- Columns -->
-        <!-- User Name Column -->
+      <mat-table
+        *ngIf="!isLoading"
+        class="mat-elevation-z1"
+        [dataSource]="dataSource"
+      >
         <ng-container matColumnDef="userName">
           <mat-header-cell *matHeaderCellDef>User Name</mat-header-cell>
           <mat-cell *matCellDef="let user">{{ user.userName }}</mat-cell>
         </ng-container>
-
-        <!-- First Name Column -->
         <ng-container matColumnDef="firstName">
           <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
           <mat-cell *matCellDef="let user">{{ user.firstName }}</mat-cell>
         </ng-container>
-
-        <!-- Last Name Column -->
         <ng-container matColumnDef="lastName">
           <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
           <mat-cell *matCellDef="let user">{{ user.lastName }}</mat-cell>
         </ng-container>
-
-        <!-- Email Column -->
         <ng-container matColumnDef="email">
           <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
           <mat-cell *matCellDef="let user" class="ellipsis-cell">{{
             user.email
           }}</mat-cell>
         </ng-container>
-
-        <!-- Role Column -->
         <ng-container matColumnDef="role">
           <mat-header-cell *matHeaderCellDef>Role</mat-header-cell>
           <mat-cell *matCellDef="let user" class="ellipsis-cell">{{
             user.role
           }}</mat-cell>
         </ng-container>
-
-        <!-- Created At Column -->
         <ng-container matColumnDef="createdAt">
           <mat-header-cell *matHeaderCellDef>Created At</mat-header-cell>
           <mat-cell *matCellDef="let user">{{
             user.createdAt | date
           }}</mat-cell>
         </ng-container>
-
-        <!-- Updated At Column -->
         <ng-container matColumnDef="updatedAt">
           <mat-header-cell *matHeaderCellDef>Updated At</mat-header-cell>
           <mat-cell *matCellDef="let user">{{
             user.updatedAt | date
           }}</mat-cell>
         </ng-container>
-
-        <!--update-user-->
         <ng-container matColumnDef="edit">
           <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
           <mat-cell *matCellDef="let user">
@@ -89,8 +89,6 @@
             </button>
           </mat-cell>
         </ng-container>
-
-        <!--delete-user-->
         <ng-container matColumnDef="delete">
           <mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
           <mat-cell *matCellDef="let user">
@@ -117,11 +115,6 @@
         [pageSizeOptions]="pageSizeOptions"
         showFirstLastButtons
       ></mat-paginator>
-    </div>
-
-    <div *ngIf="userNotFoundMessage" class="user-not-found-message">
-      {{ userNotFoundMessage }}
-      <div></div>
     </div>
   </div>
 </div>

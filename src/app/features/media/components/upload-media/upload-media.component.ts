@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MediaService } from '../../media.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { ChangeDetectorRef } from '@angular/core';
 import { UploadSuccessDialogComponent } from '../upload-success-dialog/upload-success-dialog.component';
 import { Subscription } from 'rxjs';
 
@@ -11,7 +12,11 @@ interface UploadFile {
   progress: number;
   url?: string;
   thumbnail?: string;
-  uploadSubscription?: Subscription; // Add subscription to allow canceling
+  approved?: boolean;
+  uploaded?: boolean;
+  push?: boolean;
+  uploadSubscription?: Subscription;
+  [key: string]: any; 
 }
 
 @Component({
@@ -19,15 +24,49 @@ interface UploadFile {
   templateUrl: './upload-media.component.html',
   styleUrls: ['./upload-media.component.scss'],
 })
-export class UploadMediaComponent {
+export class UploadMediaComponent implements OnInit {
   files: UploadFile[] = [];
+  categories: string[] = [];
+  companyNames: string[] = [];
+  selectedCategory: string = '';
+  selectedCompanyName: string = '';
 
   constructor(
     private mediaService: MediaService,
     private notificationService: NotificationService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef 
   ) {}
+
+  ngOnInit() {
+    this.fetchCategories();
+    this.fetchCompanyNames();
+  }
+
+  fetchCompanyNames() {
+    this.mediaService.getCompanyNames().subscribe(
+      (names: string[]) => {
+        this.companyNames = names;
+      },
+      (error) => {
+        console.error('Error fetching company names:', error);
+        this.notificationService.showNotification('Error fetching company names', 'error');
+      }
+    );
+  }
+
+  fetchCategories() {
+    this.mediaService.getCategories().subscribe(
+      (data: string[]) => {
+        this.categories = data;
+      },
+      (error) => {
+        console.error('Error fetching categories:', error);
+        this.notificationService.showNotification('Error fetching categories', 'error');
+      }
+    );
+  }
 
   onFileSelected(event: any) {
     const fileList: FileList = event.target.files;

@@ -23,6 +23,7 @@ export class CreateScreenComponent {
   hardwareVersion: string = '1.0';
   softwareVersion: string ='1.2.3';
   rebootFlag: string ='true';
+  isLoading = false;
 
 
   constructor(private formBuilder: FormBuilder,private router: Router,private screenService: ScreenService,private notificationService: NotificationService) {  
@@ -76,6 +77,7 @@ updateSFT() {
 
 onSubmit() {
   if (this.screenForm.valid) {
+    this.isLoading = true;
     const formData = new FormData();
     formData.append('tenantId', this.tenantId);
     formData.append('screenName', this.screenForm.value.screenName);
@@ -95,8 +97,7 @@ onSubmit() {
     formData.append('softwareVersion', this.softwareVersion);
     formData.append('locationCoordinates', this.screenForm.value.locationCoordinates);
     formData.append('screenStatus', this.screenForm.value.screenStatus);
-    formData.append('rebootFlag', this.rebootFlag);
-
+    formData.append('rebootFlag', this.rebootFlag ? this.rebootFlag : '');
     if (this.imageFiles && this.imageFiles.length > 0) {
       for (let i = 0; i < this.imageFiles.length; i++) {
         formData.append('imageFiles', this.imageFiles[i]);
@@ -108,10 +109,12 @@ onSubmit() {
         console.log('Screen created successfully:', response);
         this.notificationService.showNotification('Screen created successfully', 'success');
         this.router.navigate(['/schedulers/createScheduler']);
+        this.isLoading = false; 
       },
       error => {
         console.error('Error creating screen:', error);
         this.notificationService.showNotification('Screen is not created', 'error');
+        this.isLoading = false; 
       }
     );
   }
@@ -156,6 +159,4 @@ createObjectURL(file: File): string {
     this.imageFiles.splice(index, 1);
     this.fileUrls.splice(index, 1);
   }
-  
-
 }

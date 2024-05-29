@@ -13,7 +13,7 @@ export class SchedulerService {
   private screens = 'http://localhost:3001/screen';
   private tenantId = '123456';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   createScheduler(schedulerData: any): Observable<any> {
     return this.http.post<any>(this.localApiUrl, schedulerData);
@@ -23,8 +23,8 @@ export class SchedulerService {
     return this.http.get<any>(`${this.apiUrl}?screenId=${screenIdName}`);
   }
 
-  getSchedulers(pageIndex: number, pageSize: number): Observable<any[]> {
-    const url = `${this.localApiUrl}?pageIndex=${pageIndex}&pageSize=${pageSize}&tenantId=${this.tenantId}`;
+  getSchedulers(pageIndex: number, pageSize: number, search: string = ''): Observable<any[]> {
+    const url = `${this.localApiUrl}?pageIndex=${pageIndex}&pageSize=${pageSize}&tenantId=${this.tenantId}&search=${search}`;
     return this.http.get<any[]>(url);
   }
 
@@ -38,13 +38,13 @@ export class SchedulerService {
 
   deleteScheduler(scheduler: any): Observable<any> {
     console.log('Deleting user:', scheduler);
-    return this.http.delete<any[]>(`${this.localApiUrl}/${scheduler._id}`); 
+    return this.http.delete<any[]>(`${this.localApiUrl}/${scheduler._id}`);
   }
 
   deleteScreen(id: string): Observable<any> {
     return this.http.delete(`${this.screens}/${id}`);
   }
-  
+
   updateScreen(id: string, formData: FormData) {
     const url = `${this.screens}/${id}`;
     return this.http.put(url, formData);

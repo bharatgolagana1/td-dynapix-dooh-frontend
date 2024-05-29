@@ -24,14 +24,23 @@ export interface Scheduler {
 })
 export class ListSchedulerComponent implements OnInit, AfterViewInit {
   schedulers: Scheduler[] = [];
-  displayedColumns: string[] = ['schedulerName', 'cycleTime', 'slotSize', 'videoUrls', 'screenId', 'startDate', 'endDate', 'delete'];
-  dataSource = new MatTableDataSource<Scheduler>();
+  searching: boolean = false;
+  displayedColumns: string[] = [
+    'schedulerName',
+    'cycleTime',
+    'slotSize',
+    'videoUrls',
+    'screenId',
+    'startDate',
+    'endDate',
+    'delete'
+  ];
+  dataSource!: MatTableDataSource<Scheduler>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   totalItems: number = 0;
   pageSize: number = 10;
   pageIndex: number = 0;
   isLoading: boolean = false;
-
 
   constructor(
     private schedulerService: SchedulerService,
@@ -47,20 +56,18 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  getPaginatedSchedulers(pageIndex: number, pageSize: number): void {
-    this.isLoading = true;
-    this.schedulerService.getSchedulers(pageIndex, pageSize).subscribe((response: any) => {
-      if (response.schedules.length > 0) {
-        this.schedulers = response.schedules;
-        this.dataSource = new MatTableDataSource<Scheduler>(response.schedules);
+  getPaginatedSchedulers(pageIndex: number, pageSize: number, search: string = ''): void {
+    this.searching = true;
+    this.schedulerService.getSchedulers(pageIndex, pageSize, search).subscribe((response: any) => {
+      this.schedulers = response.schedules;
+      this.dataSource = new MatTableDataSource<Scheduler>(response.schedules);
+      if (this.schedulers.length > 0) {
+        this.dataSource.paginator = this.paginator;
         this.totalItems = response.totalSchedulesCount;
-        this.isLoading = false;
       } else {
-        this.schedulers = [];
-        this.dataSource = new MatTableDataSource<Scheduler>(this.schedulers);
         this.totalItems = 0;
-        this.isLoading = false;
       }
+      this.searching = false; 
     });
   }
 
@@ -92,5 +99,11 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
         );
       }
     });
+  }
+
+  onSearchChange(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const searchValue = inputElement.value.trim().toLowerCase();
+    this.getPaginatedSchedulers(0, this.pageSize, searchValue);
   }
 }

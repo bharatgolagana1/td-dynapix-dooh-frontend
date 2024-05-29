@@ -14,6 +14,11 @@ import { DeleteScreenListComponent } from '../delete-screen-list/delete-screen-l
 })
 export class ListScreenComponent implements OnInit {
   screens: any[] = [];
+<<<<<<< HEAD
+=======
+  isLoading: boolean = false;
+  displayedColumns: string[] = ['image', 'screenName', 'nextAvailableDate', 'size', 'SFT', 'actions'];
+>>>>>>> 80bae6e (all-new-changes)
   page: number = 1;
   pageSize: number = 10;
   total: number = 0;
@@ -39,7 +44,11 @@ export class ListScreenComponent implements OnInit {
 
   loadScreens() {
     this.isLoading = true;
+<<<<<<< HEAD
     this.screenService.listScreens(this.page, this.pageSize, this.search).subscribe(
+=======
+    this.screenService.listScreens(this.page, this.limit, this.search).subscribe(
+>>>>>>> 80bae6e (all-new-changes)
       data => {
         this.screens = data.screens;
         this.total = data.total;
@@ -53,6 +62,7 @@ export class ListScreenComponent implements OnInit {
   }
 
   deleteScreen(id: string) {
+<<<<<<< HEAD
     const dialogRef = this.dialog.open(DeleteScreenListComponent, {
       width: '400px',
       data: { id: id }
@@ -72,6 +82,16 @@ export class ListScreenComponent implements OnInit {
             this.isLoading = false;
           }
         );
+=======
+    this.screenService.deleteScreen(id).subscribe(
+      response => {
+        this.notificationService.showNotification('Screen deleted successfully', 'success');
+        this.loadScreens(); 
+      },
+      error => {
+        console.error('Error deleting screen:', error);
+        this.notificationService.showNotification('Error deleting screen', 'error');
+>>>>>>> 80bae6e (all-new-changes)
       }
     });
   }
@@ -88,7 +108,11 @@ export class ListScreenComponent implements OnInit {
 
   onSearchChange(event: any) {
     this.search = event.target.value;
+<<<<<<< HEAD
     this.page = 1;
+=======
+    this.page = 1; 
+>>>>>>> 80bae6e (all-new-changes)
     this.loadScreens();
   }
 }
