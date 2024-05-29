@@ -65,4 +65,9 @@ padding-top: 1rem;
   .mat-mdc-icon-button {
     color: #757FEF;
 }
-  
+.spinner-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  }  

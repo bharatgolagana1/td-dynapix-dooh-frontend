@@ -1,5 +1,6 @@
 <div class="list-screen--container">
   <div class="list-screen--title">List Screen</div>
+  
   <mat-form-field appearance="outline" [style.fontSize.px]="14">
     <mat-label class="small-label">Search</mat-label>
     <input
@@ -14,21 +15,24 @@
     </button>
   </mat-form-field>
 
-  <div *ngIf="!screens.length" class="user-not-found-message">
+  <div *ngIf="isLoading" class="spinner-container">
+    <mat-spinner diameter="70"></mat-spinner>
+    <div>list-screens loading....</div>
+  </div>
+
+  <div *ngIf="!isLoading && !screens.length" class="user-not-found-message">
     No screens found
   </div>
 
   <table
-    *ngIf="screens.length"
+    *ngIf="!isLoading && screens.length"
     mat-table
     [dataSource]="screens"
     class="mat-elevation-z1"
   >
     <!-- Column definitions -->
     <ng-container matColumnDef="image">
-      <mat-header-cell *matHeaderCellDef class="mat-header-cell"
-        >Screen</mat-header-cell
-      >
+      <mat-header-cell *matHeaderCellDef class="mat-header-cell">Screen</mat-header-cell>
       <mat-cell *matCellDef="let element" class="mat-cell">
         <img
           [src]="element.imageUrls[0]"
@@ -41,39 +45,23 @@
     </ng-container>
 
     <ng-container matColumnDef="screenName">
-      <mat-header-cell *matHeaderCellDef class="mat-header-cell"
-        >Screen Name</mat-header-cell
-      >
-      <mat-cell *matCellDef="let element" class="mat-cell">{{
-        element.screenName
-      }}</mat-cell>
+      <mat-header-cell *matHeaderCellDef class="mat-header-cell">Screen Name</mat-header-cell>
+      <mat-cell *matCellDef="let element" class="mat-cell">{{ element.screenName }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="nextAvailableDate">
-      <mat-header-cell *matHeaderCellDef class="mat-header-cell"
-        >Next Available Date</mat-header-cell
-      >
-      <mat-cell *matCellDef="let element" class="mat-cell">
-        {{ element.NextAvailableDate | date }}
-      </mat-cell>
+      <mat-header-cell *matHeaderCellDef class="mat-header-cell">Next Available Date</mat-header-cell>
+      <mat-cell *matCellDef="let element" class="mat-cell">{{ element.NextAvailableDate | date }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="size">
-      <mat-header-cell *matHeaderCellDef class="mat-header-cell"
-        >Size</mat-header-cell
-      >
-      <mat-cell *matCellDef="let element" class="mat-cell">{{
-        element.size
-      }}</mat-cell>
+      <mat-header-cell *matHeaderCellDef class="mat-header-cell">Size</mat-header-cell>
+      <mat-cell *matCellDef="let element" class="mat-cell">{{ element.size }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="SFT">
-      <mat-header-cell *matHeaderCellDef class="mat-header-cell"
-        >SFT</mat-header-cell
-      >
-      <mat-cell *matCellDef="let element" class="mat-cell">{{
-        element.SFT
-      }}</mat-cell>
+      <mat-header-cell *matHeaderCellDef class="mat-header-cell">SFT</mat-header-cell>
+      <mat-cell *matCellDef="let element" class="mat-cell">{{ element.SFT }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="edit">
@@ -94,42 +82,22 @@
       </mat-cell>
     </ng-container>
 
-
-
     <mat-header-row
-      *matHeaderRowDef="[
-        'image',
-        'screenName',
-        'nextAvailableDate',
-        'size',
-        'SFT',
-        'edit',
-        'delete',
-   
-      ]"
+      *matHeaderRowDef="['image', 'screenName', 'nextAvailableDate', 'size', 'SFT', 'edit', 'delete']"
     ></mat-header-row>
     <mat-row
       *matRowDef="
         let row;
-        columns: [
-          'image',
-          'screenName',
-          'nextAvailableDate',
-          'size',
-          'SFT',
-          'edit',
-          'delete',
-        
-        ]
+        columns: ['image', 'screenName', 'nextAvailableDate', 'size', 'SFT', 'edit', 'delete']
       "
     ></mat-row>
   </table>
 
   <mat-paginator
-    *ngIf="total > 0"
+    *ngIf="!isLoading && total > 0"
     [length]="total"
     [pageSize]="pageSize"
-    [pageSizeOptions]="[2,5, 10, 20]"
+    [pageSizeOptions]="[2, 5, 10, 20]"
     (page)="onPageChange($event)"
     showFirstLastButtons="true"
   >

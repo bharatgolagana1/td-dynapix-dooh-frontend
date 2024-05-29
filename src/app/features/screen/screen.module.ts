@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ImageDialogComponent } from './components/image-dialog/image-dialog.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { UpdateScreenComponent } from './components/update-screen/update-screen.component';
+import { DeleteScreenListComponent } from './components/delete-screen-list/delete-screen-list.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { UpdateScreenComponent } from './components/update-screen/update-screen.
     CreateScreenComponent,
     ListScreenComponent,
     ImageDialogComponent,
-    UpdateScreenComponent
+    UpdateScreenComponent,
+    DeleteScreenListComponent
   ],
   imports: [
     CommonModule,
