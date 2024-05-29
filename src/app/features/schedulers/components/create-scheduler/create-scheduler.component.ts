@@ -54,10 +54,8 @@ export class CreateSchedulerComponent implements OnInit {
   }
   toggleScreenSelection(screenId: string, checked: boolean): void {
     if (checked) {
-      // Push the selected screen ID to the array
       this.selectedScreenIds.push(screenId);
     } else {
-      // Remove the selected screen ID from the array
       const index = this.selectedScreenIds.indexOf(screenId);
       if (index !== -1) {
         this.selectedScreenIds.splice(index, 1);
@@ -66,24 +64,24 @@ export class CreateSchedulerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loaderService.showLoader(); // Show loader
+    this.loaderService.showLoader(); 
     this.schedulerService.getScreensForTenant().subscribe(
       (data: any) => {
         this.screenCards = data.screens;
-        this.showAPILoader = false; // Hide loader when data is fetched
-        this.loaderService.hideLoader(); // Hide loader
+        this.showAPILoader = false; 
+        this.loaderService.hideLoader();
       },
       error => {
         console.error('Error fetching screens:', error);
-        this.showAPILoader = true // Hide loader in case of error
-        this.loaderService.showLoader(); // Hide loader
+        this.showAPILoader = true 
+        this.loaderService.showLoader(); 
       }
     );
   }
 
   openImageDialog(card: any): void {
     const dialogRef = this.dialog.open(ImageCardsListComponent, {
-      width: '80%', // Adjust the width as needed
+      width: '80%',
       data: { images: card.imageUrls }
     });
 
@@ -92,42 +90,6 @@ export class CreateSchedulerComponent implements OnInit {
     });
   }
 
-  editScreen(screenId: string) {
-    // Navigate to the edit screen component with the screenId as a parameter
-    this.router.navigate(['/updateScreen', screenId]);
-  }
-
-  deleteScreen(screenId: string) {
-    const dialogRef = this.dialog.open(DeleteScreenComponent, {
-      width: '250px',
-      data: { screenId: screenId }
-    });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // Assuming you have a service to handle API calls for screen deletion
-        this.schedulerService.deleteScreen(screenId).subscribe(() => {
-          console.log('Screen deleted');
-  
-          // Find the index of the deleted screen in your screenCards array
-          const index = this.screenCards.findIndex(card => card._id === screenId);
-  
-          // If the screen is found, remove it from the array
-          if (index !== -1) {
-            this.screenCards.splice(index, 1);
-          }
-  
-          // Alternatively, you can reload data if needed
-          // this.loadScreenCards();
-        }, error => {
-          console.error('Error deleting screen:', error);
-          // Handle error if necessary
-        });
-      }
-    });
-  }
-  
-  
   createScheduler() {
     const datePipe = new DatePipe('en-US');
     const formattedStartDate = datePipe.transform(this.dateRange.value.startDate, 'dd-MM-yyyy');
@@ -147,11 +109,9 @@ export class CreateSchedulerComponent implements OnInit {
     this.schedulerService.createScheduler(schedulerData).subscribe(
       (response) => {
         console.log('Scheduler created successfully:', response);
-        // Handle success message or redirect to another page
       },
       (error) => {
         console.error('Error creating scheduler:', error);
-        // Handle error message
       }
     );
   }
@@ -162,8 +122,7 @@ export class CreateSchedulerComponent implements OnInit {
     if (a) {
         const formattedToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
         const formattedDate = new Date(a.getFullYear(), a.getMonth(), a.getDate());
-
-        return formattedDate >= formattedToday; // Enable dates equal to or greater than today
+        return formattedDate >= formattedToday; 
     }
     return false;
 };
@@ -225,12 +184,12 @@ export class CreateSchedulerComponent implements OnInit {
       const cycleTime = this.createSchedulerForm.value.cycleTime;
       const schedulerName = this.createSchedulerForm.value.schedulerName;
       const selectedVideos = this.selectedVideos.map((video: any) => ({
-        id: video._id, // Assuming _id field corresponds to the id in the backend schema
+        id: video._id, 
         title: video.title,
         thumbnailUrl: video.thumbnailUrl,
         duration: video.duration,
         uploadTime: video.uploadTime,
-        views: '', // Assuming this data is not available in the frontend or optional
+        views: '', 
         author: video.author,
         videoUrl: video.videoUrl,
         description: video.description,

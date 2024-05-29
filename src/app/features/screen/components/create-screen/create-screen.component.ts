@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ScreenService } from '../../screen.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Router } from '@angular/router';
+import { LoaderService } from 'src/app/core/services/loader.service';
 @Component({
   selector: 'app-create-screen',
   templateUrl: './create-screen.component.html',
@@ -25,7 +26,7 @@ export class CreateScreenComponent {
   rebootFlag: string ='true';
 
 
-  constructor(private formBuilder: FormBuilder,private router: Router,private screenService: ScreenService,private notificationService: NotificationService) {  
+  constructor(private formBuilder: FormBuilder,private router: Router,private screenService: ScreenService,private notificationService: NotificationService,public loaderService:LoaderService) {  
   this.screenForm = this.formBuilder.group({
     screenName: new FormControl('',[Validators.required]),
     address: new FormControl('',[Validators.required]),
@@ -76,6 +77,8 @@ updateSFT() {
 
 onSubmit() {
   if (this.screenForm.valid) {
+    this.loaderService.showLoader();  // Show loader
+
     const formData = new FormData();
     formData.append('tenantId', this.tenantId);
     formData.append('screenName', this.screenForm.value.screenName);
@@ -107,11 +110,13 @@ onSubmit() {
       response => {
         console.log('Screen created successfully:', response);
         this.notificationService.showNotification('Screen created successfully', 'success');
+        this.loaderService.hideLoader();  // Hide loader
         this.router.navigate(['/schedulers/createScheduler']);
       },
       error => {
         console.error('Error creating screen:', error);
         this.notificationService.showNotification('Screen is not created', 'error');
+        this.loaderService.hideLoader();  // Hide loader
       }
     );
   }
