@@ -94,7 +94,7 @@
   </table>
 
   <mat-paginator
-    *ngIf="!isLoading && total > 0"
+    *ngIf="total > 0"
     [length]="total"
     [pageSize]="pageSize"
     [pageSizeOptions]="[2, 5, 10, 20]"

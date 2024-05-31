@@ -56,6 +56,11 @@
     max-width: 100%;
     height: auto;
   }
+  .update-screen-size--content{
+    display: flex;
+    min-width: 100%;
+    gap: 0.5rem;
+  }
   .update-screen-footer-content{
     display: flex;
   justify-content: flex-end;

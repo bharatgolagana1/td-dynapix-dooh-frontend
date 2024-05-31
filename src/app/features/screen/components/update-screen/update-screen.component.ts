@@ -10,29 +10,39 @@ import { Router } from '@angular/router';
   templateUrl: './update-screen.component.html',
   styleUrls: ['./update-screen.component.scss']
 })
-export class UpdateScreenComponent implements OnInit  {
+export class UpdateScreenComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   screenId!: string;
   screenForm: FormGroup;
   imageFiles: File[] = [];
   fileUrls: string[] = [];
+  removedImageUrls: string[] = []; 
 
   constructor(
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private schedulerService:SchedulerService,
+    private schedulerService: SchedulerService,
     private router: Router,
     private notificationService: NotificationService
   ) {
     this.screenForm = this.formBuilder.group({
       screenName: ['', Validators.required],
       address: ['', Validators.required],
-      size: ['', Validators.required],
-      SFT: ['', Validators.required],
+      width: ['', Validators.required],
+      height: ['', Validators.required],
+      SFT: [{ value: '', disabled: true }, Validators.required],
       NextAvailableDate: ['', Validators.required],
       locationCoordinates: ['', [Validators.required, this.coordinateValidator()]],
       screenStatus: ['Active', Validators.required]
+    });
+
+    this.screenForm.get('width')?.valueChanges.subscribe(() => {
+      this.updateSFT();
+    });
+
+    this.screenForm.get('height')?.valueChanges.subscribe(() => {
+      this.updateSFT();
     });
   }
 
@@ -50,13 +60,13 @@ export class UpdateScreenComponent implements OnInit  {
         this.screenForm.patchValue({
           screenName: screen.screenName,
           address: screen.address,
-          size: screen.size,
-          SFT: screen.SFT,
+          width: screen.size.split('x')[0],
+          height: screen.size.split('x')[1],
           NextAvailableDate: screen.NextAvailableDate,
           locationCoordinates: screen.locationCoordinates,
           screenStatus: screen.screenStatus
         });
-        // Load images
+        this.updateSFT();
         this.loadImages(screen.imageUrls);
       },
       error => {
@@ -69,17 +79,18 @@ export class UpdateScreenComponent implements OnInit  {
   loadImages(imageUrls: string[]): void {
     this.fileUrls = imageUrls;
   }
+
   removeImage(index: number): void {
-    // Remove the image URL and corresponding file from arrays
+    const removedUrl = this.fileUrls[index];
+    this.removedImageUrls.push(removedUrl);
     this.fileUrls.splice(index, 1);
-    this.imageFiles.splice(index, 1);
   }
 
   coordinateValidator() {
     return (control: { value: string }) => {
       const value = control.value;
       if (!value || value.trim() === '') {
-        return null; // Allow empty value
+        return null; 
       }
       const regex = /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6},\s*-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}$/;
       if (!regex.test(value)) {
@@ -89,24 +100,39 @@ export class UpdateScreenComponent implements OnInit  {
     };
   }
 
-  onSubmit() {
+  updateSFT(): void {
+    const width = this.screenForm.get('width')?.value;
+    const height = this.screenForm.get('height')?.value;
+    if (width && height) {
+      const sft = (parseFloat(width) * parseFloat(height)).toFixed(2);
+      this.screenForm.get('SFT')?.setValue(sft);
+    } else {
+      this.screenForm.get('SFT')?.setValue('');
+    }
+  }
+
+  onSubmit(): void {
     if (this.screenForm.valid) {
       const formData = new FormData();
       formData.append('screenName', this.screenForm.value.screenName);
       formData.append('address', this.screenForm.value.address);
-      formData.append('size', this.screenForm.value.size);
-      formData.append('SFT', this.screenForm.value.SFT);
+      formData.append('width', this.screenForm.value.width);
+      formData.append('height', this.screenForm.value.height);
+      formData.append('SFT', this.screenForm.get('SFT')?.value);
       formData.append('NextAvailableDate', this.screenForm.value.NextAvailableDate);
       formData.append('locationCoordinates', this.screenForm.value.locationCoordinates);
       formData.append('screenStatus', this.screenForm.value.screenStatus);
-  
-      // Append image files
+
       if (this.imageFiles && this.imageFiles.length > 0) {
         for (let i = 0; i < this.imageFiles.length; i++) {
           formData.append('imageFiles', this.imageFiles[i]);
         }
       }
-  
+
+      if (this.removedImageUrls.length > 0) {
+        formData.append('removeImageUrls', JSON.stringify(this.removedImageUrls));
+      }
+
       this.schedulerService.updateScreen(this.screenId, formData).subscribe(
         response => {
           console.log('Screen updated successfully:', response);
@@ -115,14 +141,24 @@ export class UpdateScreenComponent implements OnInit  {
         },
         error => {
           console.error('Error updating screen:', error);
-          this.notificationService.showNotification('Error updating screen', 'error');
+          console.error('Full error response:', error);
+          if (error.error && error.error.message) {
+            this.notificationService.showNotification(`Error: ${error.error.message}`, 'error');
+          } else {
+            this.notificationService.showNotification('Error updating screen', 'error');
+          }
         }
       );
     } else {
-      // Form is invalid, handle validation errors
+      Object.keys(this.screenForm.controls).forEach(field => {
+        const control = this.screenForm.get(field);
+        if (control && control.invalid) {
+          control.markAsTouched({ onlySelf: true });
+        }
+      });
     }
   }
-
+  
   onFileSelected(event: any): void {
     const files = event.target.files;
     for (const file of files) {
@@ -139,10 +175,11 @@ export class UpdateScreenComponent implements OnInit  {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         this.imageFiles.push(file);
-        this.fileUrls.push(this.createObjectURL(file)); 
+        this.fileUrls.push(this.createObjectURL(file));
       }
     }
   }
+
   onDragOver(event: any): void {
     event.preventDefault();
     event.stopPropagation();
@@ -160,5 +197,4 @@ export class UpdateScreenComponent implements OnInit  {
   createObjectURL(file: File): string {
     return URL.createObjectURL(file);
   }
-  
 }
