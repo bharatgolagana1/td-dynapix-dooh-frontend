@@ -70,7 +70,6 @@ export class ListUserComponent implements OnInit, OnDestroy {
       }, error => {
         console.error('Error loading users:', error);
         this.isLoading = false;
-        // Handle error case, maybe show an error message
       });
   }
 

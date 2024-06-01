@@ -1,18 +1,22 @@
-
-  <div class="video-player">
-    <vg-player>
-      <video #media id="singleVideo" preload="auto" controls *ngIf="videosURLList.length > 0">
-        <!-- Loop through videosURLList and add each video URL as a source -->
-        <source *ngFor="let videoUrl of videosURLList" [src]="videoUrl.videoUrl" type="video/mp4">
-      </video>
-    </vg-player>
-    <div class="video-info">
-      <!-- Display information about the current video, slot size, and cycle time -->
-      <p class="text--video">Current Video: {{getCurrentVideoUrl() }}</p>
-      <p class="text--video">Slot Size: {{ slotSize }} seconds</p>
-      <p class="text--video">Cycle Time: {{ cycleTime }} minutes</p>
-    </div>
+<div class="video-player">
+  <vg-player>
+    <video
+      #media
+      id="singleVideo"
+      preload="auto"
+      controls
+      *ngIf="videosURLList.length > 0"
+    >
+      <source
+        *ngFor="let videoUrl of videosURLList"
+        [src]="videoUrl.videoUrl"
+        type="video/mp4"
+      />
+    </video>
+  </vg-player>
+  <div class="video-info">
+    <p class="text--video">Current Video: {{ getCurrentVideoUrl() }}</p>
+    <p class="text--video">Slot Size: {{ slotSize }} seconds</p>
+    <p class="text--video">Cycle Time: {{ cycleTime }} minutes</p>
   </div>
-  
-
-
+</div>

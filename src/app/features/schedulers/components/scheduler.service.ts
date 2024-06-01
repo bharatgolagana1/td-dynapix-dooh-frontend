@@ -23,10 +23,11 @@ export class SchedulerService {
     return this.http.get<any>(`${this.apiUrl}?screenId=${screenIdName}`);
   }
 
-  getSchedulers(pageIndex: number, pageSize: number): Observable<any[]> {
-    const url = `${this.localApiUrl}?pageIndex=${pageIndex}&pageSize=${pageSize}&tenantId=${this.tenantId}`;
+  getSchedulers(pageIndex: number, pageSize: number, search: string = ''): Observable<any[]> {
+    const url = `${this.localApiUrl}?pageIndex=${pageIndex}&pageSize=${pageSize}&tenantId=${this.tenantId}&search=${search}`;
     return this.http.get<any[]>(url);
   }
+  
 
   getVideos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.media}?tenantId=${this.tenantId}`);
