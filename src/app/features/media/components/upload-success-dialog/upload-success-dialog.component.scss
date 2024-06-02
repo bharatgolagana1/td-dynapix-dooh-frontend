@@ -8,13 +8,13 @@
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    color: #4caf50; /* Green color for the title */
+    color: #4caf50;
   }
   
   mat-dialog-content {
     font-size: 1.2rem;
     margin-bottom: 1.5rem;
-    color: #333; /* Dark color for content */
+    color: #333; 
   }
   
   mat-dialog-actions {
@@ -29,14 +29,14 @@
   }
   
   .success-message {
-    color: #4caf50; /* Green color for the success message */
-    font-size: 1.2rem; /* Adjust font size */
-    margin-bottom: 1rem; /* Add space below the message */
+    color: #4caf50; 
+    font-size: 1.2rem; 
+    margin-bottom: 1rem; 
   }
   
   .success-content {
-    font-size: 1.1rem; /* Adjust font size for content */
-    color: #333; /* Dark color for content */
+    font-size: 1.1rem; 
+    color: #333; 
   }
   
   p {

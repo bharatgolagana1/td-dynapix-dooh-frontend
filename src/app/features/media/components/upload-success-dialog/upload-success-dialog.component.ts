@@ -8,7 +8,6 @@ import { Component, OnInit } from '@angular/core';
 export class UploadSuccessDialogComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
-      // The navigation action is handled in the parent component
     }, 3000);
   }
 }

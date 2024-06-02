@@ -33,7 +33,7 @@ export class CreateScreenComponent {
     width: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
     height: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
     SFT: new FormControl({ value: '', disabled: true }, [Validators.required]),
-    NextAvailableDate: new FormControl('2024-05-01',[Validators.required]), // Set default date
+    NextAvailableDate: new FormControl('2024-05-01',[Validators.required]), 
     locationCoordinates: ['', [Validators.required, this.coordinateValidator()]],
     screenStatus: new FormControl('Active', [Validators.required]),
     companyName: new FormControl('',[Validators.required]),
@@ -77,8 +77,7 @@ updateSFT() {
 
 onSubmit() {
   if (this.screenForm.valid) {
-    this.loaderService.showLoader();  // Show loader
-
+    this.loaderService.showLoader(); 
     const formData = new FormData();
     formData.append('tenantId', this.tenantId);
     formData.append('screenName', this.screenForm.value.screenName);
