@@ -6,7 +6,8 @@ import { SchedulerService } from '../scheduler.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SchedulerDeleteComponent } from '../scheduler-delete/scheduler-delete.component';
 import { NotificationService } from 'src/app/core/services/notification.service';
-
+import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 export interface Scheduler {
   id: number;
   schedulerName: string;
@@ -21,12 +22,13 @@ export interface Scheduler {
 @Component({
   selector: 'app-list-scheduler',
   templateUrl: './list-scheduler.component.html',
-  styleUrls: ['./list-scheduler.component.scss']
+  styleUrls: ['./list-scheduler.component.scss'],
+  providers: [DatePipe],
 })
 export class ListSchedulerComponent implements OnInit, AfterViewInit {
-  schedulers: Scheduler[] = [];
-  displayedColumns: string[] = ['schedulerName', 'cycleTime', 'slotSize', 'videoUrls', 'screenId', 'startDate', 'endDate', 'delete'];
-  dataSource = new MatTableDataSource<Scheduler>();
+ schedulers: Scheduler[] = [];
+  displayedColumns: string[] = ['schedulerName','cycleTime', 'slotSize', 'videoUrls', 'screenId', 'startDate', 'endDate','edit', 'delete'];
+  dataSource!: MatTableDataSource<Scheduler>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   totalItems: number = 0;
   pageSize: number = 10;
@@ -34,14 +36,52 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
   isLoading: boolean = false;
   searchTerm: string = '';
 
-  constructor(
-    private schedulerService: SchedulerService,
-    private dialog: MatDialog,
-    private notificationService: NotificationService
-  ) {}
+  constructor(private router: Router,private schedulerService: SchedulerService, private dialog: MatDialog, private notificationService: NotificationService,private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.getPaginatedSchedulers(this.pageIndex, this.pageSize);
+    this.loadSchedulers();
+  }
+
+
+  private formatSchedulerDates(schedulers: Scheduler[]): Scheduler[] {
+    return schedulers.map(scheduler => ({
+      ...scheduler,
+      startDate: this.formatDate(scheduler.startDate),
+      endDate: this.formatDate(scheduler.endDate)
+    }));
+  }
+
+  private formatDate(dateStr: string): string {
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+      const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+      return this.datePipe.transform(formattedDate, 'dd-MM-yyyy') || '';
+    }
+    return dateStr;
+  }
+
+  loadSchedulers(): void {
+    this.schedulerService.getSchedulers(0, 10).subscribe(
+      (data: Scheduler[]) => {
+        if (Array.isArray(data)) {
+          this.schedulers = this.formatSchedulerDates(data);
+          this.dataSource = new MatTableDataSource<Scheduler>(this.schedulers);
+          if (this.paginator) {
+            this.dataSource.paginator = this.paginator;
+          }
+        }
+      },
+      error => {
+        console.error('Error fetching schedulers:', error);
+      }
+    );
+  }
+
+
+
+  editScheduler(schedulerId: string): void {
+    this.router.navigate(['/updateScheduler', schedulerId]);
   }
 
   ngAfterViewInit(): void {
@@ -60,7 +100,7 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onPageChange(event: PageEvent): void {
+  onPageChange(event: any): void {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.getPaginatedSchedulers(this.pageIndex, this.pageSize, this.searchTerm);
