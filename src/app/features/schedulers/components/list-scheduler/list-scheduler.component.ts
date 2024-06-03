@@ -1,4 +1,3 @@
-
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -35,6 +34,7 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
   pageIndex: number = 0;
   isLoading: boolean = false;
   searchTerm: string = '';
+  noSchedulersFound: boolean = false;
 
   constructor(private router: Router,private schedulerService: SchedulerService, private dialog: MatDialog, private notificationService: NotificationService,private datePipe: DatePipe) { }
 
@@ -92,6 +92,7 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
     this.isLoading = true;
     this.schedulerService.getSchedulers(pageIndex, pageSize, search).subscribe((response: any) => {
       this.schedulers = response.schedules;
+      this.noSchedulersFound = this.schedulers.length === 0;
       this.dataSource = new MatTableDataSource<Scheduler>(response.schedules);
       this.totalItems = response.totalSchedulesCount;
       this.isLoading = false;
@@ -142,4 +143,3 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
     this.getPaginatedSchedulers(this.pageIndex, this.pageSize, this.searchTerm);
   }
 }
-

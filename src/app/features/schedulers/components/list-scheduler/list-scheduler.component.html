@@ -24,7 +24,14 @@
     <mat-spinner diameter="70"></mat-spinner>
     <div>list-scheduler loading...</div>
   </div>
-  <mat-table [dataSource]="dataSource" *ngIf="!isLoading">
+
+  <div *ngIf="!isLoading && noSchedulersFound" class="no-schedulers-found">
+    No scheduler found.
+  </div>
+
+  <mat-table [dataSource]="dataSource" *ngIf="!isLoading && !noSchedulersFound">
+    <!-- table columns go here -->
+
     <ng-container matColumnDef="schedulerName">
       <mat-header-cell *matHeaderCellDef>Scheduler Name</mat-header-cell>
       <mat-cell *matCellDef="let scheduler">{{
@@ -119,6 +126,7 @@
   </mat-table>
 
   <mat-paginator
+    *ngIf="!noSchedulersFound"
     [length]="totalItems"
     [pageSize]="pageSize"
     [pageIndex]="pageIndex"
