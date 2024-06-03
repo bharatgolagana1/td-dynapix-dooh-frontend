@@ -17,6 +17,9 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { SchedulerDeleteComponent } from './components/scheduler-delete/scheduler-delete.component';
 import { DeleteScreenComponent } from './components/delete-screen/delete-screen.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { UpdateSchedulerComponent } from './components/update-scheduler/update-scheduler.component';
+import { DatePipe } from '@angular/common';
+
 @NgModule({
   declarations: [
     CreateSchedulerComponent,
@@ -28,10 +31,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     PlaySchedulerComponent,
     SchedulerDeleteComponent,
     DeleteScreenComponent,
-    
+    UpdateSchedulerComponent
   ],
   imports: [CommonModule, MaterialModule,SchedulerRoutingModule,FormsModule,ReactiveFormsModule,SlickCarouselModule,MatTooltipModule],
   exports: [CreateSchedulerComponent, ListSchedulerComponent,VideoDialogComponent],
+  providers: [
+    DatePipe, 
+  ],
  
 })
 export class SchedulerModule {}

@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CreateSchedulerComponent } from './components/create-scheduler/create-scheduler.component';
 import { ListSchedulerComponent } from './components/list-scheduler/list-scheduler.component';
 import { PlaySchedulerComponent } from './components/play-scheduler/play-scheduler.component';
-
+import { UpdateSchedulerComponent } from './components/update-scheduler/update-scheduler.component';
 
 const routes: Routes = [
 
@@ -19,6 +19,7 @@ const routes: Routes = [
       path: 'playScheduler',
       component: PlaySchedulerComponent,
     },
+    { path: 'updateScheduler/:id', component: UpdateSchedulerComponent },
   ];
 
   @NgModule({

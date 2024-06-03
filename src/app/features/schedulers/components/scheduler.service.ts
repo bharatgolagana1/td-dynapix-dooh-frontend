@@ -55,4 +55,22 @@ export class SchedulerService {
     const url = `${this.screens}/${screenId}`;
     return this.http.get<any>(url);
   }
+
+
+  updateScheduler(schedulerId: string, schedulerData: any): Observable<any> {
+    return this.http.put(`${this.localApiUrl}/${schedulerId}`, schedulerData);
+  }
+  
+
+
+getSchedulerById(schedulerId: string): Observable<any> {
+  return this.http.get<any>(`${this.localApiUrl}/${schedulerId}`);
+}
+
+
+  getScreens(): Observable<any> {
+    return this.http.get(`${this.localApiUrl}/screens`);
+  }
+
+  
 }

@@ -99,6 +99,15 @@
       </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="edit">
+      <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
+      <mat-cell *matCellDef="let scheduler">
+        <button mat-icon-button (click)="editScheduler(scheduler._id)">
+          <img src="assets/images/edit.svg"/>
+        </button>
+      </mat-cell>
+    </ng-container>
+
     <mat-header-row
       class="mat-header"
       *matHeaderRowDef="displayedColumns"

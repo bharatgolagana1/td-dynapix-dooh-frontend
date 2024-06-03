@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { VideoDialogComponent } from '../video-dialog/video-dialog.component';
 import { SchedulerService } from '../scheduler.service';
@@ -25,7 +25,8 @@ export interface Video {
 })
 export class VideoThumbnailsListComponent {
   @Output() selectedVideosChange: EventEmitter<Video[] | string[]> = new EventEmitter<Video[] | string[]>();
-
+@Input() 
+defaultSelectedVideosList! :any[];
   public videos: any[] = [];
   public selectedVideos: Video[] = [];
   showAPILoader: boolean = true; // Show loader initially
@@ -43,6 +44,8 @@ export class VideoThumbnailsListComponent {
             id: index.toString(),
             ...video
           }));
+
+          this.handleDefaultSelection(this.defaultSelectedVideosList)
         } else {
           console.error("No valid videos found.");
         }
@@ -58,6 +61,14 @@ export class VideoThumbnailsListComponent {
     this.dialog.open(VideoDialogComponent, {
       data: { videoUrl },
     });
+  }
+
+  handleDefaultSelection( videoList :any[]){
+    console.log("in handle function",this.defaultSelectedVideosList)
+    if(this.defaultSelectedVideosList?.length> 0){
+      console.log("in handle function with validation")
+      this.selectedVideos.push(...this.defaultSelectedVideosList)
+    }
   }
 
   toggleSelection(video: Video): void {
