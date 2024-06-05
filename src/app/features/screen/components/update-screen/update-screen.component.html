@@ -1,3 +1,5 @@
+<div class="update-screen--container">
+  <div class="update-screen--title">Update Screen</div>
 <form [formGroup]="screenForm" (ngSubmit)="onSubmit()" (drop)="onFileDropped($event)" (dragover)="onDragOver($event)" enctype="multipart/form-data">
   <div class="update-screen-main--container">
     <div>
@@ -97,10 +99,13 @@
       </mat-form-field>
     </div>
 
+
     <div class="update-screen-footer-content">
-      <button mat-raised-button class="update-screen-footer-button" type="submit">
+      <button mat-stroked-button color="primary"><a routerLink="/screen">Cancel</a></button>
+      <button mat-raised-button class="update-screen-footer-button" color="primary" type="submit">
         Update Screen
       </button>
     </div>
   </div>
 </form>
+</div>

@@ -10,13 +10,14 @@ import {
 import { VgApiService } from '@videogular/ngx-videogular/core';
 import { SchedulerService } from '../scheduler.service';
 import { Video } from '../video-thumbnails-list/video-thumbnails-list.component';
+
+
 @Component({
   selector: 'app-play-scheduler',
   templateUrl: './play-scheduler.component.html',
   styleUrls: ['./play-scheduler.component.scss'],
 })
 export class PlaySchedulerComponent implements AfterViewInit {
-  screenId: string = '1';
   cycleTime!: number;
   slotSize!: number;
   videosURLList: Video[] = [];
@@ -28,16 +29,19 @@ export class PlaySchedulerComponent implements AfterViewInit {
     private http: HttpClient,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    private schedulerService: SchedulerService
+    private schedulerService: SchedulerService 
   ) {}
+  
   ngAfterViewInit(): void {
     this.fetchSchedulerData();
   }
+  
   startVideoPlayer(): void {
     this.intervalId = setInterval(() => {
       this.playNextVideo();
     }, this.slotSize * 1000);
   }
+  
   getCurrentVideoUrl(): string | undefined {
     if (this.videosURLList.length > 0) {
       const videoIndex = this.currentVideoIndex % this.videosURLList.length;
@@ -45,21 +49,26 @@ export class PlaySchedulerComponent implements AfterViewInit {
     }
     return undefined;
   }
+  
   initialVideoPlayed: boolean = false;
+  
   playNextVideo(): void {
     if (this.videosURLList.length === 0) {
       console.error('No videos available.');
       return;
     }
+    
     const videoIndex = this.currentVideoIndex % this.videosURLList.length;
     const nextVideoIndex = (this.currentVideoIndex + 1) % this.videosURLList.length;
     const currentVideoUrl = this.videosURLList[videoIndex].videoUrl;
     const nextVideoUrl = this.videosURLList[nextVideoIndex].videoUrl;
+    
     if (currentVideoUrl === nextVideoUrl && this.initialVideoPlayed) {
       console.log('Skipping the same video:', currentVideoUrl);
       this.currentVideoIndex++;
       return;
     }
+    
     const videoUrl = nextVideoUrl;
     const videoElement: HTMLVideoElement = this.media.nativeElement;
     videoElement.src = videoUrl;
@@ -70,13 +79,15 @@ export class PlaySchedulerComponent implements AfterViewInit {
     console.log('Cycle Time:', this.cycleTime);
     this.initialVideoPlayed = true;
     this.currentVideoIndex++;
+    
     if (this.currentVideoIndex === this.videosURLList.length) {
       this.currentVideoIndex = 0;
     }
   }
+  
   fetchSchedulerData(): void {
-    const screenId = '2';
-    this.schedulerService.getScheduleByScreenId(screenId).subscribe(
+    const schedulerId = '';
+    this.schedulerService.getSchedulerById(schedulerId).subscribe(
       (data: any) => {
         console.log('After API', data.schedules, data.schedules[0]);
         let schedules = data.schedules;
