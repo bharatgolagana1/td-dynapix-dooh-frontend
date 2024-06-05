@@ -1,82 +1,75 @@
 .create-user-main-container {
-    padding: 3.5rem 0;
-    padding-left: 2.1rem;
-  }
-  
+padding: 3.5rem 0;
+padding-left: 2.1rem;
+}
+
 .create-user-title {
-    color: #757fef;
-    font-family: Manrope;
-    font-size: 1.75rem;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 2rem;
-    margin-bottom: 3.25rem;
-  }
+color: #757fef;
+font-family: Manrope;
+font-size: 1.75rem;
+font-style: normal;
+font-weight: 600;
+line-height: 2rem;
+margin-bottom: 3.25rem;
+}
 .create-user-content {
-    background: #fafbfb;
-    border-radius: 0.25rem;
-    display: flex;
-    flex-direction: column;
-    padding: 2rem;
-  }
+background: #fafbfb;
+border-radius: 0.25rem;
+display: flex;
+flex-direction: column;
+padding: 2rem;
+}
 
 .section-title-main {
-    display: flex;
-    justify-content: space-between;
-  }
+display: flex;
+justify-content: space-between;
+}
 .section-title-txt {
-    font-weight: 700;
-    font-size: 20px;
-    color: #757fef;
-  }
-  .create-user-section-grid {
-    display: grid;
-    grid-gap: 8px 24px;
-    max-width: 100%;
-    grid-template-columns: repeat(3, 1fr);
-    padding: 2rem 0;
-  }
-  ::ng-deep .ngx-dropzone.ngx-dropzone-preview{
-    align-items: center;
-    border-radius: 5px;
-    display: flex;
-    /* height: 140px; */
-    /* justify-content: center; */
-    gap: 2rem;
-    margin: 10px;
-    max-width: 1500px;
-    max-height: 140px;
-    /* min-width: 180px; */
-    padding: 0px 20px;
-    position: relative;
-  }
-  .create-user-geder--content{
-    display: flex;
-    flex-direction: column;
-  }
+font-weight: 700;
+font-size: 20px;
+color: #757fef;
+}
+.create-user-section-grid {
+display: grid;
+grid-gap: 8px 24px;
+max-width: 100%;
+grid-template-columns: repeat(3, 1fr);
+padding: 2rem 0;
+}
+::ng-deep .ngx-dropzone.ngx-dropzone-preview{
+align-items: center;
+border-radius: 5px;
+display: flex;
+gap: 2rem;
+margin: 10px;
+max-width: 1500px;
+max-height: 140px;
+padding: 0px 20px;
+position: relative;
+}
+.create-user-geder--content{
+display: flex;
+flex-direction: column;
+}
 .create-user-section--content{
-    padding: 2rem 0;
+padding: 2rem 0;
 }
 .footer{
-    display: flex;
+display: flex;
 padding: 24px 32px;
 align-items: center;
 gap: 24px;
 align-self: stretch;
 }
 .footer-button{
-    display: flex;
+display: flex;
 justify-content: flex-end;
 align-items: center;
 gap: 8px;
 flex: 1 0 0;
 }
 a{
-  text-decoration: none;
-  padding: 0.5rem;
-  color: #757fef;
-}
-.back-button--icon{
-  height: 16px;
-  font-size: 20px;
+text-decoration: none;
+padding: 0.5rem;
+color: #757fef;
 }

@@ -93,6 +93,7 @@
   </form>
 
   <div class="button" [class.disabled]="updateSchedulerForm.invalid || isSubmitting">
+    <button mat-stroked-button color="primary" class="update-schudeler--cancel-button"><a routerLink="/schedulers">Cancel</a></button>
     <button mat-raised-button color="primary" [disabled]="updateSchedulerForm.invalid || isSubmitting" (click)="updateScheduler()">
       <span *ngIf="!isSubmitting">Update Scheduler</span>
       <span *ngIf="isSubmitting">

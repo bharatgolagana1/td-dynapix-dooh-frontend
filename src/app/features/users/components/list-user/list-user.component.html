@@ -26,9 +26,12 @@
     <mat-spinner diameter="70"></mat-spinner>
     <div>list-users loading...</div>
   </div>
-  <div class="mat-elevation-z1">
-    <div *ngIf="!userNotFoundMessage">
-      <mat-table *ngIf="!isLoading" class="mat-elevation-z1" [dataSource]="dataSource">
+  <div *ngIf="userNotFoundMessage" class="user-not-found-message">
+    {{ userNotFoundMessage }}
+  </div>
+  <div >
+    <div>
+      <mat-table *ngIf="!isLoading &&!userNotFoundMessage" class="mat-elevation-z0" [dataSource]="dataSource">
         <!-- Columns -->
         <!-- User Name Column -->
         <ng-container matColumnDef="userName">
@@ -119,9 +122,5 @@
       ></mat-paginator>
     </div>
 
-    <div *ngIf="userNotFoundMessage" class="user-not-found-message">
-      {{ userNotFoundMessage }}
-      <div></div>
-    </div>
   </div>
 </div>
