@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { SchedulerService } from '../scheduler.service';
+import { SchedulerService } from '../../scheduler.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SchedulerDeleteComponent } from '../scheduler-delete/scheduler-delete.component';
 import { NotificationService } from 'src/app/core/services/notification.service';

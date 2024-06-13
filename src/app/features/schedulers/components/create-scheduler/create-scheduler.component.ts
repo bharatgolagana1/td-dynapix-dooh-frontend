@@ -1,5 +1,5 @@
 import { Component, OnInit  } from '@angular/core';
-import { SchedulerService } from '../scheduler.service';
+import { SchedulerService } from '../../scheduler.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Video } from '../video-thumbnails-list/video-thumbnails-list.component';
 import { Router } from '@angular/router';

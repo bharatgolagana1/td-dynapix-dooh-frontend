@@ -1,21 +1,5 @@
 <div class="media-upload-container">
   <div class="media-upload--title">Upload Media</div>
-  <mat-form-field appearance="outline">
-    <mat-label>Category</mat-label>
-    <mat-select [(value)]="selectedCategory">
-      <mat-option *ngFor="let category of categories" [value]="category">
-        {{ category }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field appearance="outline" class="media-upload--companyname">
-    <mat-label>Company Name</mat-label>
-    <mat-select [(value)]="selectedCompanyName">
-      <mat-option *ngFor="let company of companyNames" [value]="company">
-        {{ company }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
   <div class="dragDrop-container">
     <div
       class="drop-container"

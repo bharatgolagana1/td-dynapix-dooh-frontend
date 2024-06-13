@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { VgApiService } from '@videogular/ngx-videogular/core';
-import { SchedulerService } from '../scheduler.service';
+import { SchedulerService } from '../../scheduler.service';
 import { Video } from '../video-thumbnails-list/video-thumbnails-list.component';
 
 

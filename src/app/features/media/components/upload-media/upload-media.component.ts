@@ -1,4 +1,3 @@
-
 import { Component,OnInit } from '@angular/core';
 import { MediaService } from '../../media.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
@@ -25,7 +24,7 @@ interface UploadFile {
   templateUrl: './upload-media.component.html',
   styleUrls: ['./upload-media.component.scss'],
 })
-export class UploadMediaComponent implements OnInit {
+export class UploadMediaComponent  {
   files: UploadFile[] = [];
   categories: string[] = [];
   companyNames: string[] = [];
@@ -40,34 +39,7 @@ export class UploadMediaComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
-    this.fetchCategories();
-    this.fetchCompanyNames();
-  }
 
-  fetchCompanyNames() {
-    this.mediaService.getCompanyNames().subscribe(
-      (names: string[]) => {
-        this.companyNames = names;
-      },
-      (error) => {
-        console.error('Error fetching company names:', error);
-        this.notificationService.showNotification('Error fetching company names', 'error');
-      }
-    );
-  }
-
-  fetchCategories() {
-    this.mediaService.getCategories().subscribe(
-      (data: string[]) => {
-        this.categories = data;
-      },
-      (error) => {
-        console.error('Error fetching categories:', error);
-        this.notificationService.showNotification('Error fetching categories', 'error');
-      }
-    );
-  }
 
   onFileSelected(event: any) {
     const fileList: FileList = event.target.files;

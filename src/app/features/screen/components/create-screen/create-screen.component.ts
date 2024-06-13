@@ -25,7 +25,6 @@ export class CreateScreenComponent {
   softwareVersion: string ='1.2.3';
   rebootFlag: string ='true';
 
-
   constructor(private formBuilder: FormBuilder,private router: Router,private screenService: ScreenService,private notificationService: NotificationService,public loaderService:LoaderService) {  
   this.screenForm = this.formBuilder.group({
     screenName: new FormControl('',[Validators.required]),
@@ -59,7 +58,6 @@ coordinateValidator() {
     return null;
   };
 }
-
 
 updateSFT() {
   const width = this.screenForm.get('width')?.value;
