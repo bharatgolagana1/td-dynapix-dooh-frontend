@@ -92,7 +92,7 @@ export class UpdateScreenComponent implements OnInit {
       if (!value || value.trim() === '') {
         return null; 
       }
-      const regex = /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6},\s*-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}$/;
+      const regex = /^-?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*-?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/;
       if (!regex.test(value)) {
         return { invalidCoordinate: true };
       }

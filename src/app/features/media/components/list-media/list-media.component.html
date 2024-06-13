@@ -1,1 +1,88 @@
-<p>list-media works!</p>
+<div class="list-media--container">
+    <div class="list-media--title">List Media</div>
+     <div class="list-media--spinner" *ngIf="showAPILoader"> <mat-spinner  diameter="70" color="primary"></mat-spinner><div>...loading list-media</div></div>
+    <mat-card *ngFor="let item of mediaItems" class="list-media--card">
+      <div class="list-media--sub-container">
+        <div class="list-media--card-container">
+          <div >
+            <img [src]="item.thumbnailUrl" alt="Video Thumbnail" class="list-media--image" />
+          </div>
+  
+          <div class="list-media--details">
+            <div class="list-media--video-title">{{item.videoUrl}}</div>
+            <div class="list-media--contact">
+              <div class="list-media--contact-icon"><img src="assets/images/contact-icon.svg" /></div>
+              <div class="list-media--contact-name">Varun</div>
+            </div>
+            <div class="list-media--phone">
+              <div class="list-media--icon"><img src="assets/images/phone-icon.svg" /></div>
+              <div class="list-media--phone-number">0923856902</div>
+            </div>
+            <div class="list-media--location">
+              <div class="list-media--location-icon"><img src="assets/images/location-icon.svg" /></div>
+              <div class="list-media--location-address">Nucleus Mall Lalpur, Ranchi</div>
+            </div>
+          </div>
+  
+          <div>
+            <mat-divider vertical class="mat-divider"></mat-divider>
+          </div>
+  
+          <div class="list-media--verification-container">
+            <div class="list-media--verification">
+              <div>
+                <div class="verified-container">
+                      <div class="verified">Verified </div>
+                      <div><img src="assets/images/active-icon.svg" /></div>
+                </div>
+                <div class="list-media--date">29th May</div>
+              </div>
+              <div>
+                <div class="verified-container">
+                <div class="scheduled">Scheduled </div>
+                <div><img src="assets/images/active-icon.svg" /></div>
+                </div>
+                <div class="list-media--date">29th May</div>
+              </div>
+            </div>
+            <div class="list-media--verification">
+              <div>
+                <div class="verified-container">
+                <div class="pushed">Pushed </div>
+                <div><img src="assets/images/active-icon.svg" /></div>
+                </div>
+                <div class="list-media--date">29th May</div>
+              </div>
+              <div>
+                <div class="verified-container">
+                <div class="Inactive">Inactive </div>
+                <div><img src="assets/images/inactive-icon.svg" /></div>
+              </div>
+                <div class="list-media--date">29th May</div>
+              </div>
+            </div>
+            <div class="list-media--button-container">
+              <button mat-stroked-button class="mat-button">
+                <div class="button--scheduled">
+                  <div><img src="assets/images/calendar-icon.svg" /></div>
+                  <div class="button--scheduled-title">Scheduled</div>
+                </div>
+              </button>
+              <button mat-stroked-button class="mat-button">
+                <div class="button--delete">
+                  <div><img src="assets/images/delete-icon.svg" /></div>
+                  <div class="button--delete-title">Delete</div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="list-media--more-icon">
+          <button mat-icon-button>
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+  
