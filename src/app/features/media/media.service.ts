@@ -1,29 +1,22 @@
-
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEventType, HttpEvent } from '@angular/common/http';
 import { Observable, throwError  } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MediaService {
-  private localApiUrl = 'http://localhost:3001/media';
+  private apiUrl = 'http://localhost:3001/media';  
+
   constructor(private http: HttpClient) {}
-
-  getCategories(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.localApiUrl}/categories`);
-  }
-
-  getCompanyNames(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.localApiUrl}/companyNames`);
-  }
 
   uploadMedia(file: File): Observable<number> {
     const formData = new FormData();
     formData.append('videoFiles', file);
 
-    return this.http.post('http://localhost:3001/media', formData, {
+    return this.http.post(this.apiUrl, formData, {
       reportProgress: true,
       observe: 'events',
       responseType: 'text',
@@ -41,4 +34,5 @@ export class MediaService {
     );
   }
 }
+
 

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { VideoDialogComponent } from '../video-dialog/video-dialog.component';
-import { SchedulerService } from '../scheduler.service';
+import { SchedulerService } from '../../scheduler.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
 export interface Video {
   id: string;

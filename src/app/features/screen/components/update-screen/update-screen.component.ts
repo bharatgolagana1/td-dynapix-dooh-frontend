@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { SchedulerService } from 'src/app/features/schedulers/components/scheduler.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Router } from '@angular/router';
-
+import { ScreenService } from '../../screen.service';
 @Component({
   selector: 'app-update-screen',
   templateUrl: './update-screen.component.html',
@@ -22,8 +21,8 @@ export class UpdateScreenComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private schedulerService: SchedulerService,
     private router: Router,
+    private screenService:ScreenService,
     private notificationService: NotificationService
   ) {
     this.screenForm = this.formBuilder.group({
@@ -54,7 +53,7 @@ export class UpdateScreenComponent implements OnInit {
   }
 
   fetchScreenDetails(screenId: string): void {
-    this.schedulerService.getScreenDetails(screenId).subscribe(
+    this.screenService.getScreenDetails(screenId).subscribe(
       (data: any) => {
         const screen = data.screen;
         this.screenForm.patchValue({
@@ -133,7 +132,7 @@ export class UpdateScreenComponent implements OnInit {
         formData.append('removeImageUrls', JSON.stringify(this.removedImageUrls));
       }
 
-      this.schedulerService.updateScreen(this.screenId, formData).subscribe(
+      this.screenService.updateScreen(this.screenId, formData).subscribe(
         response => {
           console.log('Screen updated successfully:', response);
           this.notificationService.showNotification('Screen updated successfully', 'success');
