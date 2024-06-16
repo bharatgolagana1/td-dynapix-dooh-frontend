@@ -37,7 +37,7 @@ import { SchedulerModule } from './features/schedulers/scheduler.module';
     UsersModule,
     MediaModule,
     SchedulerModule,
-    ScreenModule
+    ScreenModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
