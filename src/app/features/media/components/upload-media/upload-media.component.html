@@ -27,7 +27,7 @@
     mat-raised-button
     color="primary"
     (click)="upload()"
-    [disabled]="!hasFilesToUpload()"
+    [disabled]="!hasFilesToUpload() || uploading"
   >
     Upload
   </button>
