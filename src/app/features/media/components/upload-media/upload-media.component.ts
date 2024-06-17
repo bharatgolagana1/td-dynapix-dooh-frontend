@@ -30,6 +30,7 @@ export class UploadMediaComponent  {
   companyNames: string[] = [];
   selectedCategory: string = '';
   selectedCompanyName: string = '';
+  uploading: boolean = false;
 
   constructor(
     private mediaService: MediaService,
@@ -38,8 +39,6 @@ export class UploadMediaComponent  {
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef
   ) {}
-
-
 
   onFileSelected(event: any) {
     const fileList: FileList = event.target.files;
@@ -92,6 +91,7 @@ export class UploadMediaComponent  {
   }
 
   async upload() {
+    this.uploading = true;
     try {
       for (const uploadFile of this.files) {
         const uploadSubscription = this.mediaService.uploadMedia(uploadFile.file).subscribe({
@@ -104,11 +104,13 @@ export class UploadMediaComponent  {
           error: (error) => {
             console.error('Error uploading files:', error);
             this.notificationService.showNotification('Error uploading files', 'error');
+            this.uploading = false;
           },
           complete: () => {
             const allFilesUploaded = this.files.every(file => file.progress === 100);
             if (allFilesUploaded) {
               this.openSuccessDialog();
+              this.uploading = false;
             }
           }
         });
@@ -117,6 +119,7 @@ export class UploadMediaComponent  {
     } catch (error) {
       console.error('Error uploading files:', error);
       this.notificationService.showNotification('Error uploading files', 'error');
+      this.uploading = false;
     }
   }
 
@@ -146,5 +149,3 @@ export class UploadMediaComponent  {
     return this.files.length > 0;
   }
 }
-
-
