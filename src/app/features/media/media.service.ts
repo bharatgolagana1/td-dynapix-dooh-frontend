@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEventType, HttpEvent } from '@angular/common/http';
 import { Observable, throwError  } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MediaService {
-  private apiUrl = 'http://localhost:3001/media';  
+  private apiUrl = 'http://localhost:3001/media'; 
+  private tenantId ='123456'
 
   constructor(private http: HttpClient) {}
 
@@ -32,6 +32,16 @@ export class MediaService {
         }
       })
     );
+  }
+
+  getVideos(): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}?tenantId=${this.tenantId}`
+    );
+  }
+
+  deleteMedia(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }
 

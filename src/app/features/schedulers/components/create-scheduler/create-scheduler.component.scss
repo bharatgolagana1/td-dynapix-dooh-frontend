@@ -11,7 +11,9 @@ line-height: 2rem;
 margin-bottom: 2rem;
 }
 .create-scheduler--content{
-display: flex; 
+display: flex;
+flex-wrap: wrap;
+flex-direction: row;
 gap: 2rem
 }
 .create-scheduler-card{
@@ -39,6 +41,7 @@ gap: 0.5rem;
 .create-scheduler-card--image{
 width: 5rem;
 height: 5rem;
+cursor: pointer;
 }
 
 .mat-card {
