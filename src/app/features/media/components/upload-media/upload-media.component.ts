@@ -1,21 +1,20 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MediaService } from '../../media.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadSuccessDialogComponent } from '../upload-success-dialog/upload-success-dialog.component';
 import { ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 interface UploadFile {
   file: File;
   progress: number;
   url?: string;
   thumbnail?: string;
-  uploadSubscription?: Subscription; 
-  approved?: boolean;
-  uploaded?: boolean;
-  push?: boolean;
+  uploadSubscription?: Subscription;
+  isVideo?: boolean;
   [key: string]: any;
 }
 
@@ -24,13 +23,9 @@ interface UploadFile {
   templateUrl: './upload-media.component.html',
   styleUrls: ['./upload-media.component.scss'],
 })
-export class UploadMediaComponent  {
+export class UploadMediaComponent {
   files: UploadFile[] = [];
-  categories: string[] = [];
-  companyNames: string[] = [];
-  selectedCategory: string = '';
-  selectedCompanyName: string = '';
-  uploading: boolean = false;
+  isUploading: boolean = false;
 
   constructor(
     private mediaService: MediaService,
@@ -59,9 +54,15 @@ export class UploadMediaComponent  {
     for (let i = 0; i < fileList.length; i++) {
       const file = fileList.item(i);
       if (file) {
-        const thumbnail = await this.generateThumbnail(file);
         const url = URL.createObjectURL(file);
-        this.files.push({ file, progress: 0, url, thumbnail });
+        const isVideo = file.type.startsWith('video/');
+        let thumbnail = '';
+        if (isVideo) {
+          thumbnail = await this.generateThumbnail(file);
+        } else {
+          thumbnail = url; // For images, use the URL directly as thumbnail
+        }
+        this.files.push({ file, progress: 0, url, thumbnail, isVideo });
       }
     }
   }
@@ -91,26 +92,26 @@ export class UploadMediaComponent  {
   }
 
   async upload() {
-    this.uploading = true;
+    this.isUploading = true;
     try {
       for (const uploadFile of this.files) {
         const uploadSubscription = this.mediaService.uploadMedia(uploadFile.file).subscribe({
           next: (progress) => {
             uploadFile.progress = progress;
             if (progress === 100) {
-              uploadFile.url = uploadFile.thumbnail;
+              uploadFile['uploaded'] = true;
             }
           },
           error: (error) => {
             console.error('Error uploading files:', error);
             this.notificationService.showNotification('Error uploading files', 'error');
-            this.uploading = false;
+            this.isUploading = false;
           },
           complete: () => {
             const allFilesUploaded = this.files.every(file => file.progress === 100);
             if (allFilesUploaded) {
               this.openSuccessDialog();
-              this.uploading = false;
+              // Navigation is handled in the openSuccessDialog() method
             }
           }
         });
@@ -119,7 +120,7 @@ export class UploadMediaComponent  {
     } catch (error) {
       console.error('Error uploading files:', error);
       this.notificationService.showNotification('Error uploading files', 'error');
-      this.uploading = false;
+      this.isUploading = false;
     }
   }
 
@@ -139,9 +140,11 @@ export class UploadMediaComponent  {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      setTimeout(() => {
-        this.router.navigate(['/createScheduler']);
-      }, 3000);
+      this.router.navigate(['/createScheduler']).then(() => {
+        setTimeout(() => {
+          this.isUploading = false; // Re-enable button after navigation completes
+        }, 3000);
+      });
     });
   }
 
