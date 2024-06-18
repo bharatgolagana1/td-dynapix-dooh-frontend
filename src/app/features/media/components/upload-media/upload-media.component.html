@@ -2,7 +2,7 @@
   <div class="media-upload--title">Upload Media</div>
   <div class="dragDrop-container">
     <div
-      class="drop-container"
+      class="drop-area"
       (dragover)="onDragOver($event)"
       (drop)="onDrop($event)"
       (click)="fileInput.click()"
@@ -12,28 +12,33 @@
         #fileInput
         style="display: none"
         (change)="onFileSelected($event)"
-        accept="video/*"
+        accept="video/*,image/*"
       />
       <img src="assets/images/upload-file.svg" />
-      <p>Drag & Drop to Upload Video</p>
+      <p>Drag & Drop to Upload Video or Image</p>
       <p class="Browse-file--content">or browse</p>
     </div>
   </div>
 </div>
 <div class="upload-button-margin">
   <button
-    class="upload-button"
-    type="submit"
-    mat-raised-button
-    color="primary"
-    (click)="upload()"
-    [disabled]="!hasFilesToUpload() || uploading"
-  >
+  class="upload-button"
+  type="submit"
+  mat-raised-button
+  color="primary"
+  (click)="upload()"
+  [disabled]="!hasFilesToUpload() || isUploading"
+>
     Upload
   </button>
   <div *ngFor="let file of files; let i = index" class="file-container">
     <div class="cancel-button">
-      <video [src]="file.url" controls class="videosUpload-container"></video>
+      <ng-container *ngIf="file.isVideo; else imageTemplate">
+        <video [src]="file.url" controls class="videosUpload-container"></video>
+      </ng-container>
+      <ng-template #imageTemplate>
+        <img [src]="file.url" class="imagesUpload-container" />
+      </ng-template>
       <p class="upload-fileName">{{ file.file.name }}</p>
       <mat-progress-bar
         mode="determinate"
