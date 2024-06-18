@@ -1,3 +1,10 @@
+.sticky-toolbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* Ensure it stays above other elements */
+}
+
 .election-campaign-toolbar {
   display: flex;
   justify-content: space-between;
@@ -16,6 +23,13 @@
   display: flex;
   align-items: center;
   color: #00BCD4;
+}
+
+.mat-toolbar.mat-primary {
+  background-color: #ffffff;
+  color: #757fef;
+  margin-left: 30px;
+  border-bottom-left-radius: 10px;
 }
 
 ::ng-deep .parent-link .mdc-list-item__primary-text {

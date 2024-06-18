@@ -7,7 +7,8 @@ import { environment } from 'src/environments/environment';
 })
 export class SchedulerService {
   private baseApiUrl = environment.baseApiUrl;
-  private tenantId = '123456';
+  private mediaUrl = 'http://localhost:3001/media'
+  private tenantId =  environment.tenantId;
 
   constructor(private http: HttpClient) {}
 
@@ -25,10 +26,10 @@ export class SchedulerService {
   }
 
   getVideos(): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.baseApiUrl}/media?tenantId=${this.tenantId}`
-    );
-  }
+    const url = `${this.mediaUrl}?tenantId=${this.tenantId}`;
+    console.log(`Fetching videos from URL: ${url}`);
+    return this.http.get<any[]>(url);
+}
 
   getScreensForTenant(): Observable<any> {
     return this.http.get<any>(`${this.baseApiUrl}/screen/api/screens`);

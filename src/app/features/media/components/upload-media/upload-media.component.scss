@@ -1,12 +1,17 @@
 .media-upload-container{
   margin: 2rem;
 }
-.drop-container {
-  border: 0.2rem dashed #ccc;
-  border-radius: 5px;
-  padding: 1.2rem;
+.drop-area {
+  display: flex;
+  flex-direction: column;
+  border: 0.1rem dashed #757fef;
+  border-radius: 0.2rem;
+  padding: 2rem;
   text-align: center;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
+  background: #ffff;
 }
 .media-upload--title {
   color: #757fef;
@@ -29,15 +34,14 @@
   object-fit: cover;
 }
 
-.dragDrop-container {
-  margin: 1.2rem;
-  display: flex;
-  flex-direction: column;
-}
-
 .upload-button {
   padding-left: 1rem;
   margin-bottom: 1rem;
+}
+
+.imagesUpload-container{
+    width: 5rem;
+    margin-right: 0.5rem;
 }
 
 .cancel-button {
@@ -61,7 +65,7 @@
 }
 
 .upload-button-margin {
-  margin-left: 1rem;
+  margin-left: 2rem;
 }
 
 .upload-fileName {
