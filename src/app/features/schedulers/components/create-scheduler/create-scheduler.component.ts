@@ -1,4 +1,4 @@
-import { Component, OnInit  } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SchedulerService } from '../../scheduler.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Video } from '../video-thumbnails-list/video-thumbnails-list.component';
@@ -16,7 +16,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./create-scheduler.component.scss'],
 })
 export class CreateSchedulerComponent implements OnInit {
-  dateRange: FormGroup; 
+  dateRange: FormGroup;
   cycleTime: number = 0;
   slotSize: number = 0;
   screenIds: number = 0;
@@ -48,7 +48,9 @@ export class CreateSchedulerComponent implements OnInit {
     { label: '5', value: 5 },
   ];
   screenCards: any[] = [];
-  showAPILoader: boolean  = true;
+  showAPILoader: boolean = true;
+  showAvailableScreens: boolean = false;
+
   toggleCheckbox(card: any) {
     card.selected = !card.selected;
   }
@@ -64,17 +66,17 @@ export class CreateSchedulerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loaderService.showLoader(); 
+    this.loaderService.showLoader();
     this.schedulerService.getScreensForTenant().subscribe(
       (data: any) => {
         this.screenCards = data.screens;
-        this.showAPILoader = false; 
+        this.showAPILoader = false;
         this.loaderService.hideLoader();
       },
-      error => {
+      (error) => {
         console.error('Error fetching screens:', error);
-        this.showAPILoader = true 
-        this.loaderService.showLoader(); 
+        this.showAPILoader = true;
+        this.loaderService.showLoader();
       }
     );
   }
@@ -82,18 +84,28 @@ export class CreateSchedulerComponent implements OnInit {
   openImageDialog(card: any): void {
     const dialogRef = this.dialog.open(ImageCardsListComponent, {
       width: '80%',
-      data: { images: card.imageUrls }
+      data: { images: card.imageUrls },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
     });
   }
 
+  onContinue() {
+    this.showAvailableScreens = true;
+  }
+
   createScheduler() {
     const datePipe = new DatePipe('en-US');
-    const formattedStartDate = datePipe.transform(this.dateRange.value.startDate, 'dd-MM-yyyy');
-    const formattedEndDate = datePipe.transform(this.dateRange.value.endDate, 'dd-MM-yyyy');
+    const formattedStartDate = datePipe.transform(
+      this.dateRange.value.startDate,
+      'dd-MM-yyyy'
+    );
+    const formattedEndDate = datePipe.transform(
+      this.dateRange.value.endDate,
+      'dd-MM-yyyy'
+    );
 
     const schedulerName = this.createSchedulerForm.value.schedulerName;
     const schedulerData = {
@@ -103,7 +115,7 @@ export class CreateSchedulerComponent implements OnInit {
       screenIds: this.screenIds,
       videoUrls: this.videoUrls.split(',').map((url) => url.trim()),
       startDate: formattedStartDate,
-      endDate: formattedEndDate
+      endDate: formattedEndDate,
     };
 
     this.schedulerService.createScheduler(schedulerData).subscribe(
@@ -116,16 +128,19 @@ export class CreateSchedulerComponent implements OnInit {
     );
   }
 
-
   dateFilter = function (a: Date | null): boolean {
     const today = new Date();
     if (a) {
-        const formattedToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-        const formattedDate = new Date(a.getFullYear(), a.getMonth(), a.getDate());
-        return formattedDate >= formattedToday; 
+      const formattedToday = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+      );
+      const formattedDate = new Date(a.getFullYear(), a.getMonth(), a.getDate());
+      return formattedDate >= formattedToday;
     }
     return false;
-};
+  };
 
   createSchedulerForm: FormGroup;
   constructor(
@@ -151,7 +166,7 @@ export class CreateSchedulerComponent implements OnInit {
   }
 
   receiveSelectedVideos(selectedVideos: any[]): void {
-    this.selectedVideos = selectedVideos.map(video => video);
+    this.selectedVideos = selectedVideos.map((video) => video);
     this.createSchedulerForm.patchValue({
       selectedVideos: this.selectedVideos,
     });
@@ -169,8 +184,14 @@ export class CreateSchedulerComponent implements OnInit {
 
   onDateChange(): void {
     const datePipe = new DatePipe('en-US');
-    const formattedStartDate = datePipe.transform(this.dateRange.value.startDate, 'dd-MM-yyyy');
-    const formattedEndDate = datePipe.transform(this.dateRange.value.endDate, 'dd-MM-yyyy');
+    const formattedStartDate = datePipe.transform(
+      this.dateRange.value.startDate,
+      'dd-MM-yyyy'
+    );
+    const formattedEndDate = datePipe.transform(
+      this.dateRange.value.endDate,
+      'dd-MM-yyyy'
+    );
     this.dateRange.patchValue({
       startDate: formattedStartDate,
       endDate: formattedEndDate,
@@ -179,17 +200,18 @@ export class CreateSchedulerComponent implements OnInit {
 
   createSchedulers(): void {
     if (this.createSchedulerForm.valid && !this.isSubmitting) {
-      const selectedVideosCount = this.createSchedulerForm.value.selectedVideos.length;
+      const selectedVideosCount =
+        this.createSchedulerForm.value.selectedVideos.length;
       const slotSize = this.createSchedulerForm.value.slotSize;
       const cycleTime = this.createSchedulerForm.value.cycleTime;
       const schedulerName = this.createSchedulerForm.value.schedulerName;
       const selectedVideos = this.selectedVideos.map((video: any) => ({
-        id: video._id, 
+        id: video._id,
         title: video.title,
         thumbnailUrl: video.thumbnailUrl,
         duration: video.duration,
         uploadTime: video.uploadTime,
-        views: '', 
+        views: '',
         author: video.author,
         videoUrl: video.videoUrl,
         description: video.description,
@@ -198,8 +220,14 @@ export class CreateSchedulerComponent implements OnInit {
       }));
 
       const datePipe = new DatePipe('en-US');
-      const formattedStartDate = datePipe.transform(this.dateRange.value.startDate, 'dd-MM-yyyy');
-      const formattedEndDate = datePipe.transform(this.dateRange.value.endDate, 'dd-MM-yyyy');
+      const formattedStartDate = datePipe.transform(
+        this.dateRange.value.startDate,
+        'dd-MM-yyyy'
+      );
+      const formattedEndDate = datePipe.transform(
+        this.dateRange.value.endDate,
+        'dd-MM-yyyy'
+      );
 
       const schedulerData = {
         schedulerName: schedulerName,
@@ -212,21 +240,24 @@ export class CreateSchedulerComponent implements OnInit {
       };
 
       this.isSubmitting = true;
-      this.schedulerService.createScheduler(schedulerData).subscribe(
-        (response) => {
-          console.log('Scheduler created successfully:', response);
-          this.notificationService.showNotification(
-            'Scheduler created successfully',
-            'success'
-          );
-          this.router.navigate(['/schedulers']);
-        },
-        (error) => {
-          console.error('Error creating scheduler:', error);
-        }
-      ).add(() => {
-        this.isSubmitting = false;
-      });
+      this.schedulerService
+        .createScheduler(schedulerData)
+        .subscribe(
+          (response) => {
+            console.log('Scheduler created successfully:', response);
+            this.notificationService.showNotification(
+              'Scheduler created successfully',
+              'success'
+            );
+            this.router.navigate(['/schedulers']);
+          },
+          (error) => {
+            console.error('Error creating scheduler:', error);
+          }
+        )
+        .add(() => {
+          this.isSubmitting = false;
+        });
     } else {
       this.isSubmitting = false;
     }
