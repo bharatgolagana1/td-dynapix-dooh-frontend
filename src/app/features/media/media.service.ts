@@ -1,20 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEventType, HttpEvent } from '@angular/common/http';
-import { Observable, throwError  } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MediaService {
-  private apiUrl = 'http://localhost:3001/media'; 
-  private tenantId ='123456'
+  private apiUrl = 'http://localhost:3001/media';
+  private tenantId = '123456';
 
   constructor(private http: HttpClient) {}
 
-  uploadMedia(file: File): Observable<number> {
+  uploadMedia(file: File, type: 'video' | 'image'): Observable<number> {
     const formData = new FormData();
-    formData.append('videoFiles', file);
+    if (type === 'video') {
+      formData.append('videoFiles', file);
+    } else if (type === 'image') {
+      formData.append('imageFiles', file);
+    }
 
     return this.http.post(this.apiUrl, formData, {
       reportProgress: true,
@@ -44,5 +48,3 @@ export class MediaService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }
-
-

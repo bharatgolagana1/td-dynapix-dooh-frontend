@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { MediaService } from '../../media.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Router } from '@angular/router';
@@ -29,7 +29,7 @@ export class UploadMediaComponent {
     private mediaService: MediaService,
     private notificationService: NotificationService,
     private router: Router,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) {}
 
   onFileSelected(event: any) {
@@ -92,7 +92,7 @@ export class UploadMediaComponent {
     this.isUploading = true;
     try {
       for (const uploadFile of this.files) {
-        const uploadSubscription = this.mediaService.uploadMedia(uploadFile.file).subscribe({
+        const uploadSubscription = this.mediaService.uploadMedia(uploadFile.file, uploadFile.isVideo ? 'video' : 'image').subscribe({
           next: (progress) => {
             uploadFile.progress = progress;
             if (progress === 100) {
@@ -138,7 +138,7 @@ export class UploadMediaComponent {
     dialogRef.afterClosed().subscribe(() => {
       this.router.navigate(['/createScheduler']).then(() => {
         setTimeout(() => {
-          this.isUploading = false; 
+          this.isUploading = false;
         }, 3000);
       });
     });
