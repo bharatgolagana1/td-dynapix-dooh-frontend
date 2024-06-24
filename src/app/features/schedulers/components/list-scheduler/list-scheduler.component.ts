@@ -7,6 +7,7 @@ import { SchedulerDeleteComponent } from '../scheduler-delete/scheduler-delete.c
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+
 export interface Scheduler {
   id: number;
   schedulerName: string;
@@ -25,8 +26,8 @@ export interface Scheduler {
   providers: [DatePipe],
 })
 export class ListSchedulerComponent implements OnInit, AfterViewInit {
- schedulers: Scheduler[] = [];
-  displayedColumns: string[] = ['schedulerName','cycleTime', 'slotSize', 'videoUrls', 'screenId', 'startDate', 'endDate','edit', 'delete'];
+  schedulers: Scheduler[] = [];
+  displayedColumns: string[] = ['schedulerName', 'cycleTime', 'slotSize', 'videoUrls', 'screenId', 'startDate', 'endDate', 'edit', 'delete'];
   dataSource!: MatTableDataSource<Scheduler>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   totalItems: number = 0;
@@ -36,13 +37,17 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
   searchTerm: string = '';
   noSchedulersFound: boolean = false;
 
-  constructor(private router: Router,private schedulerService: SchedulerService, private dialog: MatDialog, private notificationService: NotificationService,private datePipe: DatePipe) { }
+  constructor(
+    private router: Router,
+    private schedulerService: SchedulerService,
+    private dialog: MatDialog,
+    private notificationService: NotificationService,
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit(): void {
-    this.getPaginatedSchedulers(this.pageIndex, this.pageSize);
-    this.loadSchedulers();
+    this.getPaginatedSchedulers(this.pageIndex, this.pageSize, this.searchTerm);
   }
-
 
   private formatSchedulerDates(schedulers: Scheduler[]): Scheduler[] {
     return schedulers.map(scheduler => ({
@@ -61,55 +66,36 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
     return dateStr;
   }
 
-  loadSchedulers(): void {
-    this.schedulerService.getSchedulers(0, 10).subscribe(
-      (data: Scheduler[]) => {
-        if (Array.isArray(data)) {
-          this.schedulers = this.formatSchedulerDates(data);
-          this.dataSource = new MatTableDataSource<Scheduler>(this.schedulers);
-          if (this.paginator) {
-            this.dataSource.paginator = this.paginator;
-          }
-        }
+  ngAfterViewInit(): void {
+      this.dataSource.paginator = this.paginator;
+  }
+
+  getPaginatedSchedulers(pageIndex: number, pageSize: number, search: string = ''): void {
+    this.isLoading = true;
+    this.schedulerService.getSchedulers(pageIndex, pageSize, search).subscribe(
+      (response: any) => {
+        const schedulers = this.formatSchedulerDates(response.schedules);
+        this.schedulers = schedulers;
+        this.noSchedulersFound = schedulers.length === 0;
+        this.dataSource = new MatTableDataSource<Scheduler>(schedulers);
+        this.totalItems = response.totalSchedulesCount;
+        this.isLoading = false;
       },
-      error => {
+      (error: any) => {
+        this.isLoading = false;
         console.error('Error fetching schedulers:', error);
       }
     );
   }
 
-
-
-  editScheduler(schedulerId: string): void {
-    this.router.navigate(['/updateScheduler', schedulerId]);
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-  }
-
-  getPaginatedSchedulers(pageIndex: number, pageSize: number, search: string = ''): void {
-    this.isLoading = true;
-    this.schedulerService.getSchedulers(pageIndex, pageSize, search).subscribe((response: any) => {
-      this.schedulers = response.schedules;
-      this.noSchedulersFound = this.schedulers.length === 0;
-      this.dataSource = new MatTableDataSource<Scheduler>(response.schedules);
-      this.totalItems = response.totalSchedulesCount;
-      this.isLoading = false;
-    }, () => {
-      this.isLoading = false;
-    });
-  }
-
-  onPageChange(event: any): void {
+  onPageChange(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.getPaginatedSchedulers(this.pageIndex, this.pageSize, this.searchTerm);
   }
 
-  onSearch(): void {
-    this.pageIndex = 0;
-    this.getPaginatedSchedulers(this.pageIndex, this.pageSize, this.searchTerm);
+  editScheduler(schedulerId: string): void {
+    this.router.navigate(['/updateScheduler', schedulerId]);
   }
 
   deleteScheduler(scheduler: Scheduler): void {
