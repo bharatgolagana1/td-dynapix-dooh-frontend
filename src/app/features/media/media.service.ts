@@ -38,10 +38,12 @@ export class MediaService {
     );
   }
 
-  getVideos(): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.apiUrl}?tenantId=${this.tenantId}`
-    );
+  getMedia(mediaType: string): Observable<any[]> {
+    let url = `${this.apiUrl}?tenantId=${this.tenantId}`;
+    if (mediaType !== 'both') {
+      url += `&type=${mediaType}`;
+    }
+    return this.http.get<any[]>(url);
   }
 
   deleteMedia(id: string): Observable<any> {

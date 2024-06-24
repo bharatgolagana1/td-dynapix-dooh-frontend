@@ -10,7 +10,8 @@ interface MediaItem {
   _id: string;
   date: string;
   thumbnailUrl: string;
-  videoUrl: string;
+  videoUrl?: string;
+  imageUrl?: string;
 }
 
 @Component({
@@ -21,7 +22,7 @@ interface MediaItem {
 export class ListMediaComponent implements OnInit {
   mediaItems: MediaItem[] = [];
   showAPILoader: boolean = true; 
-
+  selectedMediaType = 'both';
 
   constructor(
     private mediaService: MediaService,
@@ -32,26 +33,37 @@ export class ListMediaComponent implements OnInit {
 
   ngOnInit(): void {
     this.loaderService.showLoader();
-    this.mediaService.getVideos().subscribe((videosList: any[]) => {
-      if (Array.isArray(videosList) && videosList.length > 0) {
-        const validVideos = videosList.filter((video) => video.thumbnailUrl);
-        if (validVideos.length > 0) {
-          console.log('Valid video list:', validVideos);
-          this.mediaItems = validVideos.map((video) => ({
-            date: video.date,
-            thumbnailUrl: video.thumbnailUrl,
-            videoUrl: video.videoUrl,
-            _id: video._id,
+    this.fetchMedia();
+  }
+
+  fetchMedia() {
+    this.mediaService.getMedia(this.selectedMediaType).subscribe(
+      (mediaList: any[]) => {
+        if (Array.isArray(mediaList) && mediaList.length > 0) {
+          this.mediaItems = mediaList.map((media) => ({
+            date: media.date,
+            thumbnailUrl: media.thumbnailUrl,
+            videoUrl: media.videoUrl,
+            imageUrl: media.imageUrl,
+            _id: media._id,
           }));
         } else {
-          console.error('No valid videos found.');
+          console.error('Invalid media list format:', mediaList);
         }
-      } else {
-        console.error('Invalid video list format:', videosList);
+        this.showAPILoader = false;
+        this.loaderService.hideLoader();
+      },
+      (error) => {
+        console.error('Error fetching media:', error);
+        this.showAPILoader = false;
+        this.loaderService.hideLoader();
       }
-      this.showAPILoader = false;
-      this.loaderService.hideLoader();
-    });
+    );
+  }
+
+  onMediaTypeChange(mediaType: string) {
+    this.selectedMediaType = mediaType;
+    this.fetchMedia();
   }
 
   openDeleteDialog(item: MediaItem): void {
@@ -70,13 +82,12 @@ export class ListMediaComponent implements OnInit {
     });
   }
 
-
   deleteMedia(id: string): void {
     this.mediaService.deleteMedia(id).subscribe(
       (response) => {
         console.log('Media deleted successfully', response);
         this.mediaItems = this.mediaItems.filter((item) => item._id !== id);
-        this.notificationService.showNotification('media deleted successfully.', 'success');
+        this.notificationService.showNotification('Media deleted successfully.', 'success');
       },
       (error) => {
         console.error('Error deleting media', error);
