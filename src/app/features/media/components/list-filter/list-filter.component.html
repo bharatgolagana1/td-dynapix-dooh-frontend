@@ -1,0 +1,15 @@
+<div class="filter-container">
+  <mat-form-field appearance="outline">
+  <mat-label>Media Type</mat-label>
+  <mat-select [(value)]="selectedMediaType" (selectionChange)="onMediaTypeChange($event.value)">
+    <mat-option *ngFor="let mediaType of mediaTypes" [value]="mediaType.value">
+      <mat-radio-group [(ngModel)]="selectedMediaType">
+        <mat-radio-button [value]="mediaType.value">
+          {{ mediaType.viewValue }}
+        </mat-radio-button>
+      </mat-radio-group>
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+</div>

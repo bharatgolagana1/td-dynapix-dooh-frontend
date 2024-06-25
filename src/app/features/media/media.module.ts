@@ -8,14 +8,17 @@ import { UploadSuccessDialogComponent } from './components/upload-success-dialog
 import { MatDialogModule } from '@angular/material/dialog';
 import { ListMediaDeleteComponent } from './components/list-media-delete/list-media-delete.component';
 import { ListMediaVideoDialogComponent } from './components/list-media-video-dialog/list-media-video-dialog.component';
-
-
+import { ListFilterComponent } from './components/list-filter/list-filter.component';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 @NgModule({
-  declarations: [UploadMediaComponent,ListMediaComponent, UploadSuccessDialogComponent, ListMediaDeleteComponent, ListMediaVideoDialogComponent
+  declarations: [UploadMediaComponent,ListMediaComponent, UploadSuccessDialogComponent, ListMediaDeleteComponent, ListMediaVideoDialogComponent, ListFilterComponent 
   ],
-  imports: [CommonModule, MaterialModule,MediaRoutingModule,MatDialogModule ],
+  imports: [CommonModule, MaterialModule,MediaRoutingModule,MatDialogModule, FormsModule,MatFormFieldModule,MatSelectModule,MatRadioModule   ],
   providers: [],
   exports: [ ListMediaComponent , UploadMediaComponent, ],
 })
