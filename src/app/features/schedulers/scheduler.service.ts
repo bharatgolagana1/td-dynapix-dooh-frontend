@@ -56,4 +56,9 @@ export class SchedulerService {
   getScreens(): Observable<any> {
     return this.http.get(`${this.baseApiUrl}/screens`);
   }
+  
+  getAvailableScreens(startDate: string, endDate: string): Observable<any> {
+    const url = `${this.baseApiUrl}/scheduler/available-screens?startDate=${startDate}&endDate=${endDate}`;
+    return this.http.get<any>(url);
+  }
 }
