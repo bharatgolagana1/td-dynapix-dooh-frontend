@@ -16,7 +16,6 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./create-scheduler.component.scss'],
 })
 export class CreateSchedulerComponent implements OnInit {
-  dateRange: FormGroup;
   cycleTime: number = 0;
   slotSize: number = 0;
   screenIds: number = 0;
@@ -26,6 +25,29 @@ export class CreateSchedulerComponent implements OnInit {
   isSubmitting: boolean = false;
   selectedVideos: string[] | Video[] = [];
   selectedScreenIds: string[] = [];
+  createSchedulerForm: FormGroup;
+  dateRange: FormGroup;
+  constructor(
+    private notificationService: NotificationService,
+    private formBuilder: FormBuilder,
+    private schedulerService: SchedulerService,
+    private router: Router,
+    private loaderService: LoaderService,
+    private dialog: MatDialog
+  ) {
+    this.createSchedulerForm = this.formBuilder.group({
+      schedulerName: ['', Validators.required],
+      cycleTime: ['', [Validators.required]],
+      slotSize: ['', [Validators.required]],
+      selectedVideos: [[], [Validators.required]],
+      selectedScreenIds: this.formBuilder.array([]),
+    });
+
+    this.dateRange = this.formBuilder.group({
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+    });
+  }
   option1 = [
     { label: '5', value: 5 },
     { label: '10', value: 10 },
@@ -65,22 +87,43 @@ export class CreateSchedulerComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.loaderService.showLoader();
-    this.schedulerService.getScreensForTenant().subscribe(
-      (data: any) => {
-        this.screenCards = data.screens;
-        this.showAPILoader = false;
-        this.loaderService.hideLoader();
-      },
-      (error) => {
-        console.error('Error fetching screens:', error);
-        this.showAPILoader = true;
-        this.loaderService.showLoader();
-      }
-    );
+  ngOnInit(): void {}
+
+  onContinue() {
+    const startDate = this.dateRange.value.startDate;
+    const endDate = this.dateRange.value.endDate;
+    this.fetchAvailableScreens(startDate, endDate);
+    this.showAvailableScreens = true;
   }
 
+  fetchAvailableScreens(startDate: Date, endDate: Date): void {
+    const datePipe = new DatePipe('en-US');
+    const formattedStartDate = datePipe.transform(startDate, 'dd-MM-yyyy');
+    const formattedEndDate = datePipe.transform(endDate, 'dd-MM-yyyy');
+  
+    if (formattedStartDate && formattedEndDate) {
+      this.schedulerService.getAvailableScreens(formattedStartDate, formattedEndDate).subscribe(
+        (data: any) => {
+          this.screenCards = data.availableScreens;
+          this.showAPILoader = false;
+          this.loaderService.hideLoader();
+        },
+        (error) => {
+          console.error('Error fetching available screens:', error);
+          if (error.error && error.error.error) {
+            console.error('Backend error message:', error.error.error);
+          }
+          this.showAPILoader = true; // Show loader if necessary
+          this.loaderService.hideLoader(); // Hide loader on error
+          this.notificationService.showNotification('Error fetching available screens', 'error');
+        }
+      );
+    } else {
+      console.error('Invalid date format');
+      this.notificationService.showNotification('Invalid date format', 'error');
+    }
+  }
+  
   openImageDialog(card: any): void {
     const dialogRef = this.dialog.open(ImageCardsListComponent, {
       width: '80%',
@@ -90,10 +133,6 @@ export class CreateSchedulerComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
     });
-  }
-
-  onContinue() {
-    this.showAvailableScreens = true;
   }
 
   createScheduler() {
@@ -141,29 +180,6 @@ export class CreateSchedulerComponent implements OnInit {
     }
     return false;
   };
-
-  createSchedulerForm: FormGroup;
-  constructor(
-    private notificationService: NotificationService,
-    private formBuilder: FormBuilder,
-    private schedulerService: SchedulerService,
-    private router: Router,
-    private loaderService: LoaderService,
-    private dialog: MatDialog
-  ) {
-    this.createSchedulerForm = this.formBuilder.group({
-      schedulerName: ['', Validators.required],
-      cycleTime: ['', [Validators.required]],
-      slotSize: ['', [Validators.required]],
-      selectedVideos: [[], [Validators.required]],
-      selectedScreenIds: this.formBuilder.array([]),
-    });
-
-    this.dateRange = this.formBuilder.group({
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
-    });
-  }
 
   receiveSelectedVideos(selectedVideos: any[]): void {
     this.selectedVideos = selectedVideos.map((video) => video);
