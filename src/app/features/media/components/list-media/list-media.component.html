@@ -5,7 +5,8 @@
       <mat-spinner diameter="70" color="primary"></mat-spinner>
       <div>...loading list-media</div>
   </div>
-  <mat-card *ngFor="let item of mediaItems" class="list-media--card">
+  <ng-container *ngIf="!showAPILoader">
+    <mat-card *ngFor="let item of mediaItems" class="list-media--card">
       <div class="list-media--sub-container">
         <div class="list-media--card-container">
           <div>
@@ -91,5 +92,5 @@
         </div>
       </div>
     </mat-card>
-  </div>
-  
+  </ng-container>
+</div>

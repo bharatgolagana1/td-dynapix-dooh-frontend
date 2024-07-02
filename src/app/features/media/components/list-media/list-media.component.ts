@@ -63,7 +63,13 @@ export class ListMediaComponent implements OnInit {
 
   onMediaTypeChange(mediaType: string) {
     this.selectedMediaType = mediaType;
-    this.fetchMedia();
+    this.mediaItems = [];
+    this.showAPILoader = true;
+    this.loaderService.showLoader();
+
+    setTimeout(() => {
+      this.fetchMedia();
+    }, 1000);
   }
 
   openDeleteDialog(item: MediaItem): void {
