@@ -33,9 +33,7 @@
 
     <ng-container matColumnDef="schedulerName">
       <mat-header-cell *matHeaderCellDef>Scheduler Name</mat-header-cell>
-      <mat-cell *matCellDef="let scheduler">{{
-        scheduler.schedulerName
-      }}</mat-cell>
+      <mat-cell *matCellDef="let scheduler">{{ scheduler.schedulerName }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="startDate">
@@ -50,27 +48,20 @@
 
     <ng-container matColumnDef="cycleTime">
       <mat-header-cell *matHeaderCellDef>Cycle Time</mat-header-cell>
-      <mat-cell *matCellDef="let scheduler">{{ scheduler.cycleTime }}</mat-cell>
+      <mat-cell *matCellDef="let scheduler">{{ formatCycleTime(scheduler.cycleTime) }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="slotSize">
       <mat-header-cell *matHeaderCellDef>Slot Size</mat-header-cell>
-      <mat-cell *matCellDef="let scheduler">{{ scheduler.slotSize }}</mat-cell>
+      <mat-cell *matCellDef="let scheduler">{{ formatSlotSize(scheduler.slotSize) }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="videoUrls">
       <mat-header-cell *matHeaderCellDef>Video Urls</mat-header-cell>
       <mat-cell *matCellDef="let scheduler" class="ellipsis-cell">
-        <ng-container
-          *ngIf="scheduler.videoUrls && scheduler.videoUrls.length > 0"
-        >
+        <ng-container *ngIf="scheduler.videoUrls && scheduler.videoUrls.length > 0">
           <ng-container *ngFor="let video of scheduler.videoUrls">
-            <a
-              href="{{ video.videoUrl }}"
-              target="_blank"
-              class="ellipsis-link"
-              >{{ video.videoUrl }}</a
-            ><br />
+            <a href="{{ video.videoUrl }}" target="_blank" class="ellipsis-link">{{ video.videoUrl }}</a><br />
           </ng-container>
         </ng-container>
       </mat-cell>
@@ -84,12 +75,8 @@
         matTooltip="{{ scheduler.screenIds.join(', ') }}"
         matTooltipPosition="above"
       >
-        <ng-container
-          *ngIf="scheduler.screenIds && scheduler.screenIds.length > 0"
-        >
-          <ng-container
-            *ngFor="let screenId of scheduler.screenIds; let last = last"
-          >
+        <ng-container *ngIf="scheduler.screenIds && scheduler.screenIds.length > 0">
+          <ng-container *ngFor="let screenId of scheduler.screenIds; let last = last">
             {{ screenId }}{{ !last ? ", " : "" }}
           </ng-container>
         </ng-container>
@@ -114,14 +101,8 @@
       </mat-cell>
     </ng-container>
 
-    <mat-header-row
-      class="mat-header"
-      *matHeaderRowDef="displayedColumns"
-    ></mat-header-row>
-    <mat-row
-      class="list-scheduler--data"
-      *matRowDef="let row; columns: displayedColumns"
-    ></mat-row>
+    <mat-header-row class="mat-header" *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row class="list-scheduler--data" *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
 
   <mat-paginator

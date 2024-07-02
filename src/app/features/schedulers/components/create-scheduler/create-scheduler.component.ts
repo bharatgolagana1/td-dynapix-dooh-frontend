@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef  } from '@angular/core';
 import { SchedulerService } from '../../scheduler.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Video } from '../video-thumbnails-list/video-thumbnails-list.component';
@@ -49,30 +49,32 @@ export class CreateSchedulerComponent implements OnInit {
     });
   }
   option1 = [
-    { label: '5', value: 5 },
-    { label: '10', value: 10 },
-    { label: '15', value: 15 },
-    { label: '20', value: 20 },
-    { label: '25', value: 25 },
-    { label: '30', value: 30 },
-    { label: '35', value: 35 },
-    { label: '40', value: 40 },
-    { label: '45', value: 45 },
-    { label: '50', value: 50 },
-    { label: '55', value: 55 },
-    { label: '60', value: 60 },
+    { label: '5 sec', value: 5 },
+    { label: '10 sec', value: 10 },
+    { label: '15 sec', value: 15 },
+    { label: '20 sec', value: 20 },
+    { label: '25 sec', value: 25 },
+    { label: '30 sec', value: 30 },
+    { label: '35 sec', value: 35 },
+    { label: '40 sec', value: 40 },
+    { label: '45 sec', value: 45 },
+    { label: '50 sec', value: 50 },
+    { label: '55 sec', value: 55 },
+    { label: '60 sec', value: 60 },
   ];
   option2 = [
-    { label: '1', value: 1 },
-    { label: '2', value: 2 },
-    { label: '3', value: 3 },
-    { label: '4', value: 4 },
-    { label: '5', value: 5 },
+    { label: '1 min', value: 1 },
+    { label: '2 min', value: 2 },
+    { label: '3 min', value: 3 },
+    { label: '4 min', value: 4 },
+    { label: '5 min', value: 5 },
   ];
   screenCards: any[] = [];
   showAPILoader: boolean = true;
   showAvailableScreens: boolean = false;
 
+  @ViewChild('availableScreensSection', { static: false })
+  availableScreensSection!: ElementRef;
   toggleCheckbox(card: any) {
     card.selected = !card.selected;
   }
@@ -94,6 +96,13 @@ export class CreateSchedulerComponent implements OnInit {
     const endDate = this.dateRange.value.endDate;
     this.fetchAvailableScreens(startDate, endDate);
     this.showAvailableScreens = true;
+
+    setTimeout(() => {
+      this.availableScreensSection.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }, 0);
   }
 
   fetchAvailableScreens(startDate: Date, endDate: Date): void {

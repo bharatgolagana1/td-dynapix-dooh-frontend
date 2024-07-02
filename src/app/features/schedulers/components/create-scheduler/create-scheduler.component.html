@@ -122,7 +122,7 @@
       ></app-video-thumbnails-list>
     </div>
 
-    <div *ngIf="showAvailableScreens">
+    <div #availableScreensSection *ngIf="showAvailableScreens">
       <div class="scheduler-available--heading">Available Screens</div>
       <div *ngIf="showAPILoader" class="spinner-container">
         <!-- Loader HTML -->

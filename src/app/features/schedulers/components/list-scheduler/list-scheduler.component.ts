@@ -66,6 +66,14 @@ export class ListSchedulerComponent implements OnInit, AfterViewInit {
     return dateStr;
   }
 
+  formatCycleTime(minutes: number): string {
+    return `${minutes} min`;
+  }
+
+  formatSlotSize(seconds: number): string {
+    return `${seconds} sec`;
+  }
+
   ngAfterViewInit(): void {
       this.dataSource.paginator = this.paginator;
   }
