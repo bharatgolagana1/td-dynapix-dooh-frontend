@@ -1,5 +1,5 @@
-<mat-card class="create-screen--card">
-  <div class="create-screen-main-container">
+<div class="create-screen-main-container">
+  <mat-card class="create-screen-card">
     <div class="create-screen-title">Create Screen</div>
     <div *ngIf="loaderService.loaderState | async" class="spinner-overlay">
       <div class="spinner-container">
@@ -36,6 +36,29 @@
             <input matInput formControlName="screenName" required />
             <mat-hint style="color: red;" *ngIf="screenForm.get('screenName')?.touched && screenForm.get('screenName')?.errors?.['required']">
               Screen Name is required
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
+            <mat-label>Screen Type</mat-label>
+            <mat-select formControlName="screenType" required>
+              <mat-option value="Tvs">Tvs</mat-option>
+              <mat-option value="Billboard">Billboard</mat-option>
+            </mat-select>
+            <mat-hint style="color: red;" *ngIf="screenForm.get('screenType')?.touched && screenForm.get('screenType')?.errors?.['required']">
+              Screen type is required
+            </mat-hint>
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
+            <mat-label>Screen Size</mat-label>
+            <mat-select formControlName="screenSize" required>
+              <mat-option value="Small">Small</mat-option>
+              <mat-option value="Medium">Medium</mat-option>
+              <mat-option value="Large">Large</mat-option>
+            </mat-select>
+            <mat-hint style="color: red;" *ngIf="screenForm.get('screenSize')?.touched && screenForm.get('screenSize')?.errors?.['required']">
+              Screen size is required
             </mat-hint>
           </mat-form-field>
           
@@ -76,14 +99,11 @@
             </mat-hint>
           </mat-form-field>
           
-          <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
+          <mat-form-field appearance="outline">
             <mat-label>Next Available Date</mat-label>
-            <input matInput formControlName="NextAvailableDate" [matDatepicker]="picker" required/>
+            <input matInput [matDatepicker]="picker" formControlName="nextAvailableDate" />
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-            <mat-hint style="color: red;" *ngIf="screenForm.get('NextAvailableDate')?.touched && screenForm.get('NextAvailableDate')?.errors?.['required']">
-              Next Available Date is required
-            </mat-hint>
           </mat-form-field>
           
           <mat-form-field appearance="outline" class="form-field">
@@ -97,31 +117,11 @@
             </mat-hint>
           </mat-form-field>
           
-  
           <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
-            <mat-label>Company Name</mat-label>
-            <input matInput formControlName="companyName" required/>
-            <mat-hint style="color: red;" *ngIf="screenForm.get('companyName')?.touched && screenForm.get('companyName')?.errors?.['required']">
-              Company name is required
-            </mat-hint>
-          </mat-form-field>
-  
-          <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
-            <mat-label>Bottom of the screen height from ground (meters)</mat-label>
-            <input matInput formControlName="bottomOfTheScreenHeightFromGround" type="number" required />
-            <mat-hint style="color: red;" *ngIf="screenForm.get('bottomOfTheScreenHeightFromGround')?.touched && screenForm.get('bottomOfTheScreenHeightFromGround')?.errors?.['required']">
-              Bottom Of The Screen Height From Ground is required
-            </mat-hint>
-          </mat-form-field>
-  
-          <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
-            <mat-label>Indoor or Outdoor</mat-label>
-            <mat-select formControlName="indoorOutdoor" required>
-              <mat-option value="Indoor">Indoor</mat-option>
-              <mat-option value="Outdoor">Outdoor</mat-option>
-            </mat-select>
-            <mat-hint style="color: red;" *ngIf="screenForm.get('indoorOutdoor')?.touched && screenForm.get('indoorOutdoor')?.errors?.['required']">
-              Indoor outdoor is required
+            <mat-label>Pincode</mat-label>
+            <input matInput formControlName="pincode" required />
+            <mat-hint style="color: red;" *ngIf="screenForm.get('pincode')?.touched && screenForm.get('pincode')?.errors?.['required']">
+              Pincode is required
             </mat-hint>
           </mat-form-field>
   
@@ -134,12 +134,11 @@
           </mat-form-field>
         </div>
         
-        <div class="create-screen-footer-content">
-          <button mat-raised-button color="primary" type="submit">Create Screen</button>
+        <div class="create-screen-footer--content">
+          <button mat-raised-button color="primary" type="submit" class="create-screen--button">Create Screen</button>
         </div>
-      </div>
+        </div>
     </form>
-  
+  </mat-card>
+  <app-screens-list></app-screens-list>
   </div>
-  
-</mat-card>

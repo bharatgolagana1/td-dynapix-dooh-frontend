@@ -1,0 +1,18 @@
+<div class="status-confirm-dailog--container">
+    <div class="status-confirm-dailog--header">
+      <h2 mat-dialog-title class="status-confirm-dailog-header--title">Inactive</h2>
+      <button mat-icon-button (click)="onCancel()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-dialog-content>
+      <div class="status-confirm-dailog--content">Are you sure you want to Inactive the screen?</div>
+      <div class="status-confirm-dailog--subcontent">It will make the screen inactive and not be available</div>
+      <div class="status-confirm-dailog--subcontent">for scheduling the media.</div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="status-confirm-dailog--footer">
+      <button mat-stroked-button color="primary" class="status-confirm-dailog-footer--button" (click)="onCancel()">Cancel</button>
+      <button mat-raised-button color="primary" class="status-confirm-dailog-footer--button"  (click)="onConfirm()" cdkFocusInitial>Confirm</button>
+    </mat-dialog-actions>
+  </div>
+  
