@@ -1,0 +1,29 @@
+.date-range-dailog--container{
+    padding: 0.5rem 0.5rem 1rem; 
+    position: relative;
+}
+
+.date-range-dailog--header{
+    display: flex;
+     align-items: center;
+      justify-content: space-between;
+}
+
+.date-range-dailog-header--title{
+    margin: 0;
+}
+
+.date-range-dailog--content{
+    display: flex;
+    gap: 0.5rem;
+}
+
+.date-range-dailog--footer{
+    display: flex; 
+    gap: 1rem; 
+    justify-content: center;
+}
+
+.date-range-dailog-footer--button{
+    padding: 0.3rem 2rem;
+}

@@ -1,0 +1,26 @@
+<div class="date-range-dailog--container">
+    <div class="date-range-dailog--header">
+      <h2 mat-dialog-title class="date-range-dailog-header--title">Select Date Range</h2>
+      <button mat-icon-button (click)="onCancel()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+<div mat-dialog-content class="date-range-dailog--content">
+  <mat-form-field appearance="outline">
+    <mat-label>From</mat-label>
+    <input matInput [(ngModel)]="data.fromDate" [matDatepicker]="picker1">
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>To</mat-label>
+    <input matInput [(ngModel)]="data.toDate" [matDatepicker]="picker2">
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker #picker2></mat-datepicker>
+  </mat-form-field>
+</div>
+<mat-dialog-actions class="date-range-dailog--footer">
+    <button mat-stroked-button color="primary" class="date-range-dailog-footer--button" (click)="onReset()">Reset</button>
+    <button mat-raised-button color="primary" class="date-range-dailog-footer--button"  (click)="onApply()" cdkFocusInitial>Apply</button>
+  </mat-dialog-actions>
+</div>

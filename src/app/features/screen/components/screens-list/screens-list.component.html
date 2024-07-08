@@ -1,0 +1,124 @@
+<mat-card class="screens-list-container--card">
+  <div class="screens-list-container--title">
+    Screens
+  </div>
+  <div class="screens-list-container-header--content">
+    <mat-form-field appearance="outline">
+      <mat-label>Address / Pincode</mat-label>
+      <input matInput [(ngModel)]="filters.addressOrPincode" (ngModelChange)="onFilterChange()" placeholder="Search by address or pincode">
+    </mat-form-field>
+    
+    <mat-form-field appearance="outline">
+      <mat-label>Screen Type</mat-label>
+      <mat-select [(value)]="filters.screenType" (selectionChange)="onFilterChange()">
+        <mat-option *ngFor="let option of screenTypeOptions" [value]="option.value">
+          <mat-radio-group [value]="filters.screenType">
+            <mat-radio-button color="primary" [value]="option.value">{{ option.label }}</mat-radio-button>
+          </mat-radio-group>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field appearance="outline">
+      <mat-label>Size</mat-label>
+      <mat-select [(value)]="filters.size" (selectionChange)="onFilterChange()">
+        <mat-option value="All">All</mat-option>
+        <mat-option value="Small">Small</mat-option>
+        <mat-option value="Medium">Medium</mat-option>
+        <mat-option value="Large">Large</mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select [(value)]="filters.status" (selectionChange)="onFilterChange()">
+        <mat-option *ngFor="let option of statusOptions" [value]="option.value">
+          <mat-radio-group [value]="filters.status">
+            <mat-radio-button color="primary" [value]="option.value">{{ option.label }}</mat-radio-button>
+          </mat-radio-group>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field appearance="outline">
+      <mat-label>Date</mat-label>
+      <mat-select [(value)]="filters.date" (selectionChange)="onFilterChange()">
+        <mat-option *ngFor="let option of dateOptions" [value]="option.value">
+          <mat-radio-group [value]="filters.date" (change)="onFilterChange()">
+            <mat-radio-button color="primary" [value]="option.value">{{ option.label }}</mat-radio-button>
+          </mat-radio-group>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    </div>
+<div class="screens-list-all--selected">  
+  <mat-checkbox
+  color="primary"
+  [checked]="allSelected"
+  [indeterminate]="someSelected()"
+  (change)="toggleAllSelection($event)">
+  <div>{{ screens.length }} Screens</div>
+</mat-checkbox>
+</div>
+
+  <div *ngIf="isLoading" class="spinner-container">
+    <mat-spinner diameter="70"></mat-spinner>
+    <div>screens list loading....</div>
+  </div>
+
+  <div class="screens-list--content">
+    <div *ngFor="let screen of screens">
+      <mat-card class="screen-list-card--container">
+        <!-- Checkbox -->
+        <div>
+          <mat-checkbox
+            color="primary"
+            [checked]="screen.selected"
+            (change)="onScreenCheckboxChange($event, screen)">
+          </mat-checkbox>
+        </div>
+
+        <!-- Image -->
+        <div class="header-image">
+          <img [src]="screen.imageUrls[0]" alt="{{ screen.screenName }}" (click)="openDialog(screen.imageUrls)">
+        </div>
+
+        <!-- Main Content -->
+        <div class="screens-list-card--content">
+          <div class="screens-list-card--name">{{screen.screenName}}</div>
+          <div>{{screen.screenType}} • {{ screen.screenSize }} • {{ screen.SFT }} sqft • {{ screen.NextAvailableDate | customDate }}</div>
+        </div>
+
+        <!-- Subcontent 1 -->
+        <div class="screens-list-card--subcontent">
+          <div>{{screen.address}}</div>
+          <div>{{screen.locationCoordinates}}</div>
+        </div>
+
+
+        <!-- Subcontent 2 -->
+        <div class="screens-list-card--subcontent">
+          <div class="screens-list-card--status">
+            <div class="screen-list-card-status--title">{{screen.screenStatus}}</div>
+            <div class="status-dot" [ngClass]="{'active-dot': screen.screenStatus === 'Active', 'inactive-dot': screen.screenStatus === 'Inactive'}"></div>
+          </div>
+          <div>{{screen.createdAt | customDate}}</div>
+        </div>
+
+        <!-- Menu Button -->
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="updateStatus(screen, 'Active')">
+            <span>Active</span>
+          </button>
+          <button mat-menu-item (click)="updateStatus(screen, 'Inactive')">
+            <span>Inactive</span>
+          </button>
+        </mat-menu>
+      </mat-card>
+    </div>
+  </div>
+</mat-card>

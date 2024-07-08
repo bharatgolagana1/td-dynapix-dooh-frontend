@@ -1,0 +1,44 @@
+.status-confirm-dailog--container{
+    padding: 0.5rem 0.5rem 1rem; 
+    position: relative;
+}
+
+.status-confirm-dailog--header{
+    display: flex;
+     align-items: center;
+      justify-content: space-between;
+}
+
+.status-confirm-dailog-header--title{
+    margin: 0;
+}
+
+.status-confirm-dailog--content{
+    font-size: 15px;
+    font-weight: 550;
+    line-height: 16px;
+    text-align: left;
+    color: #000000;
+    font-family: Lato;
+    margin-bottom: 0.5rem;
+    
+}
+
+.status-confirm-dailog--subcontent{
+    font-size: 12px;
+    font-weight: 450;
+    line-height: 12px;
+    text-align: left;
+    color: #000000;
+    font-family: Lato;
+
+}
+
+.status-confirm-dailog--footer{
+    display: flex; 
+    gap: 1rem; 
+    justify-content: center;
+}
+.status-confirm-dailog-footer--button{
+    padding: 0.5rem 3rem;
+}

@@ -9,15 +9,14 @@ export class ScreenService {
   private baseApiurl = environment.baseApiUrl; 
 
   constructor(private http: HttpClient) { }
+
   listScreens(page: number, pageSize: number, search: string): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('pageSize', pageSize.toString());
-
     if (search) {
       params = params.set('search', search);
     }
-
     return this.http.get<any>(`${this.baseApiurl}/screen/api/screens`, { params });
   }
 
@@ -36,5 +35,38 @@ export class ScreenService {
   getScreenDetails(screenId: string): Observable<any> {
     const url = `${this.baseApiurl}/screen/${screenId}`;
     return this.http.get<any>(url);
+  }
+
+  screensList(filters: any): Observable<any> {
+    let params = new HttpParams();
+    if (filters.addressOrPincode) {
+      params = params.set('addressOrPincode', filters.addressOrPincode);
+    }
+    if (filters.screenType !== 'Both') {
+      params = params.set('screenType', filters.screenType);
+    }
+    if (filters.size !== 'All') {
+      params = params.set('size', filters.size);
+    }
+    if (filters.status !== 'Both') {
+      params = params.set('status', filters.status);
+    }
+    if (filters.date !== 'All Time') {
+      params = params.set('date', filters.date);
+      if (filters.date === 'Date Range') {
+        if (filters.fromDate) {
+          params = params.set('fromDate', filters.fromDate);
+        }
+        if (filters.toDate) {
+          params = params.set('toDate', filters.toDate);
+        }
+      }
+    }
+    return this.http.get<any>(`${this.baseApiurl}/screen`, { params });
+  }
+
+  updateScreenStatus(id: string, status: string): Observable<any> {
+    const url = `${this.baseApiurl}/screen/${id}`;
+    return this.http.put(url, { screenStatus: status });
   }
 }

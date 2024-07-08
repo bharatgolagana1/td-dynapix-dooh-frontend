@@ -1,20 +1,27 @@
-.create-screen--card{
-  margin: 2rem 1rem 1rem 1.5rem;
-  box-shadow: none;
+.create-screen-main-container {
+  display: flex;
+  flex-direction: column;
+  gap:1rem;
+  padding: 2rem 2rem 2rem 2rem;
 }
 
-.create-screen-main-container {
-  padding: 2rem 2rem 2rem 2rem;
+.create-screen-card {
+  background: #fafafa;
+  box-shadow:none;
+  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 2rem;
 }
 
 .create-screen-title {
   color: #757fef;
   font-family: Manrope;
-  font-size: 1.75rem;
+  font-size: 1.2rem;
   font-style: normal;
   font-weight: 600;
   line-height: 2rem;
-  margin-bottom: 3.25rem;
+  margin-bottom: 1rem;
 }
 
 .create-screen--content {
@@ -38,7 +45,7 @@
   flex-direction: column;
   border: 0.1rem dashed #757fef;
   border-radius: 0.2rem;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
   justify-content: center;
   align-items: center;
@@ -90,17 +97,18 @@
   gap: 0.5rem;
 }
 
-.create-screen-footer-content {
+.create-screen-footer--content {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   gap: 8px;
   flex: 1 0 0;
 }
 
-.create-screen-footer-button {
-  background: #757fef;
-  -webkit-text-fill-color: #fff;
+.create-screen--button{
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem 5rem;
   box-shadow: none;
 }
 
