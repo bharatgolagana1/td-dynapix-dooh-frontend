@@ -16,6 +16,7 @@ import { UsersModule } from './features/users/users.module';
 import { MediaModule } from './features/media/media.module';
 import { ScreenModule } from './features/screen/screen.module';
 import { SchedulerModule } from './features/schedulers/scheduler.module';
+import { BookingModule } from './features/booking/booking.module.module';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { SchedulerModule } from './features/schedulers/scheduler.module';
     MediaModule,
     SchedulerModule,
     ScreenModule,
+    BookingModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

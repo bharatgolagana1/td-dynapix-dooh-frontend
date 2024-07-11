@@ -8,6 +8,7 @@ interface SubNavState {
   schedulers: boolean;
   media: boolean;
   screen: boolean;
+  booking: boolean;
 }
 
 @Component({
@@ -22,16 +23,21 @@ export class AppComponent implements OnInit {
     users: false,
     schedulers: false,
     media: false,
-    screen: false
+    screen: false,
+    booking: false,
   };
   isSidenavOpened = true;
   isSmallScreen = false;
 
-  constructor(private router: Router, private breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private router: Router,
+    private breakpointObserver: BreakpointObserver
+  ) {}
 
   ngOnInit(): void {
-    this.breakpointObserver.observe([Breakpoints.Handset])
-      .subscribe(result => {
+    this.breakpointObserver
+      .observe([Breakpoints.Handset])
+      .subscribe((result) => {
         this.isSmallScreen = result.matches;
         this.isSidenavOpened = !this.isSmallScreen;
       });

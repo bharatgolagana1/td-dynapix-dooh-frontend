@@ -19,9 +19,8 @@ const routes: Routes = [
   {
     path: AppRoutePaths.users,
     loadChildren: () =>
-      import('./features/users/users.module').then(
-        (m) => m.UsersModule
-      ),},
+      import('./features/users/users.module').then((m) => m.UsersModule),
+  },
 
   {
     path: AppRoutePaths.schedulers,
@@ -33,16 +32,12 @@ const routes: Routes = [
   {
     path: AppRoutePaths.media,
     loadChildren: () =>
-      import('./features/media/media.module').then(
-        (m) => m.MediaModule
-      ),
+      import('./features/media/media.module').then((m) => m.MediaModule),
   },
   {
     path: AppRoutePaths.screen,
     loadChildren: () =>
-      import('./features/screen/screen.module').then(
-        (m) => m.ScreenModule
-      ),
+      import('./features/screen/screen.module').then((m) => m.ScreenModule),
   },
   {
     path: AppRoutePaths.updateScreen,
@@ -50,7 +45,14 @@ const routes: Routes = [
       import('./features/schedulers/scheduler.module').then(
         (m) => m.SchedulerModule
       ),
-  }
+  },
+  {
+    path: AppRoutePaths.booking,
+    loadChildren: () =>
+      import('./features/booking/booking.module.module').then(
+        (m) => m.BookingModule
+      ),
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

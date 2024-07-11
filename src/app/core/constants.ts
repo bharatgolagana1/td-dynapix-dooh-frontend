@@ -17,5 +17,7 @@ export enum AppRoutePaths {
   schedulers = 'schedulers',
   media = 'media',
   screen = 'screen',
-  updateScreen = 'updateScreen'
+  updateScreen = 'updateScreen',
+  booking = 'booking',
+  createBooking = 'create-booking',
 }
