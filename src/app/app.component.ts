@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { KeycloakService } from 'keycloak-angular';
+import { KeycloakProfile } from 'keycloak-js';
 
 interface SubNavState {
   dashboard: boolean;
@@ -29,20 +31,43 @@ export class AppComponent implements OnInit {
   isSidenavOpened = true;
   isSmallScreen = false;
 
-  constructor(
-    private router: Router,
-    private breakpointObserver: BreakpointObserver
-  ) {}
+  constructor( private breakpointObserver: BreakpointObserver ,private router: Router, private readonly keycloak: KeycloakService) {}
 
-  ngOnInit(): void {
-    this.breakpointObserver
-      .observe([Breakpoints.Handset])
-      .subscribe((result) => {
-        this.isSmallScreen = result.matches;
-        this.isSidenavOpened = !this.isSmallScreen;
-      });
+  public isLoggedIn = false;
+  public userProfile: KeycloakProfile | null = null;
+
+
+  async ngOnInit() {
+    this.breakpointObserver.observe([Breakpoints.Handset])
+    .subscribe(result => {
+      this.isSmallScreen = result.matches;
+      this.isSidenavOpened = !this.isSmallScreen;
+    });
+    this.isLoggedIn = await this.keycloak.isLoggedIn();
+
+    if (this.isLoggedIn) {
+      this.userProfile = await this.keycloak.loadUserProfile();
+      this.router.navigate(['/']);
+    }
   }
 
+  public async login() {
+    try {
+      await this.keycloak.login();
+      this.router.navigate(['/']); 
+    } catch (error) {
+      console.error('Keycloak Login Error:', error);
+    }
+  }
+
+  public async logout() {
+    try {
+      await this.keycloak.logout();
+      this.router.navigate(['/']); 
+    } catch (error) {
+      console.error('Keycloak Logout Error:', error);
+    }
+  }
   toggleSubNav(navName: keyof SubNavState): void {
     this.subNavState[navName] = !this.subNavState[navName];
     if (this.subNavState[navName]) {
@@ -53,4 +78,6 @@ export class AppComponent implements OnInit {
   isSubNavOpen(navName: keyof SubNavState): boolean {
     return this.subNavState[navName];
   }
+
+ 
 }

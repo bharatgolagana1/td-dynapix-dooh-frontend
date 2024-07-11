@@ -7,7 +7,6 @@
 
 .election-campaign-toolbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   align-content: center;
 }
@@ -48,4 +47,34 @@
 .dashboard--title{
   display: flex;
   align-items: center;
+}
+.toolbar-header{
+  display: flex;
+  align-items: center;
+  flex: 1 0 0;
+}
+.logout-btn{
+margin-right: 1rem;
+}
+.logout-btn {
+  position: relative;
+}
+
+.logout-btn::after {
+  content: "logout";
+  font-size: 1rem;
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  color:black;
+  padding: 4px 8px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.logout-btn:hover::after {
+  opacity: 1;
 }
