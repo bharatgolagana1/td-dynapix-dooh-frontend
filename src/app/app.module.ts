@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +17,24 @@ import { MediaModule } from './features/media/media.module';
 import { ScreenModule } from './features/screen/screen.module';
 import { SchedulerModule } from './features/schedulers/scheduler.module';
 import { BookingModule } from './features/booking/booking.module.module';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { environment } from 'src/environments/environment';
+
+function initializeKeycloak(keycloak: KeycloakService) {
+  return () =>
+    keycloak.init({
+      config: {
+        url: environment.keycloakUrl,
+        realm: 'dynapix-dooh',
+        clientId: 'angular-client'
+      },
+      initOptions: {
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri:
+          window.location.origin + '/assets/silent-check-sso.html'
+      }
+    });
+}
 
 @NgModule({
   declarations: [
@@ -40,8 +58,16 @@ import { BookingModule } from './features/booking/booking.module.module';
     SchedulerModule,
     ScreenModule,
     BookingModule,
+    KeycloakAngularModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService]
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
