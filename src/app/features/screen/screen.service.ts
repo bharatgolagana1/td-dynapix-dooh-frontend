@@ -69,4 +69,13 @@ export class ScreenService {
     const url = `${this.baseApiurl}/screen/${id}`;
     return this.http.put(url, { screenStatus: status });
   }
+
+  listUnboundDevices(): Observable<any> {
+    return this.http.get<any>(`${this.baseApiurl}/api/register`);
+  }
+
+  bindDevice(Guuid: string, screenId: string): Observable<any> {
+    const url = `${this.baseApiurl}/api/register/bind-device`;
+    return this.http.post<any>(url, { Guuid, screenId });
+  }
 }
