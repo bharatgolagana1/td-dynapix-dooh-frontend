@@ -9,7 +9,9 @@ const routes: Routes = [
   {
     path: AppRoutePaths.dashboard,
     loadChildren: () =>
-      import('./features/dashboard/dashboard.module').then((m) => m.DashboardModule),
+      import('./features/dashboard/dashboard.module').then(
+        (m) => m.DashboardModule
+      ),
     canActivate: [AuthGuard],
   },
   {
@@ -21,29 +23,37 @@ const routes: Routes = [
   {
     path: AppRoutePaths.schedulers,
     loadChildren: () =>
-      import('./features/schedulers/scheduler.module').then((m) => m.SchedulerModule),
+      import('./features/schedulers/scheduler.module').then(
+        (m) => m.SchedulerModule
+      ),
     canActivate: [AuthGuard],
   },
   {
     path: AppRoutePaths.media,
     loadChildren: () =>
       import('./features/media/media.module').then((m) => m.MediaModule),
-    canActivate: [AuthGuard], 
+    canActivate: [AuthGuard],
   },
   {
     path: AppRoutePaths.screen,
     loadChildren: () =>
-      import('./features/screen/screen.module').then(
-        (m) => m.ScreenModule
-      ), canActivate: [AuthGuard],
+      import('./features/screen/screen.module').then((m) => m.ScreenModule),
+    canActivate: [AuthGuard],
   },
   {
     path: AppRoutePaths.updateScreen,
     loadChildren: () =>
       import('./features/schedulers/scheduler.module').then(
         (m) => m.SchedulerModule
-      ), canActivate: [AuthGuard],
-  }
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: AppRoutePaths.roles,
+    loadChildren: () =>
+      import('./features/roles-matrix/roles.module').then((m) => m.RolesModule),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

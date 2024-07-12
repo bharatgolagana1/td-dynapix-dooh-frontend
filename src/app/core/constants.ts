@@ -20,4 +20,5 @@ export enum AppRoutePaths {
   updateScreen = 'updateScreen',
   booking = 'booking',
   createBooking = 'create-booking',
+  roles = 'roles',
 }

@@ -19,6 +19,7 @@ import { SchedulerModule } from './features/schedulers/scheduler.module';
 import { BookingModule } from './features/booking/booking.module.module';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
+import { RolesModule } from './features/roles-matrix/roles.module';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -26,13 +27,13 @@ function initializeKeycloak(keycloak: KeycloakService) {
       config: {
         url: environment.keycloakUrl,
         realm: 'dynapix-dooh',
-        clientId: 'angular-client'
+        clientId: 'angular-client',
       },
       initOptions: {
         onLoad: 'check-sso',
         silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/silent-check-sso.html'
-      }
+          window.location.origin + '/assets/silent-check-sso.html',
+      },
     });
 }
 
@@ -58,15 +59,16 @@ function initializeKeycloak(keycloak: KeycloakService) {
     SchedulerModule,
     ScreenModule,
     BookingModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
+    RolesModule,
   ],
   providers: [
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
-      deps: [KeycloakService]
-    }
+      deps: [KeycloakService],
+    },
   ],
   bootstrap: [AppComponent],
 })

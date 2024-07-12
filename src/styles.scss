@@ -30,6 +30,7 @@ a.mdc-list-item {
 .mat-drawer-content {
   background-color: #f0f3f5;
   padding-left: 25px;
+  // overflow-x: hidden !important;
 }
 mat-sidenav {
   border-right-width: 0px !important;
