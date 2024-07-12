@@ -13,6 +13,7 @@ import { ScreensListComponent } from './components/screens-list/screens-list.com
 import { CustomDatePipe } from 'src/app/core/services/custom-date.pipe';
 import { StatusConfirmDailogComponent } from './components/status-confirm-dailog/status-confirm-dailog.component';
 import { DateRangeDialogComponent } from './components/date-range-dialog/date-range-dialog.component';
+import { BindDeviceComponent } from './components/bind-device/bind-device.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { DateRangeDialogComponent } from './components/date-range-dialog/date-ra
     ScreensListComponent,
     CustomDatePipe,
     StatusConfirmDailogComponent,
-    DateRangeDialogComponent 
+    DateRangeDialogComponent,
+    BindDeviceComponent 
   ],
   imports: [
     CommonModule,

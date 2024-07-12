@@ -1,0 +1,29 @@
+.bind-device-selected {
+    background-color: lightblue;
+  }
+
+  .loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    font-size: 1.2em;
+    color: #666;
+  }
+  
+  mat-list-item {
+    cursor: pointer;
+  }
+  
+  mat-list-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+.bind-device--content {
+    padding: 1rem;
+}
+.bind-device-container{
+  padding: 1rem;
+}
+
+  

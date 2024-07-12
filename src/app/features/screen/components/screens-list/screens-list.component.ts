@@ -6,7 +6,7 @@ import { StatusConfirmDailogComponent } from '../status-confirm-dailog/status-co
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DateRangeDialogComponent } from '../date-range-dialog/date-range-dialog.component';
-
+import { BindDeviceComponent } from '../bind-device/bind-device.component';
 export interface Screen {
   _id: string;
   screenName: string;
@@ -20,6 +20,7 @@ export interface Screen {
   createdAt: Date;
   imageUrls: string[];
   selected?: boolean; 
+  Guuid?: string | null;
 }
 
 @Component({
@@ -122,6 +123,7 @@ export class ScreensListComponent implements OnInit {
     );
   }
 
+
   toggleAllSelection(event: any) {
     this.allSelected = event.checked;
     this.screens.forEach(screen => screen.selected = this.allSelected);
@@ -164,7 +166,23 @@ export class ScreensListComponent implements OnInit {
       );
     }
   }
+  onBindTextClick(screen: any): void {
+    const dialogRef = this.dialog.open(BindDeviceComponent, {
+      width: '50%',
+      data: { screen }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Device bound successfully:', result);
+        this.loadScreens(); // Refresh the screen list
+      }
+    });
+  }
+
+  isDeviceBound(screen: any): boolean {
+    return !!screen.Guuid; // Check if the screen has a bound device
+  }
 
 
 }
