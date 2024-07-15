@@ -54,6 +54,14 @@ const routes: Routes = [
       import('./features/roles-matrix/roles.module').then((m) => m.RolesModule),
     canActivate: [AuthGuard],
   },
+  {
+    path: AppRoutePaths.organization,
+    loadChildren: () =>
+      import('./features/organization/organization.module').then(
+        (m) => m.OrganizationModule
+      ),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
