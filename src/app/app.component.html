@@ -31,6 +31,24 @@
         >
       </a>
 
+      <a mat-list-item (click)="toggleSubNav('organization')" class="parent-link">
+        <span class="dashboard--title">
+          <img
+            class="users-logo--image"
+            src="assets/icons/organization.svg"
+            alt="logo"
+          />
+          Organization</span>
+          <div class="expand-icon-container">
+            <mat-icon *ngIf="isSubNavOpen('organization')">expand_less</mat-icon>
+            <mat-icon *ngIf="!isSubNavOpen('organization')">expand_more</mat-icon>
+          </div>
+      </a>
+
+      <mat-nav-list *ngIf="isSubNavOpen('organization')">
+        <a mat-list-item routerLink="/organization/organization">Create Organization</a>
+      </mat-nav-list>
+
       <a mat-list-item (click)="toggleSubNav('booking')" class="parent-link">
         <span class="dashboard--title">
           <img
@@ -38,8 +56,11 @@
             src="assets/images/booking.svg"
             alt="logo"
           />
-          Booking</span
-        >
+          Booking</span>
+          <div class="expand-icon-container">
+            <mat-icon *ngIf="isSubNavOpen('booking')">expand_less</mat-icon>
+            <mat-icon *ngIf="!isSubNavOpen('booking')">expand_more</mat-icon>
+          </div>
       </a>
 
       <mat-nav-list *ngIf="isSubNavOpen('booking')">

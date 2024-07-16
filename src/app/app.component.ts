@@ -11,6 +11,7 @@ interface SubNavState {
   media: boolean;
   screen: boolean;
   booking: boolean;
+  organization : boolean
 }
 
 @Component({
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
     media: false,
     screen: false,
     booking: false,
+    organization : false
   };
   isSidenavOpened = true;
   isSmallScreen = false;

@@ -1,0 +1,61 @@
+
+<div class="list-organization--table">
+    <div class="list-organization--title">List Organizations</div>
+    <div class="list-organizations--search">
+      <div class="organizations--search">
+        <mat-form-field appearance="outline" [style.fontSize.px]="14">
+          <mat-label class="small-label">Search</mat-label>
+          <input type="text" matInput (input)="onSearch($event)" class="search-input" />
+          <button mat-icon-button matSuffix aria-label="Search" class="small-icon">
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="spinner-container">
+        <mat-spinner diameter="70"></mat-spinner>
+        <div>list-organization loading....</div>
+      </div>
+    <div>
+      <mat-table  class="mat-elevation-z0" [dataSource]="dataSource"  *ngIf="!isLoading">
+
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+          <mat-cell *matCellDef="let organization">{{ organization.name }}</mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+          <mat-cell *matCellDef="let organization">{{ organization.description }}</mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+          <mat-cell *matCellDef="let organization">{{ organization.status }}</mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="delete">
+            <mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
+            <mat-cell *matCellDef="let organization">
+              <button mat-icon-button (click)="deleteOrganization(organization._id)">
+                <img src="assets/images/delete.svg"/>
+              </button>
+            </mat-cell>
+          </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns" class="list-organization--data"></mat-row>
+      </mat-table>
+      <mat-paginator
+         *ngIf="!isLoading"
+        [length]="totalOrganizations"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        (page)="onPageChange($event)"
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </div>
+  
