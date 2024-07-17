@@ -6,7 +6,7 @@
   flex-direction: column;
   border: 0.1rem dashed #757fef;
   border-radius: 0.2rem;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
   justify-content: center;
   align-items: center;
@@ -14,11 +14,11 @@
   background: #ffff;
 }
 .media-upload--title {
-  color: #757fef;
+  color: #000000;
   font-family: Manrope;
-  font-size: 1.75rem;
+  font-size: 1rem;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 2rem;
   margin-bottom: 2rem;
 }
@@ -60,7 +60,6 @@
   align-items: center;
   justify-content: center;
   -webkit-text-fill-color: #757fef;
-  padding: 0.5rem;
   border-radius: 0.5rem;
 }
 

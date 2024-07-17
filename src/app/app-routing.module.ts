@@ -58,7 +58,13 @@ const routes: Routes = [
     path: AppRoutePaths.organization,
     loadChildren: () =>
       import('./features/organization/organization.module').then(
-        (m) => m.OrganizationModule
+        (m) => m.OrganizationModule)
+      },
+  {
+    path: AppRoutePaths.booking,
+    loadChildren: () =>
+      import('./features/booking/booking.module').then(
+        (m) => m.BookingModule
       ),
     canActivate: [AuthGuard],
   },

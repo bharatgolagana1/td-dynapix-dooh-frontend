@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { MediaService } from '../../media.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Router } from '@angular/router';
@@ -22,6 +22,8 @@ interface UploadFile {
   styleUrls: ['./upload-media.component.scss'],
 })
 export class UploadMediaComponent {
+  @Output() mediaUploaded = new EventEmitter<string[]>();  // Added EventEmitter for media URLs
+
   files: UploadFile[] = [];
   isUploading: boolean = false;
 
@@ -90,6 +92,7 @@ export class UploadMediaComponent {
 
   async upload() {
     this.isUploading = true;
+    const uploadedMediaUrls: string[] = [];
     try {
       for (const uploadFile of this.files) {
         const uploadSubscription = this.mediaService.uploadMedia(uploadFile.file, uploadFile.isVideo ? 'video' : 'image').subscribe({
@@ -105,9 +108,11 @@ export class UploadMediaComponent {
             this.isUploading = false;
           },
           complete: () => {
+            uploadedMediaUrls.push(uploadFile.url!);
             const allFilesUploaded = this.files.every(file => file.progress === 100);
             if (allFilesUploaded) {
-              this.openSuccessDialog();
+              // this.openSuccessDialog();
+              this.mediaUploaded.emit(uploadedMediaUrls);  // Emit uploaded media URLs
             }
           }
         });
@@ -130,19 +135,19 @@ export class UploadMediaComponent {
     }
   }
 
-  openSuccessDialog() {
-    const dialogRef = this.dialog.open(UploadSuccessDialogComponent, {
-      width: '400px',
-    });
+  // openSuccessDialog() {
+  //   const dialogRef = this.dialog.open(UploadSuccessDialogComponent, {
+  //     width: '400px',
+  //   });
 
-    dialogRef.afterClosed().subscribe(() => {
-      this.router.navigate(['/createScheduler']).then(() => {
-        setTimeout(() => {
-          this.isUploading = false;
-        }, 3000);
-      });
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(() => {
+  //     this.router.navigate(['/createScheduler']).then(() => {
+  //       setTimeout(() => {
+  //         this.isUploading = false;
+  //       }, 3000);
+  //     });
+  //   });
+  // }
 
   hasFilesToUpload(): boolean {
     return this.files.length > 0;

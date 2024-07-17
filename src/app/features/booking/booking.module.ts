@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { MaterialModule } from 'src/app/material.module';
+import { MediaModule } from '../media/media.module';
 
 @NgModule({
   declarations: [CreateBookingComponent, ListBookingComponent],
@@ -18,7 +19,8 @@ import { MaterialModule } from 'src/app/material.module';
     ReactiveFormsModule,
     SlickCarouselModule,
     MatTooltipModule,
-  ],
-  exports: [CreateBookingComponent],
+    MediaModule
+],
+  exports: [CreateBookingComponent,ListBookingComponent],
 })
 export class BookingModule {}
