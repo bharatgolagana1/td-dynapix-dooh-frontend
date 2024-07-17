@@ -124,6 +124,21 @@
         <!-- Add more sublinks as needed -->
       </mat-nav-list>
     </mat-nav-list>
+
+    <a mat-list-item (click)="toggleSubNav('roles')" class="parent-link">
+      <span class="dashboard--title">
+        <img
+          class="users-logo--image"
+          src="assets/images/booking.svg"
+          alt="logo"
+        />
+        Roles</span
+      >
+    </a>
+
+    <mat-nav-list *ngIf="isSubNavOpen('roles')">
+      <a mat-list-item routerLink="/booking/create-booking">Roles</a>
+    </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -144,8 +159,22 @@
         [subtitle]="'Bharat G'"
       >
       </app-profile-button>
-      <button  mat-icon-button *ngIf="isLoggedIn" (click)="logout()" class="logout-btn"><mat-icon>logout</mat-icon></button>
-      <button mat-icon-button *ngIf="!isLoggedIn"  (click)="login()" class="logout-btn"><mat-icon>login</mat-icon></button>
+      <button
+        mat-icon-button
+        *ngIf="isLoggedIn"
+        (click)="logout()"
+        class="logout-btn"
+      >
+        <mat-icon>logout</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        *ngIf="!isLoggedIn"
+        (click)="login()"
+        class="logout-btn"
+      >
+        <mat-icon>login</mat-icon>
+      </button>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

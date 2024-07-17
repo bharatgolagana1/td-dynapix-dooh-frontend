@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { RolesMatrixComponent } from './components/roles-matrix/roles-matrix.component';
 import { MaterialModule } from 'src/app/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FilterTasksPipe } from './filter-tasks.pipe';
 import { RolesRoutingModule } from './roles-routing.module';
+import { FilterByModulePipe, CountByModulePipe } from './filter-tasks.pipe';
 
 @NgModule({
-  declarations: [RolesMatrixComponent, FilterTasksPipe],
+  declarations: [RolesMatrixComponent, FilterByModulePipe, CountByModulePipe],
   imports: [
     CommonModule,
     MaterialModule,

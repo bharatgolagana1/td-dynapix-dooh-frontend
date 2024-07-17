@@ -11,7 +11,8 @@ interface SubNavState {
   media: boolean;
   screen: boolean;
   booking: boolean;
-  organization : boolean
+  organization: boolean;
+  roles: boolean;
 }
 
 @Component({
@@ -28,23 +29,28 @@ export class AppComponent implements OnInit {
     media: false,
     screen: false,
     booking: false,
-    organization : false
+    organization: false,
+    roles: false,
   };
   isSidenavOpened = true;
   isSmallScreen = false;
 
-  constructor( private breakpointObserver: BreakpointObserver ,private router: Router, private readonly keycloak: KeycloakService) {}
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private router: Router,
+    private readonly keycloak: KeycloakService
+  ) {}
 
   public isLoggedIn = false;
   public userProfile: KeycloakProfile | null = null;
 
-
   async ngOnInit() {
-    this.breakpointObserver.observe([Breakpoints.Handset])
-    .subscribe(result => {
-      this.isSmallScreen = result.matches;
-      this.isSidenavOpened = !this.isSmallScreen;
-    });
+    this.breakpointObserver
+      .observe([Breakpoints.Handset])
+      .subscribe((result) => {
+        this.isSmallScreen = result.matches;
+        this.isSidenavOpened = !this.isSmallScreen;
+      });
     this.isLoggedIn = await this.keycloak.isLoggedIn();
 
     if (this.isLoggedIn) {
@@ -56,7 +62,7 @@ export class AppComponent implements OnInit {
   public async login() {
     try {
       await this.keycloak.login();
-      this.router.navigate(['/']); 
+      this.router.navigate(['/']);
     } catch (error) {
       console.error('Keycloak Login Error:', error);
     }
@@ -65,7 +71,7 @@ export class AppComponent implements OnInit {
   public async logout() {
     try {
       await this.keycloak.logout();
-      this.router.navigate(['/']); 
+      this.router.navigate(['/']);
     } catch (error) {
       console.error('Keycloak Logout Error:', error);
     }
@@ -80,6 +86,4 @@ export class AppComponent implements OnInit {
   isSubNavOpen(navName: keyof SubNavState): boolean {
     return this.subNavState[navName];
   }
-
- 
 }

@@ -13,4 +13,7 @@ export class RolesService {
   getRoles(): Observable<Role[]> {
     return this.http.get<Role[]>(`${environment.baseApiUrl}/api/roles`);
   }
+  createRoles(data: { name: string; value: string }): Observable<Role> {
+    return this.http.post<Role>(`${environment.baseApiUrl}`, data);
+  }
 }

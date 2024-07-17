@@ -20,4 +20,5 @@ export interface Permission {
   roleId: string;
   taskId: string;
   enable: boolean;
+  id: string;
 }

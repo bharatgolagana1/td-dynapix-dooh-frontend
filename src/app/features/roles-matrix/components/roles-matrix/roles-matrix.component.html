@@ -1,49 +1,18 @@
-<!-- <div *ngIf="showLoader">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</div>
+<div *ngIf="showLoader">Loading...</div>
 <div *ngIf="!showLoader">
-  <mat-table [dataSource]="modules" class="mat-elevation-z8">
-   
-    <ng-container matColumnDef="moduleName">
-      <mat-header-cell *matHeaderCellDef> Module / Capability </mat-header-cell>
-      <mat-cell *matCellDef="let module"> {{ module.name }} </mat-cell>
-    </ng-container>
+  <div *ngIf="modules && modules.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Module / Capability</th>
+          <th>Tasks</th>
+          <th *ngFor="let role of roles">{{ role.name }}</th>
+        </tr>
+      </thead>
 
-    <ng-container matColumnDef="tasks">
-      <mat-header-cell *matHeaderCellDef> Tasks </mat-header-cell>
-      <mat-cell *matCellDef="let module">
-        <div
-          *ngFor="let task of tasks | filterTasks : module.id; let i = index"
-        >
-          {{ task.name }}
-        </div>
-      </mat-cell>
-    </ng-container>
-
-
-    <ng-container *ngFor="let role of roles" [matColumnDef]="role.name">
-      <mat-header-cell *matHeaderCellDef> {{ role.name }} </mat-header-cell>
-      <mat-cell *matCellDef="let module">
-        <div *ngFor="let task of tasks | filterTasks : module.id">
-          <mat-checkbox
-            [(ngModel)]="task.permissions[role.id]"
-            (change)="togglePermission()"
-          >
-          </mat-checkbox>
-        </div>
-      </mat-cell>
-    </ng-container>
-
-   
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-  </mat-table>
-
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="updatePermissionsOnServer()"
-  >
-    Save
-  </button>
-</div> -->
+      <tbody *ngIf="modules.length >= 0">
+        <ng-container *ngFor="let module of modules"> </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

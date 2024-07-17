@@ -17,5 +17,11 @@ export class TasksService {
     return this.http.get<Task[]>(this.baseUrl);
   }
 
-  // Add more methods for additional module-related API operations if needed
+  createTasks(data: {
+    moduleId: string;
+    name: string;
+    value: string;
+  }): Observable<Task> {
+    return this.http.post<Task>(`${this.baseUrl}`, data);
+  }
 }

@@ -17,5 +17,7 @@ export class ModulesService {
     return this.http.get<Module[]>(this.baseUrl);
   }
 
-  // Add more methods for additional module-related API operations if needed
+  createModule(data: { name: string; value: string }): Observable<Module> {
+    return this.http.post<Module>(`${this.baseUrl}`, data);
+  }
 }

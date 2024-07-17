@@ -27,27 +27,39 @@ export class RolesMatrixComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchData();
+
+    console.log(this.modules); // Assuming 'modules' is the data used in your table
+    console.log(this.tasks);
   }
 
   fetchData(): void {
     this.showLoader = true; // Set loader to visible while fetching data
     this.rolesService.getRoles().subscribe({
       next: (roles) => {
-        this.roles = roles;
+        this.roles.push(...roles);
         this.updateColumns();
       },
       complete: () => this.checkDataLoaded(),
     });
     this.modulesService.getModules().subscribe({
-      next: (modules) => (this.modules = modules),
+      next: (modules) => {
+        console.log(modules, 'modules in APP_ID');
+        this.modules.push(...modules);
+      },
       complete: () => this.checkDataLoaded(),
     });
     this.tasksService.getTasks().subscribe({
-      next: (tasks) => (this.tasks = tasks),
+      next: (tasks) => {
+        console.log(tasks, 'tasks');
+        this.tasks.push(...tasks);
+      },
       complete: () => this.checkDataLoaded(),
     });
     this.permissionsService.getPermissions().subscribe({
-      next: (permissions) => (this.permissions = permissions),
+      next: (permissions) => {
+        console.log(permissions, 'permissions');
+        this.permissions.push(...permissions);
+      },
       complete: () => this.checkDataLoaded(),
     });
   }
@@ -61,41 +73,86 @@ export class RolesMatrixComponent implements OnInit {
   }
 
   checkDataLoaded(): void {
-    // Checks if all data is loaded
-    if (
-      this.roles.length &&
-      this.modules.length &&
-      this.tasks.length &&
-      this.permissions.length
-    ) {
-      this.showLoader = false; // Hide loader when all data is loaded
+    if (this.roles.length && this.modules.length && this.tasks.length) {
+      this.showLoader = false;
     }
   }
-  isChecked(taskId: string, roleId: string): boolean {
-    return !!this.permissions.find(
-      (p) => p.taskId === taskId && p.roleId === roleId && p.enable
-    );
+
+  handleNewRole(): void {
+    const name = prompt('Please enter new role name:');
+    if (name !== null) {
+      const newRole = { id: String(this.roles.length), name };
+
+      this.rolesService
+        .createRoles({ name, value: name.toLowerCase() })
+        .subscribe({
+          next: (response) => {
+            this.roles.push(newRole);
+            // Handle success message
+          },
+          error: () => {
+            // Handle error message
+          },
+        });
+    }
   }
 
-  togglePermission(taskId: string, roleId: string, checked: boolean): void {
-    const index = this.permissions.findIndex(
+  handleNewModule(name: string): void {
+    this.modulesService
+      .createModule({ name, value: name.toLowerCase() })
+      .subscribe({
+        next: (response) => {
+          this.modules.push(response);
+          // Handle success message
+        },
+        error: () => {
+          // Handle error message
+        },
+      });
+  }
+
+  handleNewTask(moduleId: string, taskName: string, taskValue: string): void {
+    this.tasksService
+      .createTasks({ moduleId, name: taskName, value: taskValue })
+      .subscribe({
+        next: (response) => {
+          this.tasks.push(response);
+        },
+        error: () => {
+          // Handle error message
+        },
+      });
+  }
+
+  getPermissionState(taskId: string, roleId: string): boolean {
+    const permission = this.permissions.find(
       (p) => p.taskId === taskId && p.roleId === roleId
     );
-    if (index !== -1) {
-      // Toggle the enable status
-      this.permissions[index].enable = checked;
-    } else {
-      // Add a new permission if it doesn't exist
-      this.permissions.push({ taskId, roleId, enable: checked });
-    }
-    // Optionally, call an API to update the server-side data
-    this.updatePermissionsOnServer();
+    return permission ? permission.enable : false;
   }
 
-  updatePermissionsOnServer(): void {
-    // this.permissionsService.updatePermissions(this.permissions).subscribe({
-    //   next: () => console.log('Permissions updated successfully!'),
-    //   error: (err) => console.error('Failed to update permissions', err),
-    // });
+  togglePermission(
+    taskId: string,
+    roleId: string,
+    isChecked: boolean = false
+  ): void {
+    const permissionIndex = this.permissions.findIndex(
+      (p) => p.taskId === taskId && p.roleId === roleId
+    );
+    if (permissionIndex >= 0) {
+      this.permissions[permissionIndex].enable = isChecked;
+    } else {
+      this.permissions.push({
+        id: `${roleId}_${taskId}`, // Generate an ID for the new permission
+        roleId: roleId,
+        taskId: taskId,
+        enable: isChecked,
+      });
+    }
+  }
+
+  countTasksByModule(moduleId: string | undefined): number {
+    if (!moduleId) return 0;
+    return this.tasks.filter((task) => task.moduleId === moduleId).length;
   }
 }
