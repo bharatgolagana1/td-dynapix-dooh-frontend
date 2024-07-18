@@ -1,8 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ChangeDetectorRef, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as moment from 'moment';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,18 +9,6 @@ import { BookingService } from '../../booking.service';
 import { debounceTime, Subject } from 'rxjs';
 import { ImageDialogComponent } from 'src/app/features/screen/components/image-dialog/image-dialog.component';
 import { DateRangeDialogComponent } from 'src/app/features/screen/components/date-range-dialog/date-range-dialog.component';
-
-const MY_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'DD/MM/YYYY',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
 
 export interface Screen {
   id: any;
@@ -44,16 +30,13 @@ export interface Screen {
 @Component({
   selector: 'app-create-booking',
   templateUrl: './create-booking.component.html',
-  styleUrls: ['./create-booking.component.scss'],
-  providers: [
-    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
-  ],
+  styleUrls: ['./create-booking.component.scss']
 })
 export class CreateBookingComponent implements OnInit {
+  @ViewChild('fileInput') fileInput!: ElementRef;
   bookingForm: FormGroup;
   screens: Screen[] = [];
-  mediaContent: string[] = [];
+  imageFiles: File[] = [];
   isLoading: boolean = true;
 
   private filterSubject = new Subject<any>();
@@ -79,26 +62,43 @@ export class CreateBookingComponent implements OnInit {
     { value: 'Active', label: 'Active' },
     { value: 'Inactive', label: 'Inactive' }
   ];
+  categoryOption = [
+    {value: 'Internal', label: 'Internal'},
+    {value:'External', label: 'External'}
+  ]
+  slotSize = [
+    { label: '5 sec', value: 5 },
+    { label: '10 sec', value: 10 },
+    { label: '15 sec', value: 15 },
+    { label: '20 sec', value: 20 },
+    { label: '25 sec', value: 25 },
+    { label: '30 sec', value: 30 },
+    { label: '35 sec', value: 35 },
+    { label: '40 sec', value: 40 },
+    { label: '45 sec', value: 45 },
+    { label: '50 sec', value: 50 },
+    { label: '55 sec', value: 55 },
+    { label: '60 sec', value: 60 },
+  ];
 
   constructor(
     private fb: FormBuilder,
-    private datePipe: DatePipe,
-    private notificationService: NotificationService,
-    private loaderService: LoaderService,
     private dialog: MatDialog,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
   ) {
     this.bookingForm = this.fb.group({
       customerName: ['', Validators.required],
       slotSize: ['', Validators.required],
       totalAmount: ['', Validators.required],
-      mediaContent: ['', Validators.required],
+      mediaContent: [[], Validators.required],
       dateRange: this.fb.group({
         startDate: ['', Validators.required],
         endDate: ['', Validators.required],
       }),
       categoryType: ['', Validators.required],
-      screenIds: ['', Validators.required],
+      screenIds: [[], Validators.required],
       filters: this.fb.group({
         addressOrPincode: [''],
         screenType: ['Both'],
@@ -168,92 +168,91 @@ export class CreateBookingComponent implements OnInit {
     });
   }
 
-  onCreateBooking(): void {
-    if (this.bookingForm.invalid) {
-      console.log('Form is invalid');
-      this.logFormErrors();
-      return;
-    }
-  
-    const formData = this.bookingForm.value;
-    const startDate = moment(formData.dateRange.startDate).toISOString();
-    const endDate = moment(formData.dateRange.endDate).toISOString();
-  
-    // Ensure screenIds are properly mapped
-    const screenIds = this.screens.filter(screen => screen.selected).map(screen => screen._id);
-  
-    const bookingData = {
-      customerName: formData.customerName,
-      slotSize: formData.slotSize,
-      totalAmount: formData.totalAmount,
-      mediaContent: this.mediaContent,
-      startDate,
-      endDate,
-      screenIds,
-      categoryType: formData.categoryType,
-      filters: {
-        addressOrPincode: formData.filters.addressOrPincode,
-        screenType: formData.filters.screenType,
-        size: formData.filters.size,
-        status: formData.filters.status,
-        date: formData.filters.date,
-        fromDate: moment(formData.filters.fromDate).toISOString(),
-        toDate: moment(formData.filters.toDate).toISOString()
-      }
-    };
-  
-    console.log('Submitting booking data:', bookingData);
-  
-    if (!bookingData.screenIds.length) {
-      console.error('No screens selected');
-      return;
-    }
-  
-    this.bookingService.createBooking(bookingData).subscribe(
-      response => {
-        console.log('Booking created successfully:', response);
-      },
-      error => {
-        console.error('Error creating booking:', error);
-      }
-    );
-  }
-  
-  
-  
-  logFormErrors() {
-    Object.keys(this.bookingForm.controls).forEach(key => {
-      const controlErrors = this.bookingForm.get(key)?.errors;
-      if (controlErrors != null) {
-        console.log(`Key: ${key}, Errors: `, controlErrors);
-      }
-    });
-  
-    const dateRangeErrors = this.bookingForm.get('dateRange')?.errors;
-    if (dateRangeErrors != null) {
-      console.log(`Key: dateRange, Errors: `, dateRangeErrors);
-    }
-  
-    const filtersErrors = this.bookingForm.get('filters')?.errors;
-    if (filtersErrors != null) {
-      console.log(`Key: filters, Errors: `, filtersErrors);
-    }
-  }
-  
-  onMediaUploadSuccess(mediaUrls: string[]): void {
-    this.mediaContent = mediaUrls;
-    this.bookingForm.get('mediaContent')?.setValue(mediaUrls);
-  }
-
-  onScreensSelected(selectedScreens: any[]): void {
-    const screenIds = selectedScreens.map(screen => screen.id);
-    this.bookingForm.get('screenIds')?.setValue(screenIds);
-  }
-
-  onScreenSelectionChange(screen: any): void {
+  onScreenSelectionChange(screen: Screen): void {
     screen.selected = !screen.selected;
-    const selectedScreens = this.screens.filter(s => s.selected);
-    this.bookingForm.get('screenIds')?.setValue(selectedScreens.map(s => s._id));
+    const selectedScreenIds = this.screens
+      .filter(s => s.selected)
+      .map(s => s.Guuid)
+      .filter(id => !!id);
+
+    this.bookingForm.patchValue({
+      screenIds: selectedScreenIds
+    });
   }
-  
+
+  getFileUrl(file: File): string {
+    return URL.createObjectURL(file);
+  }
+
+  openFileSelector(): void {
+    this.fileInput.nativeElement.click();
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+  }
+
+  onFileSelected(event: any): void {
+    const files: File[] = Array.from(event.target.files);
+    this.ngZone.run(() => {
+      this.imageFiles.push(...files);
+      this.updateMediaContent();
+    });
+  }
+
+  onFileDropped(event: DragEvent): void {
+    event.preventDefault();
+    const files = Array.from(event.dataTransfer?.files || []);
+    this.ngZone.run(() => {
+      this.imageFiles.push(...files);
+      this.updateMediaContent();
+    });
+  }
+
+  updateMediaContent(): void {
+    this.bookingForm.patchValue({
+      mediaContent: this.imageFiles
+    });
+    this.cdr.detectChanges(); // Trigger change detection
+  }
+
+  removeFile(index: number): void {
+    this.imageFiles.splice(index, 1);
+    this.updateMediaContent();
+  }
+
+  onCreateBooking(): void {
+    if (this.bookingForm.valid) {
+      const formData = new FormData();
+      const formValues = this.bookingForm.value;
+
+      // Append form values to FormData
+      formData.append('customerName', formValues.customerName);
+      formData.append('slotSize', formValues.slotSize);
+      formData.append('totalAmount', formValues.totalAmount);
+      formData.append('categoryType', formValues.categoryType);
+      formData.append('screenIds', JSON.stringify(formValues.screenIds)); // Converting array to JSON string
+
+      // Append date range values to FormData
+      formData.append('startDate', formValues.dateRange.startDate);
+      formData.append('endDate', formValues.dateRange.endDate);
+
+      // Append media files to FormData
+      formValues.mediaContent.forEach((file: File) => {
+        formData.append('mediaContent', file, file.name);
+      });
+
+      // Make the API call
+      this.bookingService.createBooking(formData).subscribe({
+        next: response => {
+          console.log('Booking created successfully', response);
+        },
+        error: error => {
+          console.error('Error creating booking', error);
+        }
+      });
+    } else {
+      console.log('Form is invalid');
+    }
+  }
 }
