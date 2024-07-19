@@ -17,7 +17,8 @@ const routes: Routes = [
   {
     path: 'updateScreen/:id',
     component: UpdateScreenComponent
-  }
+  },
+  
 ];
 
 @NgModule({

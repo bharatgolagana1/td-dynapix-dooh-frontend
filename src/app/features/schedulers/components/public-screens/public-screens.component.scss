@@ -1,0 +1,89 @@
+.full-card-container {
+    margin-top: 16px; // Space above the card
+  }
+  
+  .screens-content {
+    display: flex;
+    flex-direction: row;
+    gap: 16px; // Add spacing between left and right halves
+  }
+  
+  .left-half {
+    width: 50%;
+    padding: 10px;
+    position: relative; // Ensure relative positioning for nested elements
+  }
+  
+  .right-half {
+    width: 50%;
+    padding: 3rem;
+    position: relative;
+    overflow-y: auto; // Ensure scrolling when content overflows
+    height: 600px; // Match the height of the map-and-cards-container
+  }
+  
+  .map-and-cards-container {
+    display: flex;
+    flex-direction: column;
+    position: relative; // Ensure relative positioning for nested elements
+  }
+  
+  .spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .create-scheduler-card {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 16px; // Space between card items
+  }
+  
+  .create-scheduler-card--container {
+    padding: 1.5rem;
+    display: flex;
+    gap: 2rem;
+    border-radius: 0.3rem;
+    width: 380px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Optional: Add shadow for better visibility
+  }
+  
+  .create-scheduler-card--content {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+  
+  .create-scheduler-card--image {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover; // Ensure the image fits within the specified dimensions
+    cursor: pointer;
+  }
+  
+  .mat-card {
+    position: relative;
+  }
+  
+ 
+  
+  .available-screens-container {
+    .available-screens-header {
+      padding: 3rem 0 0 0; // Adjust padding to fit the layout
+      color: #757fef;
+      font-family: 'Manrope', sans-serif; // Ensure proper font loading
+      font-size: 1.75rem;
+      font-weight: 600;
+      line-height: 2rem;
+    }
+  }
+  
+  
+
+  

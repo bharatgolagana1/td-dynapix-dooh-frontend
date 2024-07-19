@@ -1,0 +1,22 @@
+/* screen-map.component.scss */
+.map-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%; /* Adjust width as needed */
+  max-width: 600px; /* Adjust max-width as needed */
+  position: relative;
+  top: 40px; 
+  
+
+
+  .card-body {
+    padding: auto;
+  }
+
+  .map-container {
+    height: 470px; /* Adjust height as needed */
+    width: 100%; /* Ensure the map container takes full width */
+  }
+}

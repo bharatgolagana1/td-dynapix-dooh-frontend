@@ -1,0 +1,34 @@
+<div class="available-screens-container">
+  <div class="available-screens-header">Available Screens</div>
+</div>
+
+<mat-card class="full-card-container">
+  <div class="screens-content">
+    <div class="left-half">
+      <div class="map-and-cards-container">
+        <app-screen-map class="map-card"></app-screen-map>
+      </div>
+    </div>
+
+    <div class="right-half">
+      <div class="create-scheduler-card">
+        <mat-card *ngFor="let a of screenCards" class="create-scheduler-card--container">
+          <div class="create-scheduler-card--content">
+            <div>
+              <img [src]="a.imageUrls[0]" class="create-scheduler-card--image" (click)="openImageDialog(a)" />
+            </div>
+            <div>
+              <div class="create-scheduler-card--name">{{ a.screenName }}</div>
+              <div class="create-scheduler-card--address">{{ a.address }}</div>
+              <div>
+                <div class="create-scheduler-card--subcontent">Size: {{ a.size }}</div>
+                <div class="create-scheduler-card--subcontent">SFT: {{ a.SFT }}</div>
+                <div class="create-scheduler-card--subcontent">Next Available Date: {{ a.NextAvailableDate | date }}</div>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</mat-card>

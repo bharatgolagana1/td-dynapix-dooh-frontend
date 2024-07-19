@@ -19,7 +19,8 @@ import { DeleteScreenComponent } from './components/delete-screen/delete-screen.
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UpdateSchedulerComponent } from './components/update-scheduler/update-scheduler.component';
 import { DatePipe } from '@angular/common';
-
+import { ScreenMapComponent } from './components/screen-map/screen-map.component';
+import { PublicScreensComponent } from './components/public-screens/public-screens.component';
 @NgModule({
   declarations: [
     CreateSchedulerComponent,
@@ -31,7 +32,9 @@ import { DatePipe } from '@angular/common';
     PlaySchedulerComponent,
     SchedulerDeleteComponent,
     DeleteScreenComponent,
-    UpdateSchedulerComponent
+    UpdateSchedulerComponent,
+    ScreenMapComponent,
+    PublicScreensComponent
   ],
   imports: [CommonModule, MaterialModule,SchedulerRoutingModule,FormsModule,ReactiveFormsModule,SlickCarouselModule,MatTooltipModule],
   exports: [CreateSchedulerComponent, ListSchedulerComponent,VideoDialogComponent],
