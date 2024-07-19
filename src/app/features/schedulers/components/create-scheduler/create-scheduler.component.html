@@ -1,6 +1,6 @@
 <div class="create-scheduler-main--container">
-  <div class="create-scheduler--title">New Scheduler</div>
   <form [formGroup]="createSchedulerForm">
+    <div class="create-scheduler--title">New Scheduler</div>
     <div class="create-scheduler--content">
       <mat-form-field appearance="outline">
         <mat-label>Scheduler Name</mat-label>
@@ -114,7 +114,8 @@
     <div class="continue-button-description">
       Click on Continue to Select Available Screens
     </div>
-
+   <div style="padding-top: 1rem;"><mat-divider></mat-divider></div>
+    
     <div>
       <div class="scheduler-available--heading">Available Content</div>
       <app-video-thumbnails-list
@@ -122,6 +123,7 @@
       ></app-video-thumbnails-list>
     </div>
 
+    <div style="padding-top: 1rem;"><mat-divider></mat-divider></div>
     <div #availableScreensSection *ngIf="showAvailableScreens">
       <div class="scheduler-available--heading">Available Screens</div>
       <div *ngIf="showAPILoader" class="spinner-container">

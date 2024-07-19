@@ -1,15 +1,17 @@
 .organization--main-container{
 padding: 2rem;
+margin: 3rem 2rem;
+background-color: white;
+border-radius: 0.5rem;
 }
 
 .create-organization--title {
 color: #757fef;
 font-family: Manrope;
-font-size: 1.75rem;
+font-size: 1.5rem;
 font-style: normal;
 font-weight: 600;
 line-height: 2rem;
-margin-bottom: 3.25rem;
 }
 .organization--form-fields{
 display: grid;

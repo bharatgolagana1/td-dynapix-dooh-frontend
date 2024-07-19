@@ -1,10 +1,19 @@
-.list-screen--container{
-    margin: 2rem;
+.list-screen-container{
+    margin: 3rem 2rem;
+    background-color: white;
+    border-radius: 0.5rem;
     }
+
+.list-screen-search{
+    padding: 2rem 2rem 0rem 2rem;
+}
+.list-table-container{
+    padding: 0rem 2rem;
+}
 .list-screen--title{
     color: #757fef;
     font-family: Manrope;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-style: normal;
     font-weight: 600;
     line-height: 2rem;
