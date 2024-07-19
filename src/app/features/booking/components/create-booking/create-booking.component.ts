@@ -1,10 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild, ChangeDetectorRef, NgZone } from '@angular/core';
+import {Component,ElementRef,OnInit,ViewChild,ChangeDetectorRef,NgZone,AfterViewInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import * as moment from 'moment';
-import { NotificationService } from 'src/app/core/services/notification.service';
-import { LoaderService } from 'src/app/core/services/loader.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
 import { BookingService } from '../../booking.service';
 import { debounceTime, Subject } from 'rxjs';
 import { ImageDialogComponent } from 'src/app/features/screen/components/image-dialog/image-dialog.component';
@@ -32,7 +28,7 @@ export interface Screen {
   templateUrl: './create-booking.component.html',
   styleUrls: ['./create-booking.component.scss']
 })
-export class CreateBookingComponent implements OnInit {
+export class CreateBookingComponent implements OnInit, AfterViewInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
   bookingForm: FormGroup;
   screens: Screen[] = [];
@@ -62,10 +58,12 @@ export class CreateBookingComponent implements OnInit {
     { value: 'Active', label: 'Active' },
     { value: 'Inactive', label: 'Inactive' }
   ];
+
   categoryOption = [
-    {value: 'Internal', label: 'Internal'},
-    {value:'External', label: 'External'}
-  ]
+    { value: 'Internal', label: 'Internal' },
+    { value: 'External', label: 'External' }
+  ];
+
   slotSize = [
     { label: '5 sec', value: 5 },
     { label: '10 sec', value: 10 },
@@ -92,22 +90,20 @@ export class CreateBookingComponent implements OnInit {
       customerName: ['', Validators.required],
       slotSize: ['', Validators.required],
       totalAmount: ['', Validators.required],
-      mediaContent: [[], Validators.required],
+      categoryType: ['Internal', Validators.required],
       dateRange: this.fb.group({
         startDate: ['', Validators.required],
         endDate: ['', Validators.required],
       }),
-      categoryType: ['', Validators.required],
-      screenIds: [[], Validators.required],
       filters: this.fb.group({
         addressOrPincode: [''],
         screenType: ['Both'],
         size: ['All'],
         status: ['Both'],
         date: ['All Time'],
-        fromDate: null,
-        toDate: null
-      })
+      }),
+      mediaContent: [null],
+      screenIds: [[]],
     });
   }
 
@@ -116,6 +112,10 @@ export class CreateBookingComponent implements OnInit {
       this.loadScreens();
     });
     this.loadScreens();
+  }
+
+  ngAfterViewInit() {
+    this.cdr.detectChanges(); // Ensure the view is fully initialized
   }
 
   onFilterChange() {
@@ -152,12 +152,18 @@ export class CreateBookingComponent implements OnInit {
   loadScreens() {
     this.bookingService.screensList(this.bookingForm.get('filters')?.value).subscribe(
       (data: { screens: Screen[] }) => {
-        this.screens = data.screens.map(screen => ({ ...screen, selected: false }));
-        this.isLoading = false;
+        this.ngZone.run(() => {
+          this.screens = data.screens.map(screen => ({ ...screen, selected: false }));
+          this.isLoading = false;
+          this.cdr.detectChanges(); // Ensure changes are detected
+        });
       },
       error => {
         console.error('Error fetching screens:', error);
-        this.isLoading = true;
+        this.ngZone.run(() => {
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        });
       }
     );
   }
@@ -175,13 +181,12 @@ export class CreateBookingComponent implements OnInit {
       .map(s => s.Guuid)
       .filter(id => !!id);
 
-    this.bookingForm.patchValue({
-      screenIds: selectedScreenIds
+    this.ngZone.run(() => {
+      this.bookingForm.patchValue({
+        screenIds: selectedScreenIds
+      });
+      this.cdr.detectChanges();
     });
-  }
-
-  getFileUrl(file: File): string {
-    return URL.createObjectURL(file);
   }
 
   openFileSelector(): void {
@@ -210,49 +215,56 @@ export class CreateBookingComponent implements OnInit {
   }
 
   updateMediaContent(): void {
-    this.bookingForm.patchValue({
-      mediaContent: this.imageFiles
+    const formData = new FormData();
+    this.imageFiles.forEach(file => formData.append('mediaContent', file));
+
+    this.ngZone.run(() => {
+      this.bookingForm.patchValue({
+        mediaContent: formData
+      });
+      this.cdr.detectChanges(); // Trigger change detection
     });
-    this.cdr.detectChanges(); // Trigger change detection
   }
 
   removeFile(index: number): void {
-    this.imageFiles.splice(index, 1);
-    this.updateMediaContent();
+    this.ngZone.run(() => {
+      this.imageFiles.splice(index, 1);
+      this.updateMediaContent();
+    });
   }
+
 
   onCreateBooking(): void {
-    if (this.bookingForm.valid) {
-      const formData = new FormData();
-      const formValues = this.bookingForm.value;
-
-      // Append form values to FormData
-      formData.append('customerName', formValues.customerName);
-      formData.append('slotSize', formValues.slotSize);
-      formData.append('totalAmount', formValues.totalAmount);
-      formData.append('categoryType', formValues.categoryType);
-      formData.append('screenIds', JSON.stringify(formValues.screenIds)); // Converting array to JSON string
-
-      // Append date range values to FormData
-      formData.append('startDate', formValues.dateRange.startDate);
-      formData.append('endDate', formValues.dateRange.endDate);
-
-      // Append media files to FormData
-      formValues.mediaContent.forEach((file: File) => {
-        formData.append('mediaContent', file, file.name);
-      });
-
-      // Make the API call
-      this.bookingService.createBooking(formData).subscribe({
-        next: response => {
-          console.log('Booking created successfully', response);
-        },
-        error: error => {
-          console.error('Error creating booking', error);
-        }
-      });
-    } else {
-      console.log('Form is invalid');
+    if (this.bookingForm.invalid) {
+      return;
     }
+  
+    const formValues = this.bookingForm.value;
+    const formData = new FormData();
+  
+    formData.append('customerName', formValues.customerName);
+    formData.append('slotSize', formValues.slotSize);
+    formData.append('totalAmount', formValues.totalAmount);
+    formData.append('categoryType', formValues.categoryType);
+    formData.append('startDate', formValues.dateRange.startDate);
+    formData.append('endDate', formValues.dateRange.endDate);
+    formData.append('screenIds', JSON.stringify(formValues.screenIds));
+  
+    this.imageFiles.forEach((file, index) => {
+      formData.append(`mediaContent[${index}]`, file);
+    });
+  
+    this.bookingService.createBooking(formData).subscribe(
+      response => {
+        console.log('Booking created:', response);
+        this.bookingForm.reset();
+        this.imageFiles = [];
+        this.loadScreens(); // Reload screens after booking creation
+      },
+      error => {
+        console.error('Error creating booking:', error);
+      }
+    );
   }
+  
 }

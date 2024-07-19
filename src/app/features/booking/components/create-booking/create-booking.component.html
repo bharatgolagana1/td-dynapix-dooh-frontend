@@ -66,29 +66,32 @@
 
         <div class="create-booking-card--container">
           <div class="create-booking--title">Media</div>
-          <div>
-            <input type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none" #fileInput multiple name="screenImage">
-            <div class="drop-area" (click)="openFileSelector()" (drop)="onFileDropped($event)" (dragover)="onDragOver($event)">
-              <img src="assets/images/upload-file.svg"/>
-              <p>Drag & Drop to Upload Image</p>
-              <p class="Browse-file--content">or browse</p>
-              <div class="image-container">
-                <ng-container *ngFor="let file of imageFiles; let i = index">
-                  <div class="image-wrapper">
-                    <img [src]="getFileUrl(file)" alt="Uploaded Image">
-                    <div class="remove-button-container">
-                      <button mat-icon-button class="remove-button" (click)="removeFile(i)">
-                        <mat-icon>remove_circle</mat-icon>
-                      </button>
-                    </div>
-                  </div>
-                </ng-container>
-
-                </div>
-              
-            </div>
+          <div
+          class="drag-drop-area"
+          (dragover)="onDragOver($event)"
+          (drop)="onFileDropped($event)"
+          (click)="openFileSelector()"
+        >
+          <p>Drag and drop files here or click to select files</p>
+        </div>
+      
+        <!-- File Input -->
+        <input
+          type="file"
+          #fileInput
+          (change)="onFileSelected($event)"
+          multiple
+          hidden
+        />
+      
+        <!-- File List -->
+        <div *ngIf="imageFiles.length > 0">
+          <div *ngFor="let file of imageFiles; let i = index" class="file-item">
+            <span>{{ file.name }}</span>
+            <button type="button" (click)="removeFile(i)">Remove</button>
           </div>
         </div>
+         </div>
 
         <div class="create-booking-card--container">
           <div class="create-booking--title">Available Screens</div>
@@ -170,7 +173,7 @@
     <input type="hidden" formControlName="screenIds">
 
     <div class="create-booking-footer--content">
-      <button type="submit" mat-raised-button color="primary">Create Booking</button>
+      <button type="submit" [disabled]="bookingForm.invalid" mat-raised-button color="primary">Create Booking</button>
     </div>
   </form>
 </div>
