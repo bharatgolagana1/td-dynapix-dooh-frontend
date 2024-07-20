@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  baseApiUrl: 'http://localhost:3001',
+  baseApiUrl: 'https://devapi.dynapix.in',
   keycloakUrl: 'https://keycloak.dynapix.in',
   tenantId: '123456',
 };
