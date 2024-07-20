@@ -1,15 +1,20 @@
-
+.list-user--container{
+    background-color: white; 
+    margin:3rem 2rem; 
+    border-radius: 0.5rem;
+}
 .mat-table {
 width: 100%;
 }
 .list-user--title {
 color: #757fef;
 font-family: Manrope;
-font-size: 1.75rem;
+font-size: 1.5rem;
 font-style: normal;
 font-weight: 600;
 line-height: 2rem;
-margin-bottom: 3.25rem;
+margin-bottom: 2rem;
+padding-top: 2rem;
 }
 .mat-row, .mat-header-row {
 display: flex;

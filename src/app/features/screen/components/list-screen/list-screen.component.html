@@ -1,6 +1,6 @@
-<div class="list-screen--container">
+<div class="list-screen-container">
+  <div class="list-screen-search">
   <div class="list-screen--title">List Screen</div>
-
   <mat-form-field appearance="outline" [style.fontSize.px]="14">
     <mat-label class="small-label">Search</mat-label>
     <input
@@ -14,7 +14,7 @@
       <mat-icon>search</mat-icon>
     </button>
   </mat-form-field>
-
+  </div>
   <div *ngIf="isLoading" class="spinner-container">
     <mat-spinner diameter="70"></mat-spinner>
     <div>list-screens loading....</div>
@@ -23,7 +23,7 @@
   <div *ngIf="!isLoading && !screens.length" class="user-not-found-message">
     No screens found
   </div>
-
+<div class="list-table-container">
   <table
     *ngIf="!isLoading && screens.length"
     mat-table
@@ -139,6 +139,7 @@
     showFirstLastButtons="true"
   >
   </mat-paginator>
+</div>
 </div>
 
 

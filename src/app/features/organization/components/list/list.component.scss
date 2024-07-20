@@ -1,11 +1,16 @@
 .list-organization--title {
 color: #757fef;
 font-family: Manrope;
-font-size: 1.75rem;
+font-size: 1.5rem;
 font-style: normal;
 font-weight: 600;
 line-height: 2rem;
-margin-bottom: 3rem;
+margin-bottom: 2rem;
+}
+.list-organization-container{
+    background-color: white;
+    margin:3rem 2rem;
+    border-radius: 0.5rem;
 }
 .list-organization--table{
 padding: 2rem;
