@@ -1,5 +1,19 @@
-import {Component,ElementRef,OnInit,ViewChild,ChangeDetectorRef,NgZone,AfterViewInit} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  ChangeDetectorRef,
+  NgZone,
+  AfterViewInit,
+} from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { BookingService } from '../../booking.service';
 import { debounceTime, Subject } from 'rxjs';
@@ -26,7 +40,7 @@ export interface Screen {
 @Component({
   selector: 'app-create-booking',
   templateUrl: './create-booking.component.html',
-  styleUrls: ['./create-booking.component.scss']
+  styleUrls: ['./create-booking.component.scss'],
 })
 export class CreateBookingComponent implements OnInit, AfterViewInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
@@ -44,24 +58,24 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     { value: 'This Month', label: 'This Month' },
     { value: 'Last Month', label: 'Last Month' },
     { value: 'This Year', label: 'This Year' },
-    { value: 'Date Range', label: 'Date Range' }
+    { value: 'Date Range', label: 'Date Range' },
   ];
 
   screenTypeOptions = [
     { value: 'Both', label: 'Both' },
     { value: 'Tvs', label: 'Tvs' },
-    { value: 'Billboard', label: 'Billboard' }
+    { value: 'Billboard', label: 'Billboard' },
   ];
 
   statusOptions = [
     { value: 'Both', label: 'Both' },
     { value: 'Active', label: 'Active' },
-    { value: 'Inactive', label: 'Inactive' }
+    { value: 'Inactive', label: 'Inactive' },
   ];
 
   categoryOption = [
     { value: 'Internal', label: 'Internal' },
-    { value: 'External', label: 'External' }
+    { value: 'External', label: 'External' },
   ];
 
   slotSize = [
@@ -102,7 +116,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
         status: ['Both'],
         date: ['All Time'],
       }),
-      mediaContent: [null],
+      mediaContent: this.fb.array([]),
       screenIds: [[]],
     });
   }
@@ -131,15 +145,15 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
       width: '300px',
       data: {
         fromDate: this.bookingForm.get('filters')?.get('fromDate')?.value,
-        toDate: this.bookingForm.get('filters')?.get('toDate')?.value
-      }
+        toDate: this.bookingForm.get('filters')?.get('toDate')?.value,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.bookingForm.get('filters')?.patchValue({
           fromDate: result.fromDate,
-          toDate: result.toDate
+          toDate: result.toDate,
         });
         this.filterSubject.next(this.bookingForm.get('filters')?.value);
       } else {
@@ -150,40 +164,45 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
   }
 
   loadScreens() {
-    this.bookingService.screensList(this.bookingForm.get('filters')?.value).subscribe(
-      (data: { screens: Screen[] }) => {
-        this.ngZone.run(() => {
-          this.screens = data.screens.map(screen => ({ ...screen, selected: false }));
-          this.isLoading = false;
-          this.cdr.detectChanges(); // Ensure changes are detected
-        });
-      },
-      error => {
-        console.error('Error fetching screens:', error);
-        this.ngZone.run(() => {
-          this.isLoading = false;
-          this.cdr.detectChanges();
-        });
-      }
-    );
+    this.bookingService
+      .screensList(this.bookingForm.get('filters')?.value)
+      .subscribe(
+        (data: { screens: Screen[] }) => {
+          this.ngZone.run(() => {
+            this.screens = data.screens.map((screen) => ({
+              ...screen,
+              selected: false,
+            }));
+            this.isLoading = false;
+            this.cdr.detectChanges(); // Ensure changes are detected
+          });
+        },
+        (error) => {
+          console.error('Error fetching screens:', error);
+          this.ngZone.run(() => {
+            this.isLoading = false;
+            this.cdr.detectChanges();
+          });
+        }
+      );
   }
 
   openDialog(imageUrls: string[]) {
     this.dialog.open(ImageDialogComponent, {
-      data: { images: imageUrls }
+      data: { images: imageUrls },
     });
   }
 
   onScreenSelectionChange(screen: Screen): void {
     screen.selected = !screen.selected;
     const selectedScreenIds = this.screens
-      .filter(s => s.selected)
-      .map(s => s.Guuid)
-      .filter(id => !!id);
+      .filter((s) => s.selected)
+      .map((s) => s.Guuid)
+      .filter((id) => !!id);
 
     this.ngZone.run(() => {
       this.bookingForm.patchValue({
-        screenIds: selectedScreenIds
+        screenIds: selectedScreenIds,
       });
       this.cdr.detectChanges();
     });
@@ -215,14 +234,10 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
   }
 
   updateMediaContent(): void {
-    const formData = new FormData();
-    this.imageFiles.forEach(file => formData.append('mediaContent', file));
-
-    this.ngZone.run(() => {
-      this.bookingForm.patchValue({
-        mediaContent: formData
-      });
-      this.cdr.detectChanges(); // Trigger change detection
+    const mediaArray = this.bookingForm.get('mediaContent') as FormArray;
+    mediaArray.clear();
+    this.imageFiles.forEach((file) => {
+      mediaArray.push(new FormControl(file));
     });
   }
 
@@ -233,38 +248,36 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   onCreateBooking(): void {
     if (this.bookingForm.invalid) {
       return;
     }
-  
+
     const formValues = this.bookingForm.value;
     const formData = new FormData();
-  
     formData.append('customerName', formValues.customerName);
-    formData.append('slotSize', formValues.slotSize);
-    formData.append('totalAmount', formValues.totalAmount);
+    formData.append('slotSize', formValues.slotSize.toString());
+    formData.append('totalAmount', formValues.totalAmount.toString());
     formData.append('categoryType', formValues.categoryType);
     formData.append('startDate', formValues.dateRange.startDate);
     formData.append('endDate', formValues.dateRange.endDate);
     formData.append('screenIds', JSON.stringify(formValues.screenIds));
-  
-    this.imageFiles.forEach((file, index) => {
-      formData.append(`mediaContent[${index}]`, file);
-    });
-  
+    if (formValues.mediaContent && formValues.mediaContent.length > 0) {
+      for (let file of formValues.mediaContent) {
+        formData.append('mediaContent', file, file.name);
+      }
+    }
+
     this.bookingService.createBooking(formData).subscribe(
-      response => {
+      (response) => {
         console.log('Booking created:', response);
         this.bookingForm.reset();
         this.imageFiles = [];
-        this.loadScreens(); // Reload screens after booking creation
+        this.loadScreens();
       },
-      error => {
+      (error) => {
         console.error('Error creating booking:', error);
       }
     );
   }
-  
 }
