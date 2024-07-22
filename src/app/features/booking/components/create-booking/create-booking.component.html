@@ -5,6 +5,7 @@
         <div class="create-booking-card--container">
           <div class="create-booking--title">Booking Details</div>
           <div class="create-booking-card--content">
+      
             <mat-form-field appearance="outline">
               <mat-label>Customer Name</mat-label>
               <input matInput formControlName="customerName" />
@@ -15,12 +16,8 @@
 
             <mat-form-field appearance="outline">
               <mat-label>Slot Size</mat-label>
-              <mat-select formControlName="slotSize" required >
-                <mat-option
-                  *ngFor="let option of slotSize"
-                  [value]="option.value"
-                  type="number"
-                >
+              <mat-select formControlName="slotSize" required>
+                <mat-option *ngFor="let option of slotSize" [value]="option.value">
                   {{ option.label }}
                 </mat-option>
               </mat-select>
@@ -53,6 +50,7 @@
               </mat-hint>
             </mat-form-field>
 
+
             <mat-form-field appearance="outline">
               <mat-label>Category Type</mat-label>
               <mat-select formControlName="categoryType" required>
@@ -77,7 +75,6 @@
           <p>Drag and drop files here or click to select files</p>
         </div>
       
-        <!-- File Input -->
         <input
           type="file"
           #fileInput
@@ -86,7 +83,6 @@
           hidden
         />
       
-        <!-- File List -->
         <div *ngIf="imageFiles.length > 0">
           <div *ngFor="let file of imageFiles; let i = index" class="file-item">
             <span>{{ file.name }}</span>
@@ -101,6 +97,7 @@
         <div class="create-booking-card--container">
           <div class="create-booking--title">Available Screens</div>
           <div class="create-booking-container-header--content" formGroupName="filters">
+      
             <mat-form-field appearance="outline">
               <mat-label>Address / Pincode</mat-label>
               <input matInput formControlName="addressOrPincode" (ngModelChange)="onFilterChange()" placeholder="Search by address or pincode" />
@@ -109,6 +106,7 @@
               </button>
             </mat-form-field>
 
+        
             <mat-form-field appearance="outline">
               <mat-label>Screen Type</mat-label>
               <mat-select formControlName="screenType" (selectionChange)="onFilterChange()">
@@ -118,6 +116,7 @@
               </mat-select>
             </mat-form-field>
 
+        
             <mat-form-field appearance="outline">
               <mat-label>Size</mat-label>
               <mat-select formControlName="size" (selectionChange)="onFilterChange()">
@@ -128,6 +127,7 @@
               </mat-select>
             </mat-form-field>
 
+  
             <mat-form-field appearance="outline">
               <mat-label>Status</mat-label>
               <mat-select formControlName="status" (selectionChange)="onFilterChange()">
@@ -137,6 +137,7 @@
               </mat-select>
             </mat-form-field>
 
+          
             <mat-form-field appearance="outline">
               <mat-label>Date</mat-label>
               <mat-select formControlName="date" (selectionChange)="onFilterChange()">
@@ -147,6 +148,7 @@
             </mat-form-field>
           </div>
 
+        
           <div class="create-booking-screens-card">
             <mat-card *ngFor="let a of screens" class="create-booking-screen-card--container">
               <div class="create-booking-screen-card--content">
@@ -163,9 +165,7 @@
                   </div>
                 </div>
                 <div class="create-booking-card--actions">
-                  <div>
-                    <mat-checkbox class="checkbox" color="primary" (change)="onScreenSelectionChange(a)"></mat-checkbox>
-                  </div>
+                  <mat-checkbox class="checkbox" color="primary" (change)="onScreenSelectionChange(a)"></mat-checkbox>
                 </div>
               </div>
             </mat-card>
@@ -173,7 +173,6 @@
         </div>
       </mat-card>
     </div>
-
 
     <div class="create-booking-footer--content">
       <button type="submit" [disabled]="bookingForm.invalid" mat-raised-button color="primary">Create Booking</button>

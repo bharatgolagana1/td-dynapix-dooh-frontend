@@ -52,47 +52,11 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
 
   private filterSubject = new Subject<any>();
 
-  dateOptions = [
-    { value: 'All Time', label: 'All Time' },
-    { value: 'Today', label: 'Today' },
-    { value: 'Yesterday', label: 'Yesterday' },
-    { value: 'This Month', label: 'This Month' },
-    { value: 'Last Month', label: 'Last Month' },
-    { value: 'This Year', label: 'This Year' },
-    { value: 'Date Range', label: 'Date Range' },
-  ];
-
-  screenTypeOptions = [
-    { value: 'Both', label: 'Both' },
-    { value: 'Tvs', label: 'Tvs' },
-    { value: 'Billboard', label: 'Billboard' },
-  ];
-
-  statusOptions = [
-    { value: 'Both', label: 'Both' },
-    { value: 'Active', label: 'Active' },
-    { value: 'Inactive', label: 'Inactive' },
-  ];
-
-  categoryOption = [
-    { value: 'Internal', label: 'Internal' },
-    { value: 'External', label: 'External' },
-  ];
-
-  slotSize = [
-    { label: '5 sec', value: 5 },
-    { label: '10 sec', value: 10 },
-    { label: '15 sec', value: 15 },
-    { label: '20 sec', value: 20 },
-    { label: '25 sec', value: 25 },
-    { label: '30 sec', value: 30 },
-    { label: '35 sec', value: 35 },
-    { label: '40 sec', value: 40 },
-    { label: '45 sec', value: 45 },
-    { label: '50 sec', value: 50 },
-    { label: '55 sec', value: 55 },
-    { label: '60 sec', value: 60 },
-  ];
+  dateOptions: any[] = [];
+  screenTypeOptions: any[] = [];
+  statusOptions: any[] = [];
+  categoryOption: any[] = [];
+  slotSize: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -128,10 +92,29 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
       this.loadScreens();
     });
     this.loadScreens();
+    this.loadOptions();
   }
 
   ngAfterViewInit() {
     this.cdr.detectChanges();
+  }
+
+  loadOptions(): void {
+    this.bookingService.getDateOptions().subscribe((data) => {
+      this.dateOptions = data;
+    });
+    this.bookingService.getScreenTypeOptions().subscribe((data) => {
+      this.screenTypeOptions = data;
+    });
+    this.bookingService.getStatusOptions().subscribe((data) => {
+      this.statusOptions = data;
+    });
+    this.bookingService.getCategoryOptions().subscribe((data) => {
+      this.categoryOption = data;
+    });
+    this.bookingService.getSlotSizeOptions().subscribe((data) => {
+      this.slotSize = data;
+    });
   }
 
   onFilterChange() {

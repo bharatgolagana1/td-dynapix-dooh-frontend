@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 export class SchedulerService {
 ;
   private baseApiUrl = environment.baseApiUrl;
-  private mediaUrl = 'http://localhost:3001/media'
+  private mediaUrl = environment.baseApiUrl;
   private tenantId =  environment.tenantId;
 
   constructor(private http: HttpClient) {}
@@ -31,7 +31,7 @@ export class SchedulerService {
   }
 
   getVideos(): Observable<any[]> {
-    const url = `${this.mediaUrl}?tenantId=${this.tenantId}`;
+    const url = `${this.mediaUrl}/media?tenantId=${this.tenantId}`;
     console.log(`Fetching videos from URL: ${url}`);
     return this.http.get<any[]>(url);
 }

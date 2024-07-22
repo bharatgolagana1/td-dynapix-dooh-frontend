@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class BookingService {
   private baseApiUrl = environment.baseApiUrl;
+  private apiUrl = 'http://localhost:3000/settings/options';
 
   constructor(private http: HttpClient) {}
 
@@ -45,5 +46,25 @@ export class BookingService {
       }
     }
     return this.http.get<any>(`${this.baseApiUrl}/screen`, { params });
+  };
+
+  getDateOptions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/date`);
+  }
+
+  getScreenTypeOptions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/screenType`);
+  }
+
+  getStatusOptions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/status`);
+  }
+
+  getCategoryOptions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/category`);
+  }
+
+  getSlotSizeOptions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/slotSize`);
   }
 }
