@@ -101,13 +101,13 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     private ngZone: NgZone
   ) {
     this.bookingForm = this.fb.group({
-      customerName: ['', Validators.required],
-      slotSize: ['', Validators.required],
-      totalAmount: ['', Validators.required],
-      categoryType: ['Internal', Validators.required],
+      customerName: new FormControl('', [Validators.required]),
+      slotSize: new FormControl('', [Validators.required]),
+      totalAmount: new FormControl('', [Validators.required]),
+      categoryType:new FormControl ('Internal', [Validators.required]),
       dateRange: this.fb.group({
-        startDate: ['', Validators.required],
-        endDate: ['', Validators.required],
+        startDate: new FormControl('', [Validators.required]),
+        endDate: new FormControl('', [Validators.required]),
       }),
       filters: this.fb.group({
         addressOrPincode: [''],
@@ -129,7 +129,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.cdr.detectChanges(); // Ensure the view is fully initialized
+    this.cdr.detectChanges();
   }
 
   onFilterChange() {
@@ -174,7 +174,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
               selected: false,
             }));
             this.isLoading = false;
-            this.cdr.detectChanges(); // Ensure changes are detected
+            this.cdr.detectChanges(); 
           });
         },
         (error) => {
@@ -197,9 +197,9 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     screen.selected = !screen.selected;
     const selectedScreenIds = this.screens
       .filter((s) => s.selected)
-      .map((s) => s.Guuid)
+      .map((s) => s._id)
       .filter((id) => !!id);
-
+      console.log('Selected Screen IDs:', selectedScreenIds);
     this.ngZone.run(() => {
       this.bookingForm.patchValue({
         screenIds: selectedScreenIds,
@@ -252,8 +252,10 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     if (this.bookingForm.invalid) {
       return;
     }
-
+  
     const formValues = this.bookingForm.value;
+    console.log('Form Values:', formValues); 
+  
     const formData = new FormData();
     formData.append('customerName', formValues.customerName);
     formData.append('slotSize', formValues.slotSize.toString());
@@ -261,23 +263,52 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     formData.append('categoryType', formValues.categoryType);
     formData.append('startDate', formValues.dateRange.startDate);
     formData.append('endDate', formValues.dateRange.endDate);
-    formData.append('screenIds', JSON.stringify(formValues.screenIds));
-    if (formValues.mediaContent && formValues.mediaContent.length > 0) {
-      for (let file of formValues.mediaContent) {
-        formData.append('mediaContent', file, file.name);
-      }
-    }
-
+  
+    formValues.screenIds.forEach((screenId: string) => {
+      formData.append('screenIds', screenId);
+    });
+  
+    formValues.mediaContent.forEach((file: File) => {
+      formData.append('mediaContent', file, file.name);
+    });
+  
     this.bookingService.createBooking(formData).subscribe(
       (response) => {
-        console.log('Booking created:', response);
-        this.bookingForm.reset();
-        this.imageFiles = [];
-        this.loadScreens();
+        console.log('Booking created successfully', response);
+        this.resetForm(); 
       },
       (error) => {
         console.error('Error creating booking:', error);
       }
     );
   }
+  
+  resetForm(): void {
+    this.bookingForm.reset({
+      customerName: '',
+      slotSize: '',
+      totalAmount: '',
+      categoryType: 'Internal',
+      dateRange: {
+        startDate: '',
+        endDate: '',
+      },
+      filters: {
+        addressOrPincode: '',
+        screenType: 'Both',
+        size: 'All',
+        status: 'Both',
+        date: 'All Time',
+      },
+      mediaContent: [],
+      screenIds: [],
+    });
+    this.imageFiles = [];
+    this.screens = [];
+    this.isLoading = true;
+    this.loadScreens();
+  }
+  
+  
+  
 }
