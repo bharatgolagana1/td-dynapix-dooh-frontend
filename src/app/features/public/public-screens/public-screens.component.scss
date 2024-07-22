@@ -1,0 +1,90 @@
+.full-card-container {
+  margin-top: 16px;
+}
+
+.screens-content {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+}
+.left-half {
+  flex-basis: 50%;
+  padding: 10px;
+  position: relative;
+  height: 50vh;
+}
+
+.right-half {
+  flex-basis: 50%;
+  padding: 1rem;
+  position: relative;
+  overflow-y: auto;
+  height: 60vh;
+}
+
+.map-and-cards-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.create-scheduler-card {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 16px; // Space between card items
+}
+
+.create-scheduler-card--container {
+  padding: 1.5rem;
+  display: flex;
+  gap: 2rem;
+  border-radius: 0.3rem;
+  width: 380px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.create-scheduler-card--content {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.create-scheduler-card--image {
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover; // Ensure the image fits within the specified dimensions
+  cursor: pointer;
+}
+
+.mat-card {
+  position: relative;
+}
+
+.available-screens-container {
+  .available-screens-header {
+    padding: 1rem 0 0 0;
+    color: #757fef;
+    font-family: "Manrope", sans-serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 2rem;
+  }
+}
+@media (max-width: 600px) {
+  .screens-content {
+    // flex-wrap: wrap;
+    flex-direction: column;
+  }
+}

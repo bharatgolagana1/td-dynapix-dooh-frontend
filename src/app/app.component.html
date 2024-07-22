@@ -31,26 +31,39 @@
         >
       </a>
 
-      <a mat-list-item (click)="toggleSubNav('organization')" class="parent-link">
+      <a
+        mat-list-item
+        (click)="toggleSubNav('organization')"
+        class="parent-link"
+      >
         <span class="dashboard--title">
           <img
             class="users-logo--image"
             src="assets/icons/organization.svg"
             alt="logo"
           />
-          Organization</span>
-          <div class="expand-icon-container">
-            <mat-icon *ngIf="isSubNavOpen('organization')">expand_less</mat-icon>
-            <mat-icon *ngIf="!isSubNavOpen('organization')">expand_more</mat-icon>
-          </div>
+          Organization</span
+        >
+        <div class="expand-icon-container">
+          <mat-icon *ngIf="isSubNavOpen('organization')">expand_less</mat-icon>
+          <mat-icon *ngIf="!isSubNavOpen('organization')">expand_more</mat-icon>
+        </div>
       </a>
 
       <mat-nav-list *ngIf="isSubNavOpen('organization')">
-        <a mat-list-item routerLink="/organization/organization">Create Organization</a>
+        <a mat-list-item routerLink="/organization/organization"
+          >Create Organization</a
+        >
       </mat-nav-list>
 
       <a mat-list-item (click)="toggleSubNav('booking')" class="parent-link">
-        <span class="dashboard--title"><img class="users-logo--image" src="assets/icons/screen.svg" alt="logo">Booking</span>
+        <span class="dashboard--title"
+          ><img
+            class="users-logo--image"
+            src="assets/icons/screen.svg"
+            alt="logo"
+          />Booking</span
+        >
         <div class="expand-icon-container">
           <mat-icon *ngIf="isSubNavOpen('booking')">expand_less</mat-icon>
           <mat-icon *ngIf="!isSubNavOpen('booking')">expand_more</mat-icon>
@@ -79,6 +92,9 @@
           >Create Scheduler</a
         >
         <a mat-list-item routerLink="/schedulers/playScheduler">Play</a>
+        <a mat-list-item routerLink="/schedulers/publicScreens"
+          >Public Screens</a
+        >
         <!-- Add more sublinks as needed -->
       </mat-nav-list>
 
@@ -97,7 +113,6 @@
       </a>
       <mat-nav-list *ngIf="isSubNavOpen('screen')">
         <a mat-list-item routerLink="/screen/createScreens">Create screens</a>
-        <!-- Add more sublinks as needed -->
       </mat-nav-list>
       <a mat-list-item (click)="toggleSubNav('media')" class="parent-link">
         <span class="dashboard--title"
@@ -138,6 +153,7 @@
     <mat-toolbar
       color="primary"
       class="election-campaign-toolbar sticky-toolbar"
+      *ngIf="showToolBar"
     >
       <div class="toolbar-header">
         <button mat-icon-button (click)="sidenav.toggle()" class="profile-btn">

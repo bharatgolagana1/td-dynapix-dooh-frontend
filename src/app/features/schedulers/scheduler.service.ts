@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class SchedulerService {
+;
   private baseApiUrl = environment.baseApiUrl;
   private mediaUrl = 'http://localhost:3001/media'
   private tenantId =  environment.tenantId;
@@ -14,6 +15,10 @@ export class SchedulerService {
 
   createScheduler(schedulerData: any): Observable<any> {
     return this.http.post<any>(`${this.baseApiUrl}/scheduler`, schedulerData);
+  }
+
+  getScreen(id: string): Observable<any> {
+    return this.http.get<any>(`${this.baseApiUrl}/screens/${id}`);
   }
 
   getSchedulers(
@@ -53,12 +58,41 @@ export class SchedulerService {
     return this.http.get<any>(`${this.baseApiUrl}/scheduler/${schedulerId}`);
   }
 
-  getScreens(): Observable<any> {
-    return this.http.get(`${this.baseApiUrl}/screens`);
-  }
   
   getAvailableScreens(startDate: string, endDate: string): Observable<any> {
     const url = `${this.baseApiUrl}/scheduler/available-screens?startDate=${startDate}&endDate=${endDate}`;
     return this.http.get<any>(url);
   }
+
+  // screensList method added from ScreenService
+  screensList(filters: any): Observable<any> {
+    let params = new HttpParams();
+    if (filters.addressOrPincode) {
+      params = params.set('addressOrPincode', filters.addressOrPincode);
+    }
+    if (filters.screenType !== 'Both') {
+      params = params.set('screenType', filters.screenType);
+    }
+    if (filters.size !== 'All') {
+      params = params.set('size', filters.size);
+    }
+    if (filters.status !== 'Both') {
+      params = params.set('status', filters.status);
+    }
+    if (filters.date !== 'All Time') {
+      params = params.set('date', filters.date);
+      if (filters.date === 'Date Range') {
+        if (filters.fromDate) {
+          params = params.set('fromDate', filters.fromDate);
+        }
+        if (filters.toDate) {
+          params = params.set('toDate', filters.toDate);
+        }
+      }
+    }
+    return this.http.get<any>(`${this.baseApiUrl}/screen`, { params });
+  }
 }
+
+
+  

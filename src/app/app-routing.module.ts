@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { AppRoutePaths } from './core/constants';
+import { PublicScreensComponent } from './features/public/public-screens/public-screens.component';
 
 const routes: Routes = [
   { path: '', redirectTo: AppRoutePaths.dashboard, pathMatch: 'full' },
@@ -58,15 +59,18 @@ const routes: Routes = [
     path: AppRoutePaths.organization,
     loadChildren: () =>
       import('./features/organization/organization.module').then(
-        (m) => m.OrganizationModule)
-      },
+        (m) => m.OrganizationModule
+      ),
+  },
   {
     path: AppRoutePaths.booking,
     loadChildren: () =>
-      import('./features/booking/booking.module').then(
-        (m) => m.BookingModule
-      ),
+      import('./features/booking/booking.module').then((m) => m.BookingModule),
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'public-screens',
+    component: PublicScreensComponent,
   },
 ];
 

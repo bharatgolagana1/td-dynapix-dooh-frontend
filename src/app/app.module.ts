@@ -20,6 +20,8 @@ import { BookingModule } from './features/booking/booking.module';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
 import { RolesModule } from './features/roles-matrix/roles.module';
+import { PublicScreensComponent } from './features/public/public-screens/public-screens.component';
+import { ScreenMapComponent } from './features/public/screen-map/screen-map.component';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -47,6 +49,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     MediaUploadComponent,
     CreateUserComponent,
     NewInventoryComponent,
+    PublicScreensComponent,
+    ScreenMapComponent,
   ],
   imports: [
     BrowserModule,

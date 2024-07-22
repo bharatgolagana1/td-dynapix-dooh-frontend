@@ -34,12 +34,19 @@ export class AppComponent implements OnInit {
   };
   isSidenavOpened = true;
   isSmallScreen = false;
-
+  showToolBar = true;
   constructor(
     private breakpointObserver: BreakpointObserver,
     private router: Router,
     private readonly keycloak: KeycloakService
-  ) {}
+  ) {
+    this.router.events.subscribe((event) => {
+      if (router.url.includes('public-screens')) {
+        this.isSidenavOpened = false;
+        this.showToolBar = false;
+      }
+    });
+  }
 
   public isLoggedIn = false;
   public userProfile: KeycloakProfile | null = null;
@@ -55,7 +62,7 @@ export class AppComponent implements OnInit {
 
     if (this.isLoggedIn) {
       this.userProfile = await this.keycloak.loadUserProfile();
-      this.router.navigate(['/']);
+      this.router.navigate([`/${window.location.origin}`]);
     }
   }
 

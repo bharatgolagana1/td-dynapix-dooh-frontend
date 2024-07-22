@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CreateSchedulerComponent } from './components/create-scheduler/create-scheduler.component';
@@ -10,7 +9,7 @@ import { ImageCardsListComponent } from './components/image-cards-list/image-car
 import { SchedulerFormComponentComponent } from './components/scheduler-form-component/scheduler-form-component.component';
 import { VideoDialogComponent } from './components/video-dialog/video-dialog.component';
 import { FormsModule } from '@angular/forms';
-import {ReactiveFormsModule} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { VgApiService } from '@videogular/ngx-videogular/core';
 import { PlaySchedulerComponent } from './components/play-scheduler/play-scheduler.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
@@ -31,14 +30,22 @@ import { DatePipe } from '@angular/common';
     PlaySchedulerComponent,
     SchedulerDeleteComponent,
     DeleteScreenComponent,
-    UpdateSchedulerComponent
+    UpdateSchedulerComponent,
   ],
-  imports: [CommonModule, MaterialModule,SchedulerRoutingModule,FormsModule,ReactiveFormsModule,SlickCarouselModule,MatTooltipModule],
-  exports: [CreateSchedulerComponent, ListSchedulerComponent,VideoDialogComponent],
-  providers: [
-    DatePipe, 
+  imports: [
+    CommonModule,
+    MaterialModule,
+    SchedulerRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SlickCarouselModule,
+    MatTooltipModule,
   ],
- 
+  exports: [
+    CreateSchedulerComponent,
+    ListSchedulerComponent,
+    VideoDialogComponent,
+  ],
+  providers: [DatePipe],
 })
 export class SchedulerModule {}
-

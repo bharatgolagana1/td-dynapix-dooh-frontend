@@ -114,8 +114,8 @@
     <div class="continue-button-description">
       Click on Continue to Select Available Screens
     </div>
-   <div style="padding-top: 1rem;"><mat-divider></mat-divider></div>
-    
+    <div style="padding-top: 1rem"><mat-divider></mat-divider></div>
+
     <div>
       <div class="scheduler-available--heading">Available Content</div>
       <app-video-thumbnails-list
@@ -123,71 +123,95 @@
       ></app-video-thumbnails-list>
     </div>
 
-    <div style="padding-top: 1rem;"><mat-divider></mat-divider></div>
+    <div style="padding-top: 1rem"><mat-divider></mat-divider></div>
     <div #availableScreensSection *ngIf="showAvailableScreens">
       <div class="scheduler-available--heading">Available Screens</div>
-      <div *ngIf="showAPILoader" class="spinner-container">
-        <!-- Loader HTML -->
-        <mat-spinner diameter="70" color="primary"></mat-spinner>
-        <div>Screens Loading...</div>
-      </div>
-      <div class="create-scheduler-card">
-        <mat-card
-          *ngFor="let a of screenCards"
-          class="create-scheduler-card--container"
-        >
-          <div class="create-scheduler-card--content">
-            <div>
-              <img
-                [src]="a.imageUrls[0]"
-                class="create-scheduler-card--image"
-                (click)="openImageDialog(a)"
-              />
-            </div>
-            <div>
-              <div class="create-scheduler-card--name">{{ a.screenName }}</div>
-              <div class="create-scheduler-card--address">{{ a.address }}</div>
-              <div>
-                <div class="create-scheduler-card--subcontent">
-                  Size: {{ a.size }}
-                </div>
-                <div class="create-scheduler-card--subcontent">
-                  SFT: {{ a.SFT }}
-                </div>
-                <div class="create-scheduler-card--subcontent">
-                  Next Available Date: {{ a.NextAvailableDate | date }}
-                </div>
-              </div>
-            </div>
-            <div class="create-scheduler-card--actions">
-              <div>
-                <mat-checkbox
-                  (change)="toggleScreenSelection(a._id, $event.checked)"
-                  [checked]="a.selected"
-                  class="checkbox"
-                  color="primary"
-                ></mat-checkbox>
-              </div>
-            </div>
+    </div>
+
+    <mat-card class="full-card-container">
+      <div
+        #availableScreensSection
+        *ngIf="showAvailableScreens"
+        class="create-scheduler--content"
+      >
+        <!-- Left Half: Screen Map -->
+        <div class="left-half">
+          <div *ngIf="showAPILoader" class="spinner-container">
+            <!-- Loader HTML -->
+            <mat-spinner diameter="70" color="primary"></mat-spinner>
+            <div>Screens Loading...</div>
           </div>
-        </mat-card>
+          <div class="map-and-cards-container">
+            <!-- <app-screen-map class="map-card"></app-screen-map> -->
+          </div>
+        </div>
+
+        <!-- Right Half: Available Screens -->
+        <div class="right-half">
+          <div class="create-scheduler-card">
+            <mat-card
+              *ngFor="let a of screenCards"
+              class="create-scheduler-card--container"
+            >
+              <div class="create-scheduler-card--content">
+                <div>
+                  <img
+                    [src]="a.imageUrls[0]"
+                    class="create-scheduler-card--image"
+                    (click)="openImageDialog(a)"
+                  />
+                </div>
+                <div>
+                  <div class="create-scheduler-card--name">
+                    {{ a.screenName }}
+                  </div>
+                  <div class="create-scheduler-card--address">
+                    {{ a.address }}
+                  </div>
+                  <div>
+                    <div class="create-scheduler-card--subcontent">
+                      Size: {{ a.size }}
+                    </div>
+                    <div class="create-scheduler-card--subcontent">
+                      SFT: {{ a.SFT }}
+                    </div>
+                    <div class="create-scheduler-card--subcontent">
+                      Next Available Date: {{ a.NextAvailableDate | date }}
+                    </div>
+                  </div>
+                </div>
+                <div class="create-scheduler-card--actions">
+                  <div>
+                    <mat-checkbox
+                      (change)="toggleScreenSelection(a._id, $event.checked)"
+                      [checked]="a.selected"
+                      class="checkbox"
+                      color="primary"
+                    ></mat-checkbox>
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+        </div>
       </div>
+    </mat-card>
+
+    <div
+      class="button"
+      [class.disabled]="createSchedulerForm.invalid || isSubmitting"
+    >
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="createSchedulerForm.invalid || isSubmitting"
+        (click)="createSchedulers()"
+      >
+        <span *ngIf="!isSubmitting">Create Scheduler</span>
+        <span *ngIf="isSubmitting">
+          <mat-spinner diameter="20" color="accent"></mat-spinner>
+        </span>
+      </button>
     </div>
   </form>
-  <div
-    class="button"
-    [class.disabled]="createSchedulerForm.invalid || isSubmitting"
-  >
-    <button
-      mat-raised-button
-      color="primary"
-      [disabled]="createSchedulerForm.invalid || isSubmitting"
-      (click)="createSchedulers()"
-    >
-      <span *ngIf="!isSubmitting">Create Scheduler</span>
-      <span *ngIf="isSubmitting">
-        <mat-spinner diameter="20" color="accent"></mat-spinner>
-      </span>
-    </button>
-  </div>
 </div>
