@@ -78,7 +78,7 @@ export class ScreenMapComponent implements OnInit {
         (img, idx) => `
       <img class="slide" src="${img}" style="display:${
           idx === 0 ? 'inline-flex' : 'none'
-        }; width:12rem; height:12rem;justify-content:center; text-align: center;" alt="${screenName}">
+        }; width:100%; height:12rem;justify-content:center; text-align: center;" alt="${screenName}">
     `
       )
       .join('');
@@ -88,9 +88,9 @@ export class ScreenMapComponent implements OnInit {
           <div styles="justify-content: center;">
           ${slides}
         </div>
-        <h3>${screenName}</h3>
-        <p>${address}</p>
-        <p>${locationCoordinates}</p>
+        <h3 style="text-align:start;">${screenName}</h3>
+        <p style="text-align:start;">${address}</p>
+        <p style="text-align:start;">${locationCoordinates}</p>
    
         <div class="slider-controls">
           <button class="prev" onclick="window.changeSlide(-1)">❮</button>
