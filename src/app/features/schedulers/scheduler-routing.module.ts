@@ -4,7 +4,6 @@ import { CreateSchedulerComponent } from './components/create-scheduler/create-s
 import { ListSchedulerComponent } from './components/list-scheduler/list-scheduler.component';
 import { PlaySchedulerComponent } from './components/play-scheduler/play-scheduler.component';
 import { UpdateSchedulerComponent } from './components/update-scheduler/update-scheduler.component';
-import { ScreenMapComponent } from '../public/screen-map/screen-map.component';
 
 const routes: Routes = [
   {
@@ -20,10 +19,7 @@ const routes: Routes = [
     component: PlaySchedulerComponent,
   },
   { path: 'updateScheduler/:id', component: UpdateSchedulerComponent },
-  {
-    path: 'map',
-    component: ScreenMapComponent,
-  },
+
 ];
 
 @NgModule({
