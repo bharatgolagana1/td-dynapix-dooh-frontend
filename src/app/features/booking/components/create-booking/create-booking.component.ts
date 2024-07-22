@@ -19,6 +19,8 @@ import { BookingService } from '../../booking.service';
 import { debounceTime, Subject } from 'rxjs';
 import { ImageDialogComponent } from 'src/app/features/screen/components/image-dialog/image-dialog.component';
 import { DateRangeDialogComponent } from 'src/app/features/screen/components/date-range-dialog/date-range-dialog.component';
+import { Router } from '@angular/router';
+
 
 export interface Screen {
   id: any;
@@ -98,7 +100,8 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private bookingService: BookingService,
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private router: Router
   ) {
     this.bookingForm = this.fb.group({
       customerName: new FormControl('', [Validators.required]),
@@ -275,7 +278,8 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     this.bookingService.createBooking(formData).subscribe(
       (response) => {
         console.log('Booking created successfully', response);
-        this.resetForm(); 
+        this.resetForm();
+        this.router.navigate(['/booking']); 
       },
       (error) => {
         console.error('Error creating booking:', error);
