@@ -1,3 +1,179 @@
-<div class="create-booking-container">
-  <p>Testing</p>
+<div class="create-booking-main--container">
+  <form [formGroup]="bookingForm" (ngSubmit)="onCreateBooking()">
+    <div class="create-booking-main--content">
+      <mat-card class="create-booking-card">
+        <div class="create-booking-card--container">
+          <div class="create-booking--title">Booking Details</div>
+          <div class="create-booking-card--content">
+            <mat-form-field appearance="outline">
+              <mat-label>Customer Name</mat-label>
+              <input matInput formControlName="customerName" />
+              <mat-hint *ngIf="bookingForm.get('customerName')?.touched && bookingForm.get('customerName')?.errors?.['required']" style="color: red">
+                Customer Name is required
+              </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Slot Size</mat-label>
+              <mat-select formControlName="slotSize" required >
+                <mat-option
+                  *ngFor="let option of slotSize"
+                  [value]="option.value"
+                  type="number"
+                >
+                  {{ option.label }}
+                </mat-option>
+              </mat-select>
+              <mat-hint *ngIf="bookingForm.get('slotSize')?.touched && bookingForm.get('slotSize')?.errors?.['required']" style="color: red">
+                Slot Size is required
+              </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Total Amount</mat-label>
+              <input matInput type="number" formControlName="totalAmount" />
+              <mat-hint *ngIf="bookingForm.get('totalAmount')?.touched && bookingForm.get('totalAmount')?.errors?.['required']" style="color: red">
+                Total Amount is required
+              </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Date Range</mat-label>
+              <mat-date-range-input formGroupName="dateRange" [rangePicker]="picker">
+                <input matStartDate formControlName="startDate" placeholder="Start Date" />
+                <input matEndDate formControlName="endDate" placeholder="End Date" />
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+              <mat-hint style="color: red" *ngIf="bookingForm.get('dateRange')?.get('startDate')?.touched && bookingForm.get('dateRange')?.get('startDate')?.errors?.['required']">
+                Start Date is required
+              </mat-hint>
+              <mat-hint style="color: red" *ngIf="bookingForm.get('dateRange')?.get('endDate')?.touched && bookingForm.get('dateRange')?.get('endDate')?.errors?.['required']">
+                End Date is required
+              </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Category Type</mat-label>
+              <mat-select formControlName="categoryType" required>
+                <mat-option *ngFor="let option of categoryOption" [value]="option.value">
+                  {{ option.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="create-booking-card--container">
+          <div class="create-booking--title">Media</div>
+          <div
+          class="drag-drop-area"
+          (dragover)="onDragOver($event)"
+          (drop)="onFileDropped($event)"
+          (click)="openFileSelector()"
+        >
+          <p>Drag and drop files here or click to select files</p>
+        </div>
+      
+        <!-- File Input -->
+        <input
+          type="file"
+          #fileInput
+          (change)="onFileSelected($event)"
+          multiple
+          hidden
+        />
+      
+        <!-- File List -->
+        <div *ngIf="imageFiles.length > 0">
+          <div *ngFor="let file of imageFiles; let i = index" class="file-item">
+            <span>{{ file.name }}</span>
+            <button type="button" (click)="removeFile(i)">Remove</button>
+          </div>
+        </div>
+         </div>
+
+        <div class="create-booking-card--container">
+          <div class="create-booking--title">Available Screens</div>
+          <div class="create-booking-container-header--content" formGroupName="filters">
+            <mat-form-field appearance="outline">
+              <mat-label>Address / Pincode</mat-label>
+              <input matInput formControlName="addressOrPincode" (ngModelChange)="onFilterChange()" placeholder="Search by address or pincode" />
+              <button mat-icon-button matSuffix aria-label="Search" class="small-icon">
+                <mat-icon>search</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Screen Type</mat-label>
+              <mat-select formControlName="screenType" (selectionChange)="onFilterChange()">
+                <mat-option *ngFor="let option of screenTypeOptions" [value]="option.value">
+                  {{ option.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Size</mat-label>
+              <mat-select formControlName="size" (selectionChange)="onFilterChange()">
+                <mat-option value="All">All</mat-option>
+                <mat-option value="Small">Small</mat-option>
+                <mat-option value="Medium">Medium</mat-option>
+                <mat-option value="Large">Large</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status" (selectionChange)="onFilterChange()">
+                <mat-option *ngFor="let option of statusOptions" [value]="option.value">
+                  {{ option.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Date</mat-label>
+              <mat-select formControlName="date" (selectionChange)="onFilterChange()">
+                <mat-option *ngFor="let option of dateOptions" [value]="option.value">
+                  {{ option.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="create-booking-screens-card">
+            <mat-card *ngFor="let a of screens" class="create-booking-screen-card--container">
+              <div class="create-booking-screen-card--content">
+                <div>
+                  <img [src]="a.imageUrls[0]" class="create-booking-card--image" (click)="openDialog(a.imageUrls)" />
+                </div>
+                <div>
+                  <div class="create-booking-card--name">{{ a.screenName }}</div>
+                  <div class="create-booking-card--address">{{ a.address }}</div>
+                  <div>
+                    <div class="create-booking-card--subcontent">Size: {{ a.screenSize }}</div>
+                    <div class="create-booking-card--subcontent">SFT: {{ a.SFT }}</div>
+                    <div class="create-booking-card--subcontent">Next Available Date: {{ a.NextAvailableDate | date }}</div>
+                  </div>
+                </div>
+                <div class="create-booking-card--actions">
+                  <div>
+                    <mat-checkbox class="checkbox" color="primary" (change)="onScreenSelectionChange(a)"></mat-checkbox>
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <input type="hidden" formControlName="mediaContent">
+    <input type="hidden" formControlName="screenIds">
+
+    <div class="create-booking-footer--content">
+      <button type="submit" [disabled]="bookingForm.invalid" mat-raised-button color="primary">Create Booking</button>
+    </div>
+  </form>
 </div>

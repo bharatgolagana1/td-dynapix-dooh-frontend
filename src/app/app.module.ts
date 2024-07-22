@@ -16,7 +16,7 @@ import { UsersModule } from './features/users/users.module';
 import { MediaModule } from './features/media/media.module';
 import { ScreenModule } from './features/screen/screen.module';
 import { SchedulerModule } from './features/schedulers/scheduler.module';
-import { BookingModule } from './features/booking/booking.module.module';
+import { BookingModule } from './features/booking/booking.module';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
 import { RolesModule } from './features/roles-matrix/roles.module';
@@ -33,6 +33,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         onLoad: 'check-sso',
         silentCheckSsoRedirectUri:
           window.location.origin + '/assets/silent-check-sso.html',
+        checkLoginIframe: false,
       },
     });
 }

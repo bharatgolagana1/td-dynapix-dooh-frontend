@@ -8,9 +8,8 @@ const routes: Routes = [
     path: '',
     component: ListBookingComponent,
   },
-
   {
-    path: 'create-booking',
+    path: 'create-booking',  
     component: CreateBookingComponent,
   },
 ];
