@@ -2,11 +2,11 @@
   padding: 2rem 1.2rem 2rem 2rem;
 }
 .create-booking--title {
-  color: #000000;
+  color: #757fef;
   font-family: Manrope;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 2rem;
   margin-bottom: 2rem;
 }
@@ -122,43 +122,55 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  }
-  .drop-area {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    border: 2px dashed #ccc;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-  }
-  
-  .image-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .image-wrapper {
-    position: relative;
-  }
-  
-  .image-wrapper img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-  }
-  
-  .remove-button-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-  
-  .remove-button {
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 50%;
-  }
-  
+}
+
+.drag-drop-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 0.1rem dashed #757fef;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 5px;
+  transition: background-color 0.3s;
+}
+
+.file-item:hover {
+  background-color: #eee;
+}
+
+.file-item span {
+  flex-grow: 1;
+}
+
+.file-item button {
+  background-color: transparent;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-item mat-icon {
+  font-size: 20px;
+}
