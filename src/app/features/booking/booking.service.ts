@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class BookingService {
   private baseApiUrl = environment.baseApiUrl;
-  private apiUrl = 'http://localhost:3000/settings/options';
+  private apiUrl = 'http://localhost:3000/settings/bookings';
 
   constructor(private http: HttpClient) {}
 
