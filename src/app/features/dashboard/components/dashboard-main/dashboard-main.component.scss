@@ -1,0 +1,63 @@
+.chart-and-screens-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.chart-container {
+  margin: 1rem 1rem 2rem 2rem;
+  border-radius: 0.5rem;
+  width:820px;
+  height: 427px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.chart-title {
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19.2px;
+  text-align: left;
+}
+
+.revenue-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.total-revenue-in--rupees {
+  font-family: Lato;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 48px;
+  text-align: left;
+  color: #5b5fc7;
+}
+
+.matform-full-width {
+  min-width: 150px;
+  max-width: 300px;
+}
+
+.chart {
+  width: 100%;
+  height: calc(100% - 50px);
+}
+
+.chart-container,
+app-revenue-screens {
+  flex: 1;
+}
+
+
+
+
+
+

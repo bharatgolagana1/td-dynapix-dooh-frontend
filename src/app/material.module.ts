@@ -28,6 +28,11 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import {MatChipsModule} from '@angular/material/chips';
+
+
+
+
 @NgModule({
   declarations: [],
   imports: [
@@ -60,7 +65,10 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSlideToggleModule,
     DragDropModule,
     MatMenuModule,
-    MatDividerModule
+    MatDividerModule,
+    MatChipsModule,
+  
+  
 
   ],
   exports: [
