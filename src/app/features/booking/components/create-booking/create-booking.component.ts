@@ -21,7 +21,6 @@ import { ImageDialogComponent } from 'src/app/features/screen/components/image-d
 import { DateRangeDialogComponent } from 'src/app/features/screen/components/date-range-dialog/date-range-dialog.component';
 import { Router } from '@angular/router';
 
-
 export interface Screen {
   id: any;
   _id: string;
@@ -120,7 +119,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
         date: ['All Time'],
       }),
       mediaContent: this.fb.array([]),
-      screenIds: this.fb.array([]),
+      screenIds: new FormControl([], [Validators.required]),
     });
   }
 
@@ -275,7 +274,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
       (response) => {
         console.log('Booking created successfully', response);
         this.resetForm();
-        this.router.navigate(['/booking']); 
+        this.router.navigate(['/booking']);
       },
       (error) => {
         console.error('Error creating booking:', error);
