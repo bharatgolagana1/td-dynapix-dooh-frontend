@@ -120,7 +120,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
         date: ['All Time'],
       }),
       mediaContent: this.fb.array([]),
-      screenIds: [[]],
+      screenIds: this.fb.array([]),
     });
   }
 
