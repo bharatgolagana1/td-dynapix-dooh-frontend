@@ -202,7 +202,6 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
       .filter((s) => s.selected)
       .map((s) => s._id)
       .filter((id) => !!id);
-    console.log('Selected Screen IDs:', selectedScreenIds);
     this.ngZone.run(() => {
       this.bookingForm.patchValue({
         screenIds: selectedScreenIds,
@@ -257,7 +256,6 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     }
 
     const formValues = this.bookingForm.value;
-    console.log('Form Values:', formValues);
 
     const formData = new FormData();
     formData.append('customerName', formValues.customerName);
