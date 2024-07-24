@@ -107,7 +107,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
       customerName: new FormControl('', [Validators.required]),
       slotSize: new FormControl('', [Validators.required]),
       totalAmount: new FormControl('', [Validators.required]),
-      categoryType:new FormControl ('Internal', [Validators.required]),
+      categoryType: new FormControl('Internal', [Validators.required]),
       dateRange: this.fb.group({
         startDate: new FormControl('', [Validators.required]),
         endDate: new FormControl('', [Validators.required]),
@@ -120,7 +120,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
         date: ['All Time'],
       }),
       mediaContent: this.fb.array([]),
-      screenIds: [[]],
+      screenIds: this.fb.array([]),
     });
   }
 
@@ -177,7 +177,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
               selected: false,
             }));
             this.isLoading = false;
-            this.cdr.detectChanges(); 
+            this.cdr.detectChanges();
           });
         },
         (error) => {
@@ -202,7 +202,6 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
       .filter((s) => s.selected)
       .map((s) => s._id)
       .filter((id) => !!id);
-      console.log('Selected Screen IDs:', selectedScreenIds);
     this.ngZone.run(() => {
       this.bookingForm.patchValue({
         screenIds: selectedScreenIds,
@@ -255,10 +254,9 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     if (this.bookingForm.invalid) {
       return;
     }
-  
+
     const formValues = this.bookingForm.value;
-    console.log('Form Values:', formValues); 
-  
+
     const formData = new FormData();
     formData.append('customerName', formValues.customerName);
     formData.append('slotSize', formValues.slotSize.toString());
@@ -266,15 +264,13 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     formData.append('categoryType', formValues.categoryType);
     formData.append('startDate', formValues.dateRange.startDate);
     formData.append('endDate', formValues.dateRange.endDate);
-  
-    formValues.screenIds.forEach((screenId: string) => {
-      formData.append('screenIds', screenId);
-    });
-  
+
+    formData.append('screenIds', formValues.screenIds);
+
     formValues.mediaContent.forEach((file: File) => {
       formData.append('mediaContent', file, file.name);
     });
-  
+
     this.bookingService.createBooking(formData).subscribe(
       (response) => {
         console.log('Booking created successfully', response);
@@ -286,7 +282,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
       }
     );
   }
-  
+
   resetForm(): void {
     this.bookingForm.reset({
       customerName: '',
@@ -312,7 +308,4 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     this.isLoading = true;
     this.loadScreens();
   }
-  
-  
-  
 }
