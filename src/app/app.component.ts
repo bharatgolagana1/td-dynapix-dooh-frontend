@@ -13,6 +13,7 @@ interface SubNavState {
   booking: boolean;
   organization: boolean;
   roles: boolean;
+  settings:boolean;
 }
 
 @Component({
@@ -31,6 +32,7 @@ export class AppComponent implements OnInit {
     booking: false,
     organization: false,
     roles: false,
+    settings: false
   };
   isSidenavOpened = true;
   isSmallScreen = false;

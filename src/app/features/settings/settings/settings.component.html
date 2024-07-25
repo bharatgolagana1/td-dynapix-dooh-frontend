@@ -1,0 +1,11 @@
+<div class="settings--container">
+<div class="settings--sub-container">
+    <div class="settings--title">Settings</div>
+    <div class="card-container">
+        <mat-card *ngFor="let card of cards" class="card"  [routerLink]="card.route">
+            <div> <img class="users-logo--image" [src]="card.image" alt="logo"/></div>
+            <div class="settings--card-title"> {{ card.title }}</div>
+        </mat-card>
+      </div>
+  </div> 
+</div>
