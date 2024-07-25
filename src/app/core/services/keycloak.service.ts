@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class KeycloakOperationService {
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = environment.baseApiUrl;
 
   constructor(private readonly keycloak: KeycloakService ,private http: HttpClient) {}
 

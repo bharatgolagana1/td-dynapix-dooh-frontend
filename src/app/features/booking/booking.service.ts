@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class BookingService {
   private baseApiUrl = environment.baseApiUrl;
-  private apiUrl = 'http://localhost:3000/settings/bookings';
+
 
   constructor(private http: HttpClient) {}
 
@@ -49,22 +49,22 @@ export class BookingService {
   };
 
   getDateOptions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/date`);
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/date`);
   }
 
   getScreenTypeOptions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/screenType`);
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/screenType`);
   }
 
   getStatusOptions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/status`);
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/status`);
   }
 
   getCategoryOptions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/category`);
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/category`);
   }
 
   getSlotSizeOptions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/slotSize`);
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/slotSize`);
   }
 }
