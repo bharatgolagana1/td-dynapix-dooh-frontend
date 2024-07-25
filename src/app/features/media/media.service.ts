@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class MediaService {
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = environment.baseApiUrl;
   private tenantId = '123456';
 
   constructor(private http: HttpClient) {}
