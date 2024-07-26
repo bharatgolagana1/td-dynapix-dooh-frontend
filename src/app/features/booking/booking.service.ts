@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 export class BookingService {
   private baseApiUrl = environment.baseApiUrl;
 
+
   constructor(private http: HttpClient) {}
 
   createBooking(bookingData: any): Observable<any> {
@@ -45,5 +46,25 @@ export class BookingService {
       }
     }
     return this.http.get<any>(`${this.baseApiUrl}/screen`, { params });
+  };
+
+  getDateOptions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/date`);
+  }
+
+  getScreenTypeOptions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/screenType`);
+  }
+
+  getStatusOptions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/status`);
+  }
+
+  getCategoryOptions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/category`);
+  }
+
+  getSlotSizeOptions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/slotSize`);
   }
 }

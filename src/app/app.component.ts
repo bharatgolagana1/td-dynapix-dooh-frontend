@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { KeycloakService } from 'keycloak-angular';
+import { KeycloakOperationService } from './core/services/keycloak.service';
 import { KeycloakProfile } from 'keycloak-js';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface SubNavState {
   dashboard: boolean;
@@ -40,7 +42,8 @@ export class AppComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private router: Router,
-    private readonly keycloak: KeycloakService
+    private readonly keycloak: KeycloakService,
+    private KeycloakOperationService : KeycloakOperationService
   ) {
     this.router.events.subscribe((event) => {
       if (router.url.includes('public-screens')) {
@@ -64,7 +67,22 @@ export class AppComponent implements OnInit {
 
     if (this.isLoggedIn) {
       this.userProfile = await this.keycloak.loadUserProfile();
-      this.router.navigate([`/${window.location.origin}`]);
+      this.router.navigate(['/${window.location.origin}']);
+
+      this.KeycloakOperationService.getUserData().subscribe(
+        (data) => { 
+          console.log('User data fetched successfully:', data);
+        },
+        (error: HttpErrorResponse) => {
+          console.error('Error fetching user data:', error);
+          if (error.status === 0) {
+            console.error('Network error - please check your backend service and CORS configuration.');
+          } else {
+            console.error(`Backend returned code ${error.status}, body was: ${error.message}`);
+          }
+        }
+      );
+      
     }
   }
 
@@ -85,6 +103,7 @@ export class AppComponent implements OnInit {
       console.error('Keycloak Logout Error:', error);
     }
   }
+
   toggleSubNav(navName: keyof SubNavState): void {
     this.subNavState[navName] = !this.subNavState[navName];
     if (this.subNavState[navName]) {

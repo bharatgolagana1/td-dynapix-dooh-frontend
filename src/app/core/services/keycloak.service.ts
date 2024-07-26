@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class KeycloakOperationService {
-  constructor(private readonly keycloak: KeycloakService) {}
+  private baseUrl = environment.baseApiUrl;
+
+  constructor(private readonly keycloak: KeycloakService ,private http: HttpClient) {}
 
   isLoggedIn(): boolean {
     return this.keycloak.isLoggedIn();
@@ -11,8 +16,13 @@ export class KeycloakOperationService {
   logout(): void {
     this.keycloak.logout();
   }
+
   getUserProfile(): any {
     return this.keycloak.loadUserProfile();
   }
-  // Add other methods as needed for token access, user info retrieval, etc.}
+
+  getUserData(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/me`);
+  }
+
 }

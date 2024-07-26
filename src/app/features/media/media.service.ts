@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEventType, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MediaService {
-  private apiUrl = 'http://localhost:3001/media';
+  private baseUrl = environment.baseApiUrl;
   private tenantId = '123456';
 
   constructor(private http: HttpClient) {}
@@ -20,7 +21,7 @@ export class MediaService {
       formData.append('imageFiles', file);
     }
 
-    return this.http.post(this.apiUrl, formData, {
+    return this.http.post(`${this.baseUrl}/media`, formData, {
       reportProgress: true,
       observe: 'events',
       responseType: 'text',
@@ -39,7 +40,7 @@ export class MediaService {
   }
 
   getMedia(mediaType: string): Observable<any[]> {
-    let url = `${this.apiUrl}?tenantId=${this.tenantId}`;
+    let url = `${this.baseUrl}/media?tenantId=${this.tenantId}`;
     if (mediaType !== 'both') {
       url += `&type=${mediaType}`;
     }
@@ -47,6 +48,6 @@ export class MediaService {
   }
 
   deleteMedia(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+    return this.http.delete(`${this.baseUrl}/media/${id}`);
   }
 }
