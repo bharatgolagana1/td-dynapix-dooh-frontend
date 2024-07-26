@@ -1,0 +1,27 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side" opened>
+      <mat-nav-list>
+        <a mat-list-item (click)="selectItem('identificationType')">Identification Type</a>
+        <a mat-list-item (click)="selectItem('role')">Role</a>
+        <a mat-list-item (click)="selectItem('profile')">Profile</a>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <div *ngIf="selectedItem === 'identificationType'" >
+     <app-user-identification-type></app-user-identification-type>  
+      </div>
+
+
+      <div *ngIf="selectedItem === 'role'">
+        <app-user-role></app-user-role>
+      </div>
+
+
+      <div *ngIf="selectedItem === 'profile'">
+     <app-user-profile></app-user-profile>
+      </div>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

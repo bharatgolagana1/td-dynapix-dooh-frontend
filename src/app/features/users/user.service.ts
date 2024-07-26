@@ -48,5 +48,16 @@ getUsers(pageIndex: number, pageSize: number, search: string, sortBy: string, so
     return this.http.put<any[]>(`${this.baseApiUrl}/users/${user._id}`, user);
   }
   
+  getIdentificationTypes(): Observable<any> {
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/user/getIdentificationtypes`);
+  }
+
+  getRoles(): Observable<any> {
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/user/getRoles`);
+  }
+
+  getProfiles(): Observable<any>{
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/user/getProfiles`);
+  }
   
 }

@@ -72,6 +72,13 @@ const routes: Routes = [
     path: 'public-screens',
     component: PublicScreensComponent,
   },
+  {
+    path: AppRoutePaths.settings,
+    loadChildren: () =>
+      import('./features/settings/settings.module').then((m) => m.SettingsModule),
+    canActivate: [AuthGuard],
+  },
+  
 ];
 
 @NgModule({
