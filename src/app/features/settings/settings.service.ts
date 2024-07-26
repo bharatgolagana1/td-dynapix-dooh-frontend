@@ -7,55 +7,45 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class SettingsService {
-  private baseApiUrl = environment.baseApiUrl;
+  private apiUrl = environment.baseApiUrl;
 
 
   constructor(private http: HttpClient) { }
 
-  createIdentificationType(identificationType: string): Observable<any> {
-    return this.http.post(`${this.baseApiUrl}/settings`, {
-      identificationType
-    });
-  }
-
-  createRole(role: string): Observable<any> {
-    return this.http.post(`${this.baseApiUrl}/settings`, { role });
-  }
-
-  createProfile(profile: string): Observable<any> {
-    return this.http.post(`${this.baseApiUrl}/settings`, { profile });
-  }
-
-  getIdentificationTypes(): Observable<any> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/identificationtypes`);
-  }
-
-  getRoles(): Observable<any> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/roles`);
-  }
-
-  getProfiles(): Observable<any> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/profiles`);
+  createIdentificationType(status: string, identificationType: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/settings/user/createIdentificationtype`, { status, identificationType });
   }
 
   deleteIdentificationType(identificationType: string): Observable<any> {
-    const url = `${this.baseApiUrl}/settings/items`;
-    return this.http.delete(url, {
-      body: { type: 'identificationType', value: identificationType }
-    });
+    return this.http.delete(`${this.apiUrl}/settings/user/deleteIdentificationtype`, { body: { identificationType } });
+  }
+
+  getIdentificationTypes(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/settings/user/getIdentificationtypes`);
+  }
+
+  createRole(status: string, role: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/settings/user/createRole`, { status, role });
   }
 
   deleteRole(role: string): Observable<any> {
-    const url = `${this.baseApiUrl}/settings/items`;
-    return this.http.delete(url, {
-      body: { type: 'role', value: role }
-    });
+    return this.http.delete(`${this.apiUrl}/settings/user/deleteRole`, { body: { role } });
+  }
+
+  getRoles(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/settings/user/getRoles`);
+  }
+
+  createProfile(status: string, profile: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/settings/user/createProfile`, { status, profile });
   }
 
   deleteProfile(profile: string): Observable<any> {
-    const url = `${this.baseApiUrl}/settings/items`;
-    return this.http.delete(url, {
-      body: { type: 'profile', value: profile }
-    });
+    return this.http.delete(`${this.apiUrl}/settings/user/deleteProfile`, { body: { profile } });
   }
+
+  getProfiles(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/settings/user/getProfiles`);
+  }
+
 }

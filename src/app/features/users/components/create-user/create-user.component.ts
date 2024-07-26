@@ -28,14 +28,14 @@ export class CreateUserComponent implements OnInit {
     this.createUserForm = this.formBuilder.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      identificationType: ['', [Validators.required]],
+      identificationType: ['Internal User', [Validators.required]], // Default value
       identificationNo: ['', [Validators.required]],
       gender: ['', [Validators.required]],
       employeeNo: ['', [Validators.required]],
       userName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      role: ['', [Validators.required]],
-      profile: ['', [Validators.required]],
+      role: ['scheduler', [Validators.required]], // Default value
+      profile: ['Chief Executive Officer (CEO)', [Validators.required]], // Default value
     });
   }
 
@@ -49,6 +49,9 @@ export class CreateUserComponent implements OnInit {
     this.userService.getIdentificationTypes().subscribe(
       (data) => {
         this.identificationTypes = data;
+        if (this.identificationTypes.length > 0 && !this.createUserForm.get('identificationType')?.value) {
+          this.createUserForm.get('identificationType')?.setValue('Internal User');
+        }
       },
       (error) => {
         console.error('Error fetching identification types:', error);
@@ -60,6 +63,9 @@ export class CreateUserComponent implements OnInit {
     this.userService.getRoles().subscribe(
       (data) => {
         this.roles = data;
+        if (this.roles.length > 0 && !this.createUserForm.get('role')?.value) {
+          this.createUserForm.get('role')?.setValue('scheduler');
+        }
       },
       (error) => {
         console.error('Error fetching roles:', error);
@@ -71,6 +77,9 @@ export class CreateUserComponent implements OnInit {
     this.userService.getProfiles().subscribe(
       (data) => {
         this.profiles = data;
+        if (this.profiles.length > 0 && !this.createUserForm.get('profile')?.value) {
+          this.createUserForm.get('profile')?.setValue('Chief Executive Officer (CEO)');
+        }
       },
       (error) => {
         console.error('Error fetching profiles:', error);
@@ -81,12 +90,12 @@ export class CreateUserComponent implements OnInit {
   onSubmit() {
     this.isSubmitting = true;
     if (this.createUserForm.valid) {
-      this.router.navigate(['/users']);
       this.userService.createUser(this.createUserForm.value).subscribe(
         (response) => {
           console.log('User created successfully:', response);
           this.notificationService.showNotification('User created successfully', 'success');
           this.isSubmitting = false;
+          this.router.navigate(['/users']);
         },
         (error) => {
           console.error('Error creating user:', error);

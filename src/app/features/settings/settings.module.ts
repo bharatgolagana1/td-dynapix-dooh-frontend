@@ -9,7 +9,8 @@ import { PlaylistSettingsComponent } from './playlist-settings/playlist-settings
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserRoleComponent } from './user-role/user-role.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { UserIdentificationTypeComponent } from './user-identification-type/user-identification-type.component'; 
+import { UserIdentificationTypeComponent } from './user-identification-type/user-identification-type.component';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component'; 
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { UserIdentificationTypeComponent } from './user-identification-type/user
  PlaylistSettingsComponent,
  UserRoleComponent,
  UserProfileComponent,
- UserIdentificationTypeComponent
+ UserIdentificationTypeComponent,
+ DeleteDialogComponent
   ],
   imports: [CommonModule, MaterialModule, SettingsRoutingModule, FormsModule,],
   providers: [],

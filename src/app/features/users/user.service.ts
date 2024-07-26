@@ -49,15 +49,15 @@ getUsers(pageIndex: number, pageSize: number, search: string, sortBy: string, so
   }
   
   getIdentificationTypes(): Observable<any> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/identificationtypes`);
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/user/getIdentificationtypes`);
   }
 
   getRoles(): Observable<any> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/roles`);
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/user/getRoles`);
   }
 
   getProfiles(): Observable<any>{
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/profiles`);
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/user/getProfiles`);
   }
   
 }
