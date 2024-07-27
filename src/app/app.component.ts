@@ -53,6 +53,10 @@ export class AppComponent implements OnInit {
         this.isSidenavOpened = false;
         this.showToolBar = false;
       }
+      if (router.url.includes('server-not-found')) {
+        this.isSidenavOpened = false;
+        this.showToolBar = false;
+      }
     });
   }
 
