@@ -16,10 +16,19 @@ export class BookingService {
     return this.http.post(`${this.baseApiUrl}/booking/create`, bookingData);
   }
 
+  updateBooking(bookingId: string, bookingData: any): Observable<any> {
+    return this.http.put(`${this.baseApiUrl}/booking/${bookingId}`, bookingData);
+  }
+
   getBookings(): Observable<any> {
     return this.http.get(`${this.baseApiUrl}/booking`);
   }
 
+  getBookingDetails(bookingId: string): Observable<any> {
+    return this.http.get(`${this.baseApiUrl}/booking/${bookingId}`);
+  }
+
+  
   screensList(filters: any): Observable<any> {
     let params = new HttpParams();
     if (filters.addressOrPincode) {
