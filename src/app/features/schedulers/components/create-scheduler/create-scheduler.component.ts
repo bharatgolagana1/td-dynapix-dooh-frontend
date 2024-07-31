@@ -30,10 +30,10 @@ export class CreateSchedulerComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private formBuilder: FormBuilder,
-    private schedulerService: SchedulerService,
     private router: Router,
     private loaderService: LoaderService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private schedulerService:SchedulerService
   ) {
     this.createSchedulerForm = this.formBuilder.group({
       schedulerName: ['', Validators.required],
