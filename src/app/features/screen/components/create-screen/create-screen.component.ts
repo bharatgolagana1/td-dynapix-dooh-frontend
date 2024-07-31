@@ -94,8 +94,10 @@ export class CreateScreenComponent {
       formData.append('tenantId', this.tenantId);
       formData.append('screenName', this.screenForm.value.screenName);
       formData.append('address', this.screenForm.value.address);
-      formData.append('width', this.screenForm.value.width ? this.screenForm.value.width.toString() : '');
-      formData.append('height', this.screenForm.value.height ? this.screenForm.value.height.toString() : '');
+      const width = this.screenForm.value.width ? this.screenForm.value.width.toString() : '';
+      const height = this.screenForm.value.height ? this.screenForm.value.height.toString() : '';
+      formData.append('width', width);
+      formData.append('height', height);
       formData.append('SFT', this.screenForm.value.SFT ? this.screenForm.value.SFT.toString() : '');
       formData.append('localIP', this.localIP);
       formData.append('MACID', this.MACID);
@@ -110,17 +112,25 @@ export class CreateScreenComponent {
       formData.append('locationCoordinates', this.screenForm.value.locationCoordinates);
       formData.append('screenStatus', this.screenForm.value.screenStatus);
       formData.append('rebootFlag', this.rebootFlag);
-
+  
       const nextAvailableDate = this.screenForm.value.nextAvailableDate; // Retrieve the date from the form
       const formattedDate = this.datePipe.transform(nextAvailableDate, 'dd/MM/yyyy');
       formData.append('NextAvailableDate', formattedDate || ''); // Ensure fallback in case formattedDate is null
-
+  
+      // Calculate and append orientation
+      if (width && height) {
+        const parsedWidth = parseFloat(width);
+        const parsedHeight = parseFloat(height);
+        const orientation = parsedWidth > parsedHeight ? 'Horizontal' : 'Vertical';
+        formData.append('orientation', orientation);
+      }
+  
       if (this.imageFiles && this.imageFiles.length > 0) {
         for (let i = 0; i < this.imageFiles.length; i++) {
           formData.append('imageFiles', this.imageFiles[i]);
         }
       }
-
+  
       this.screenService.createScreen(formData).subscribe(
         response => {
           console.log('Screen created successfully:', response);
@@ -136,6 +146,7 @@ export class CreateScreenComponent {
       );
     }
   }
+  
 
   onFileSelected(event: any): void {
     const files = event.target.files;

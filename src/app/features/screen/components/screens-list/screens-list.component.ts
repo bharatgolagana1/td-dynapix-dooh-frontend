@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DateRangeDialogComponent } from '../date-range-dialog/date-range-dialog.component';
 import { BindDeviceComponent } from '../bind-device/bind-device.component';
+
 export interface Screen {
   _id: string;
   screenName: string;
@@ -34,7 +35,7 @@ export class ScreensListComponent implements OnInit {
   filters = {
     addressOrPincode: '',
     screenType: 'Both',
-    size: 'All',
+    orientation: 'Both',
     status: 'Both',
     date: 'All Time',
     fromDate: null,
@@ -59,12 +60,17 @@ export class ScreensListComponent implements OnInit {
     { value: 'Billboard', label: 'Billboard' }
   ];
 
+  orientationOptions = [
+    { value: 'Both', label: 'Both' },
+    { value: 'Horizontal', label: 'Horizontal' },
+    { value: 'Vertical', label: 'Vertical' }
+  ];
+
   statusOptions = [
     { value: 'Both', label: 'Both' },
     { value: 'Active', label: 'Active' },
     { value: 'Inactive', label: 'Inactive' }
   ];
-
 
   constructor(
     private screenService: ScreenService,
@@ -123,7 +129,6 @@ export class ScreensListComponent implements OnInit {
     );
   }
 
-
   toggleAllSelection(event: any) {
     this.allSelected = event.checked;
     this.screens.forEach(screen => screen.selected = this.allSelected);
@@ -166,6 +171,7 @@ export class ScreensListComponent implements OnInit {
       );
     }
   }
+
   onBindTextClick(screen: any): void {
     const dialogRef = this.dialog.open(BindDeviceComponent, {
       width: '50%',
@@ -183,6 +189,4 @@ export class ScreensListComponent implements OnInit {
   isDeviceBound(screen: any): boolean {
     return !!screen.Guuid; // Check if the screen has a bound device
   }
-
-
 }
