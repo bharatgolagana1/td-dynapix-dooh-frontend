@@ -1,0 +1,60 @@
+.create-booking-card {
+    margin: 2rem;
+    padding: 1rem;
+    overflow: hidden;
+  }
+  
+  .create-booking-main--container {
+    width: 100%;
+  }
+  
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  th {
+    background-color: #F7F7F7;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    text-align: left;
+    color: #757fef;
+    background-color: #F7F7F7;
+  }
+
+  td{
+    font-family: Arial;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  color: #808080;
+  }
+  
+  .create-booking--title {
+    color: #757fef;
+    font-family: Manrope;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 2rem;
+    margin-bottom: 2rem;
+    padding-top: 2rem;
+    margin-left: 1rem;
+  }
+  
+  mat-paginator {
+    margin-top: 16px;
+  }
+  
+  .ellipsis{
+    display: inline-block;
+  width: 100%; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 1rem;
+  }
+
+ 

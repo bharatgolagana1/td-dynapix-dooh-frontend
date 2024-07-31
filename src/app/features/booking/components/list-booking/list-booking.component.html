@@ -1,62 +1,78 @@
-<div class="create-booking-main--container">
+<mat-card class="create-booking-card">
+  <div class="create-booking-main--container">
     <div class="create-booking--title">List Booking</div>
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-  
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z1">
       <!-- Start Date Column -->
       <ng-container matColumnDef="startDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
-        <td mat-cell *matCellDef="let booking"> {{booking.startDate | date: 'dd/MM/yyyy'}} </td>
+        <th mat-header-cell *matHeaderCellDef>Start Date</th>
+        <td mat-cell *matCellDef="let booking">
+          {{ booking.startDate | date : "dd/MM/yyyy" }}
+        </td>
       </ng-container>
-  
+
       <!-- End Date Column -->
       <ng-container matColumnDef="endDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
-        <td mat-cell *matCellDef="let booking"> {{booking.endDate | date: 'dd/MM/yyyy'}} </td>
+        <th mat-header-cell *matHeaderCellDef>End Date</th>
+        <td mat-cell *matCellDef="let booking">
+          {{ booking.endDate | date : "dd/MM/yyyy" }}
+        </td>
       </ng-container>
-  
+
       <!-- Slot Size Column -->
       <ng-container matColumnDef="slotSize">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Slot Size </th>
-        <td mat-cell *matCellDef="let booking"> {{booking.slotSize}} </td>
+        <th mat-header-cell *matHeaderCellDef>Slot Size</th>
+        <td mat-cell *matCellDef="let booking">{{ booking.slotSize }}</td>
       </ng-container>
-  
+
       <!-- Total Amount Column -->
       <ng-container matColumnDef="totalAmount">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Amount </th>
-        <td mat-cell *matCellDef="let booking"> {{booking.totalAmount}} </td>
+        <th mat-header-cell *matHeaderCellDef>Total Amount</th>
+        <td mat-cell *matCellDef="let booking">{{ booking.totalAmount }}</td>
       </ng-container>
-  
+
       <!-- Customer Name Column -->
       <ng-container matColumnDef="customerName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </th>
-        <td mat-cell *matCellDef="let booking"> {{booking.customerName}} </td>
+        <th mat-header-cell *matHeaderCellDef>Customer Name</th>
+        <td mat-cell *matCellDef="let booking">{{ booking.customerName }}</td>
       </ng-container>
-  
+
       <!-- Category Type Column -->
       <ng-container matColumnDef="categoryType">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Category Type </th>
-        <td mat-cell *matCellDef="let booking"> {{booking.categoryType}} </td>
+        <th mat-header-cell *matHeaderCellDef>Category Type</th>
+        <td mat-cell *matCellDef="let booking">{{ booking.categoryType }}</td>
       </ng-container>
-  
+
       <!-- Screen IDs Column -->
       <ng-container matColumnDef="screenIds">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Screen IDs </th>
-        <td mat-cell *matCellDef="let booking"> {{booking.screenIds.join(', ')}} </td>
+        <th mat-header-cell *matHeaderCellDef>Screen IDs</th>
+        <td mat-cell *matCellDef="let booking">
+          <span
+            class="ellipsis"
+            matTooltip="{{ booking.screenIds.join(', ') }}"
+            matTooltipPosition="above"
+          >
+            {{ booking.screenIds.join(", ") }}
+          </span>
+        </td>
       </ng-container>
-  
+
       <!-- Actions Column -->
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let booking">
           <button mat-icon-button (click)="editBooking(booking)">
-            <img src="assets/images/edit.svg"/>
+            <img src="assets/images/edit.svg" />
           </button>
         </td>
       </ng-container>
-  
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-  
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+    ></mat-paginator>
   </div>
+</mat-card>
