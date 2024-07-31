@@ -19,6 +19,7 @@ import { BookingService } from '../../booking.service';
 import { debounceTime, Subject } from 'rxjs';
 import { ImageDialogComponent } from 'src/app/features/screen/components/image-dialog/image-dialog.component';
 import { DateRangeDialogComponent } from 'src/app/features/screen/components/date-range-dialog/date-range-dialog.component';
+import { LoaderService } from 'src/app/core/services/loader.service';
 import { Router } from '@angular/router';
 
 export interface Screen {
@@ -48,8 +49,6 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
   bookingForm: FormGroup;
   screens: Screen[] = [];
   imageFiles: File[] = [];
-  isLoading: boolean = true;
-
   private filterSubject = new Subject<any>();
 
   dateOptions: any[] = [];
@@ -63,6 +62,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private bookingService: BookingService,
     private cdr: ChangeDetectorRef,
+    public loaderService: LoaderService,
     private ngZone: NgZone,
     private router: Router
   ) {
@@ -88,6 +88,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.loaderService.hideLoader();
     this.filterSubject.pipe(debounceTime(300)).subscribe(() => {
       this.loadScreens();
     });
@@ -149,6 +150,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
   }
 
   loadScreens() {
+    this.loaderService.showLoader(); 
     this.bookingService
       .screensList(this.bookingForm.get('filters')?.value)
       .subscribe(
@@ -158,15 +160,15 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
               ...screen,
               selected: false,
             }));
-            this.isLoading = false;
-            this.cdr.detectChanges();
+            this.cdr.detectChanges(); 
+            this.loaderService.hideLoader();
           });
         },
         (error) => {
           console.error('Error fetching screens:', error);
           this.ngZone.run(() => {
-            this.isLoading = false;
             this.cdr.detectChanges();
+            this.loaderService.hideLoader();
           });
         }
       );
@@ -236,9 +238,9 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     if (this.bookingForm.invalid) {
       return;
     }
-
+    this.loaderService.showLoader(); 
     const formValues = this.bookingForm.value;
-
+    console.log('Form Values:', formValues);
     const formData = new FormData();
     formData.append('customerName', formValues.customerName);
     formData.append('slotSize', formValues.slotSize.toString());
@@ -247,47 +249,26 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     formData.append('startDate', formValues.dateRange.startDate);
     formData.append('endDate', formValues.dateRange.endDate);
 
-    formData.append('screenIds', formValues.screenIds);
+    formValues.screenIds.forEach((screenId: string) => {
+      formData.append('screenIds', screenId);
+    });
 
-    formValues.mediaContent.forEach((file: File) => {
+    this.imageFiles.forEach((file, index) => {
       formData.append('mediaContent', file, file.name);
     });
 
     this.bookingService.createBooking(formData).subscribe(
       (response) => {
-        console.log('Booking created successfully', response);
-        this.resetForm();
-        this.router.navigate(['/booking']);
+        console.log('Booking created successfully:', response);
+        this.loaderService.hideLoader();
+        this.router.navigate(['/booking']); 
+        
       },
       (error) => {
         console.error('Error creating booking:', error);
+        this.loaderService.hideLoader(); 
       }
     );
   }
 
-  resetForm(): void {
-    this.bookingForm.reset({
-      customerName: '',
-      slotSize: '',
-      totalAmount: '',
-      categoryType: 'Internal',
-      dateRange: {
-        startDate: '',
-        endDate: '',
-      },
-      filters: {
-        addressOrPincode: '',
-        screenType: 'Both',
-        size: 'All',
-        status: 'Both',
-        date: 'All Time',
-      },
-      mediaContent: [],
-      screenIds: [],
-    });
-    this.imageFiles = [];
-    this.screens = [];
-    this.isLoading = true;
-    this.loadScreens();
-  }
 }

@@ -4,6 +4,12 @@
       <mat-card class="create-booking-card">
         <div class="create-booking-card--container">
           <div class="create-booking--title">Booking Details</div>
+          <div *ngIf="loaderService.loaderState | async" class="spinner-overlay">
+            <div class="spinner-container">
+              <mat-spinner></mat-spinner>
+              <p>Booking in progress...</p>
+            </div>
+          </div>
           <div class="create-booking-card--content">
       
             <mat-form-field appearance="outline">
