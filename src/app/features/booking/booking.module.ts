@@ -8,9 +8,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { MaterialModule } from 'src/app/material.module';
 import { MediaModule } from '../media/media.module';
-
+import { EditBookingComponent } from './components/edit-booking/edit-booking.component';
 @NgModule({
-  declarations: [CreateBookingComponent, ListBookingComponent],
+  declarations: [CreateBookingComponent, ListBookingComponent, EditBookingComponent],
   imports: [
     CommonModule,
     MaterialModule,
