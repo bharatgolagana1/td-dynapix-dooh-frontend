@@ -45,8 +45,8 @@ export class ScreenService {
     if (filters.screenType !== 'Both') {
       params = params.set('screenType', filters.screenType);
     }
-    if (filters.size !== 'All') {
-      params = params.set('size', filters.size);
+    if (filters.orientation !== 'Both') {
+      params = params.set('orientation', filters.orientation);
     }
     if (filters.status !== 'Both') {
       params = params.set('status', filters.status);
@@ -64,6 +64,7 @@ export class ScreenService {
     }
     return this.http.get<any>(`${this.baseApiurl}/screen`, { params });
   }
+  
 
   updateScreenStatus(id: string, status: string): Observable<any> {
     const url = `${this.baseApiurl}/screen/${id}`;

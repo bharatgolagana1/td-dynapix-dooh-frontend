@@ -20,33 +20,34 @@ export class BookingService {
     return this.http.get(`${this.baseApiUrl}/booking`);
   }
 
-  screensList(filters: any): Observable<any> {
-    let params = new HttpParams();
-    if (filters.addressOrPincode) {
-      params = params.append('addressOrPincode', filters.addressOrPincode);
-    }
-    if (filters.screenType !== 'Both') {
-      params = params.set('screenType', filters.screenType);
-    }
-    if (filters.size !== 'All') {
-      params = params.set('size', filters.size);
-    }
-    if (filters.status !== 'Both') {
-      params = params.set('status', filters.status);
-    }
-    if (filters.date !== 'All Time') {
-      params = params.set('date', filters.date);
-      if (filters.date === 'Date Range') {
-        if (filters.fromDate) {
-          params = params.set('fromDate', filters.fromDate);
-        }
-        if (filters.toDate) {
-          params = params.set('toDate', filters.toDate);
-        }
+screensList(filters: any): Observable<any> {
+  let params = new HttpParams();
+  if (filters.addressOrPincode) {
+    params = params.set('addressOrPincode', filters.addressOrPincode);
+  }
+  if (filters.screenType !== 'Both') {
+    params = params.set('screenType', filters.screenType);
+  }
+  if (filters.orientation !== 'Both') {
+    params = params.set('orientation', filters.orientation);
+  }
+  if (filters.status !== 'Both') {
+    params = params.set('status', filters.status);
+  }
+  if (filters.date !== 'All Time') {
+    params = params.set('date', filters.date);
+    if (filters.date === 'Date Range') {
+      if (filters.fromDate) {
+        params = params.set('fromDate', filters.fromDate);
+      }
+      if (filters.toDate) {
+        params = params.set('toDate', filters.toDate);
       }
     }
-    return this.http.get<any>(`${this.baseApiUrl}/screen`, { params });
-  };
+  }
+  return this.http.get<any>(`${this.baseApiUrl}/screen`, { params });
+}
+
 
   getDateOptions(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/date`);

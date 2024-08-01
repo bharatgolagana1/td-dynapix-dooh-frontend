@@ -39,6 +39,9 @@ export class AppComponent implements OnInit {
   isSidenavOpened = true;
   isSmallScreen = false;
   showToolBar = true;
+  firstName: string = '';
+  lastName: string = '';
+  role: string = '';
   constructor(
     private breakpointObserver: BreakpointObserver,
     private router: Router,
@@ -70,8 +73,11 @@ export class AppComponent implements OnInit {
       this.router.navigate(['/${window.location.origin}']);
 
       this.KeycloakOperationService.getUserData().subscribe(
-        (data) => { 
+        (data) => {
           console.log('User data fetched successfully:', data);
+          this.firstName = data.firstName;
+          this.lastName = data.lastName;
+          this.role = data.role;
         },
         (error: HttpErrorResponse) => {
           console.error('Error fetching user data:', error);
@@ -82,7 +88,6 @@ export class AppComponent implements OnInit {
           }
         }
       );
-      
     }
   }
 

@@ -56,6 +56,11 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
   statusOptions: any[] = [];
   categoryOption: any[] = [];
   slotSize: any[] = [];
+  orientationOptions = [
+    { value: 'Both', label: 'Both' },
+    { value: 'Horizontal', label: 'Horizontal' },
+    { value: 'Vertical', label: 'Vertical' }
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -78,7 +83,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
       filters: this.fb.group({
         addressOrPincode: [''],
         screenType: ['Both'],
-        size: ['All'],
+        orientation: ['Both'], 
         status: ['Both'],
         date: ['All Time'],
       }),
@@ -270,5 +275,4 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
       }
     );
   }
-
 }

@@ -7,7 +7,7 @@
       <mat-label>Address / Pincode</mat-label>
       <input matInput [(ngModel)]="filters.addressOrPincode" (ngModelChange)="onFilterChange()" placeholder="Search by address or pincode">
     </mat-form-field>
-    
+  
     <mat-form-field appearance="outline">
       <mat-label>Screen Type</mat-label>
       <mat-select [(value)]="filters.screenType" (selectionChange)="onFilterChange()">
@@ -18,17 +18,18 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    
+  
     <mat-form-field appearance="outline">
-      <mat-label>Size</mat-label>
-      <mat-select [(value)]="filters.size" (selectionChange)="onFilterChange()">
-        <mat-option value="All">All</mat-option>
-        <mat-option value="Small">Small</mat-option>
-        <mat-option value="Medium">Medium</mat-option>
-        <mat-option value="Large">Large</mat-option>
+      <mat-label>Orientation</mat-label>
+      <mat-select [(value)]="filters.orientation" (selectionChange)="onFilterChange()">
+        <mat-option *ngFor="let option of orientationOptions" [value]="option.value">
+          <mat-radio-group [value]="filters.orientation">
+            <mat-radio-button color="primary" [value]="option.value">{{ option.label }}</mat-radio-button>
+          </mat-radio-group>
+        </mat-option>
       </mat-select>
     </mat-form-field>
-    
+  
     <mat-form-field appearance="outline">
       <mat-label>Status</mat-label>
       <mat-select [(value)]="filters.status" (selectionChange)="onFilterChange()">
@@ -39,7 +40,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    
+  
     <mat-form-field appearance="outline">
       <mat-label>Date</mat-label>
       <mat-select [(value)]="filters.date" (selectionChange)="onFilterChange()">
@@ -50,8 +51,8 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-
-    </div>
+  </div>
+  
 <div class="screens-list-all--selected">  
   <mat-checkbox
   color="primary"

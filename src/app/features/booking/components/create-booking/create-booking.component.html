@@ -122,17 +122,13 @@
               </mat-select>
             </mat-form-field>
 
-        
-            <mat-form-field appearance="outline">
-              <mat-label>Size</mat-label>
-              <mat-select formControlName="size" (selectionChange)="onFilterChange()">
-                <mat-option value="All">All</mat-option>
-                <mat-option value="Small">Small</mat-option>
-                <mat-option value="Medium">Medium</mat-option>
-                <mat-option value="Large">Large</mat-option>
-              </mat-select>
-            </mat-form-field>
-
+              <mat-form-field appearance="outline">
+                <mat-label>Orientation</mat-label>
+                <mat-select formControlName="orientation"  (selectionChange)="onFilterChange()">
+                  <mat-option *ngFor="let orientation of orientationOptions" [value]="orientation.value">{{ orientation.label }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+    
   
             <mat-form-field appearance="outline">
               <mat-label>Status</mat-label>
