@@ -1,0 +1,20 @@
+<mat-card class="mat-card--container">
+  <div class="chart-header">
+    <div class="chart-title">Digital</div>
+    <mat-chip color="primary" class="add-chip--button">
+      Ad:Dynapix
+      <mat-icon matChipRemove (click)="removeChip()">cancel</mat-icon>
+    </mat-chip>
+    <button mat-button>
+      <mat-icon fontIcon="filter_list"></mat-icon>
+    </button>
+  </div>
+  <div class="date-picker--container">
+    <mat-form-field appearance="outline">
+      <input matInput [matDatepicker]="picker" placeholder="Select a date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div id="digitalchart" class="digital-chart--container"></div>
+</mat-card>

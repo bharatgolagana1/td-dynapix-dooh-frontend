@@ -1,0 +1,92 @@
+<mat-card class="mat-card-container">
+  <div class="title-container">
+    <div class="card-title">Outstanding Payments</div>
+    <button mat-button>
+      <mat-icon fontIcon="filter_list"></mat-icon>
+    </button>
+  </div>
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="customerName">
+      <th mat-header-cell *matHeaderCellDef class="heading-styles">
+        Customer Name
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="image-container">
+          <img
+            src="assets/images/{{ element.iconName }}.png"
+            class="customer-image"
+          />
+          <div class="text-style">{{ element.customerName }}</div>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="contactNo">
+      <th mat-header-cell *matHeaderCellDef class="heading-styles">
+        Contact Number
+      </th>
+      <td mat-cell *matCellDef="let element" class="text-style">
+        {{ element.contactNo }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="emailAddress">
+      <th mat-header-cell *matHeaderCellDef class="heading-styles">
+        Email Address
+      </th>
+      <td mat-cell *matCellDef="let element" class="text-style">
+        {{ element.emailAddress }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="creditPeriod">
+      <th mat-header-cell *matHeaderCellDef class="heading-styles">
+        Credit Period
+      </th>
+      <td mat-cell *matCellDef="let element" class="text-style">
+        {{ element.creditPeriod }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="outstandingDays">
+      <th mat-header-cell *matHeaderCellDef class="heading-styles">
+        Outstanding Days
+      </th>
+      <td mat-cell *matCellDef="let element" class="text-style">
+        {{ element.outstandingDays }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="inventoryNAme">
+      <th mat-header-cell *matHeaderCellDef class="heading-styles">
+        Inventory Name
+      </th>
+      <td mat-cell *matCellDef="let element" class="text-style">
+        {{ element.inventoryNAme }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="region">
+      <th mat-header-cell *matHeaderCellDef class="heading-styles">Region</th>
+      <td mat-cell *matCellDef="let element" class="text-style">
+        {{ element.region }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="city">
+      <th mat-header-cell *matHeaderCellDef class="heading-styles">City</th>
+      <td mat-cell *matCellDef="let element" class="text-style">
+        {{ element.city }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    [length]="dataSource.data.length"
+    [pageSize]="5"
+    [pageSizeOptions]="[2, 5, 10, 15, 20]"
+  ></mat-paginator>
+</mat-card>

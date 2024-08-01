@@ -1,0 +1,41 @@
+<mat-card class="mat-card--container">
+  <div class="chart-header">
+    <div class="chart-title">Screens</div>
+    <button mat-button>
+      <mat-icon fontIcon="filter_list"></mat-icon>
+    </button>
+  </div>
+  <div>
+    <div class="filters-wrapper">
+      <div class="filters">
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Revenue</mat-label>
+          <mat-select>
+            <mat-option
+              *ngFor="let revenue of revenueOptions"
+              [value]="revenue"
+              >{{ revenue }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Top 5</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let option of topOptions" [value]="option">{{
+              option
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Select Month</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let month of months" [value]="month">{{
+              month
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div id="chart" style="width: 100%; height: 400px; margin-top: 1.5rem"></div>
+</mat-card>
