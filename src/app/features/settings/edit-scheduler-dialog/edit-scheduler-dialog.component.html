@@ -1,0 +1,30 @@
+<p>edit-scheduler-dialog works!</p>
+<h1 mat-dialog-title>Edit Scheduler</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="outline">
+    <mat-label>Scheduler Name</mat-label>
+    <input matInput [(ngModel)]="data.schedulerName" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Slot Size</mat-label>
+    <input matInput type="number" [(ngModel)]="data.slotSize" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Cycle Time</mat-label>
+    <input matInput type="number" [(ngModel)]="data.cycleTime" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Status</mat-label>
+    <mat-select [(value)]="data.status">
+      <mat-option value="active">Active</mat-option>
+      <mat-option value="inactive">Inactive</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button (click)="onSave()">Save</button>
+</div>

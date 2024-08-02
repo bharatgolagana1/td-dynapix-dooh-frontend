@@ -1,5 +1,10 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ScreenService } from '../../screen.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Router } from '@angular/router';
@@ -11,9 +16,9 @@ import { DateAdapter } from '@angular/material/core';
   selector: 'app-create-screen',
   templateUrl: './create-screen.component.html',
   styleUrls: ['./create-screen.component.scss'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
-export class CreateScreenComponent {
+export class CreateScreenComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   screenForm: FormGroup;
@@ -28,6 +33,9 @@ export class CreateScreenComponent {
   hardwareVersion: string = '1.0';
   softwareVersion: string = '1.2.3';
   rebootFlag: string = 'true';
+  schedulers: any[] = [];
+  slotSize: string = '';
+  cycleTime: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,24 +46,49 @@ export class CreateScreenComponent {
     private datePipe: DatePipe,
     private dateAdapter: DateAdapter<Date>
   ) {
-    this.dateAdapter.setLocale('en-GB');  // Set locale for date picker to en-GB (dd/MM/yyyy)
+    this.dateAdapter.setLocale('en-GB'); // Set locale for date picker to en-GB (dd/MM/yyyy)
     this.screenForm = this.formBuilder.group({
       screenName: new FormControl('', [Validators.required]),
       address: new FormControl('', [Validators.required]),
-      width: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
-      height: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
-      SFT: new FormControl({ value: '', disabled: true }, [Validators.required]),
-      locationCoordinates: ['', [Validators.required, this.coordinateValidator()]],
+      width: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[0-9]*$'),
+      ]),
+      height: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[0-9]*$'),
+      ]),
+      SFT: new FormControl({ value: '', disabled: true }, [
+        Validators.required,
+      ]),
+      locationCoordinates: [
+        '',
+        [Validators.required, this.coordinateValidator()],
+      ],
       screenStatus: new FormControl('Active', [Validators.required]),
       screenType: new FormControl('', [Validators.required]),
       screenSize: new FormControl('Small', [Validators.required]),
       pincode: new FormControl('', [Validators.required]),
       nextAvailableDate: new FormControl('', [Validators.required]),
-      imageFiles: ['']
+      schedulerId: new FormControl('', [Validators.required]),
+      slotSize: new FormControl({ value: '', disabled: true }),
+      cycleTime: new FormControl({ value: '', disabled: true }),
+      imageFiles: [''],
     });
 
     this.screenForm.valueChanges.subscribe(() => {
       this.updateSFT();
+    });
+  }
+
+  ngOnInit() {
+    this.loadSchedulers();
+  }
+
+  loadSchedulers() {
+    this.screenService.getSchedulers().subscribe((data) => {
+      // @ts-ignore
+      this.schedulers = data?.schedulers;
     });
   }
 
@@ -65,7 +98,8 @@ export class CreateScreenComponent {
       if (!value || value.trim() === '') {
         return null;
       }
-      const regex = /^-?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*-?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/;
+      const regex =
+        /^-?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*-?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/;
       if (!regex.test(value)) {
         return { invalidCoordinate: true };
       }
@@ -89,32 +123,59 @@ export class CreateScreenComponent {
 
   onSubmit() {
     if (this.screenForm.valid) {
+      console.log('screen Form', this.screenForm);
       this.loaderService.showLoader();
       const formData = new FormData();
       formData.append('tenantId', this.tenantId);
       formData.append('screenName', this.screenForm.value.screenName);
       formData.append('address', this.screenForm.value.address);
-      const width = this.screenForm.value.width ? this.screenForm.value.width.toString() : '';
-      const height = this.screenForm.value.height ? this.screenForm.value.height.toString() : '';
-      formData.append('width', width);
-      formData.append('height', height);
-      formData.append('SFT', this.screenForm.value.SFT ? this.screenForm.value.SFT.toString() : '');
+      formData.append(
+        'width',
+        this.screenForm.value.width
+          ? this.screenForm.value.width.toString()
+          : ''
+      );
+      formData.append(
+        'height',
+        this.screenForm.value.height
+          ? this.screenForm.value.height.toString()
+          : ''
+      );
+      formData.append(
+        'SFT',
+        this.screenForm.value.SFT ? this.screenForm.value.SFT.toString() : ''
+      );
       formData.append('localIP', this.localIP);
       formData.append('MACID', this.MACID);
       formData.append('screenType', this.screenForm.value.screenType);
-      formData.append('screenSize', this.screenForm.value.screenSize ? this.screenForm.value.screenSize.toString() : '');
+      formData.append(
+        'screenSize',
+        this.screenForm.value.screenSize
+          ? this.screenForm.value.screenSize.toString()
+          : ''
+      );
       formData.append('pincode', this.screenForm.value.pincode);
       formData.append('lastHeartbeat', this.lastHeartbeat);
       formData.append('upTime', this.upTime);
       formData.append('inSyncStatus', this.inSyncStatus);
       formData.append('hardwareVersion', this.hardwareVersion);
       formData.append('softwareVersion', this.softwareVersion);
-      formData.append('locationCoordinates', this.screenForm.value.locationCoordinates);
+      formData.append(
+        'locationCoordinates',
+        this.screenForm.value.locationCoordinates
+      );
       formData.append('screenStatus', this.screenForm.value.screenStatus);
       formData.append('rebootFlag', this.rebootFlag);
-  
+      formData.append('schedulerId', this.screenForm.value.schedulerId);
+
+      formData.append('slotSize', this.slotSize ? this.slotSize : '');
+      formData.append('cycleTime', this.cycleTime ? this.cycleTime : '');
+
       const nextAvailableDate = this.screenForm.value.nextAvailableDate; // Retrieve the date from the form
-      const formattedDate = this.datePipe.transform(nextAvailableDate, 'dd/MM/yyyy');
+      const formattedDate = this.datePipe.transform(
+        nextAvailableDate,
+        'dd/MM/yyyy'
+      );
       formData.append('NextAvailableDate', formattedDate || ''); // Ensure fallback in case formattedDate is null
   
       // Calculate and append orientation
@@ -132,21 +193,44 @@ export class CreateScreenComponent {
       }
   
       this.screenService.createScreen(formData).subscribe(
-        response => {
+        (response) => {
           console.log('Screen created successfully:', response);
-          this.notificationService.showNotification('Screen created successfully', 'success');
+          this.notificationService.showNotification(
+            'Screen created successfully',
+            'success'
+          );
           this.loaderService.hideLoader();
           this.router.navigate(['/schedulers/createScheduler']);
         },
-        error => {
+        (error) => {
           console.error('Error creating screen:', error);
-          this.notificationService.showNotification('Screen is not created', 'error');
+          this.notificationService.showNotification(
+            'Screen is not created',
+            'error'
+          );
           this.loaderService.hideLoader();
         }
       );
     }
   }
   
+
+  onSchedulerChange(event: any): void {
+    const schedulerId = event.value;
+    console.log('scheduler Id', schedulerId, event.value);
+    const selectedScheduler = this.schedulers.find(
+      (scheduler) => scheduler._id === schedulerId
+    );
+
+    if (selectedScheduler) {
+      this.slotSize = selectedScheduler.slotSize;
+      this.cycleTime = selectedScheduler.cycleTime;
+      this.screenForm.patchValue({
+        slotSize: selectedScheduler.slotSize,
+        cycleTime: selectedScheduler.cycleTime,
+      });
+    }
+  }
 
   onFileSelected(event: any): void {
     const files = event.target.files;
@@ -196,9 +280,11 @@ export class CreateScreenComponent {
   onDateChange(): void {
     const nextAvailableDate = this.screenForm.value.nextAvailableDate;
     if (nextAvailableDate) {
-      const formattedDate = this.datePipe.transform(nextAvailableDate, 'dd/MM/yyyy');
+      const formattedDate = this.datePipe.transform(
+        nextAvailableDate,
+        'dd/MM/yyyy'
+      );
       this.screenForm.patchValue({ nextAvailableDate: formattedDate });
     }
   }
-  
 }

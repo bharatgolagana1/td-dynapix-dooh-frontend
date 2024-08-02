@@ -4,31 +4,32 @@ import { SettingsComponent } from './settings/settings.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { BookingSettingsComponent } from './booking-settings/booking-settings.component';
 import { PlaylistSettingsComponent } from './playlist-settings/playlist-settings.component';
-
+import { SchedulerSettingsComponent } from './scheduler-settings/scheduler-settings.component';
 
 const routes: Routes = [
-      {
-        path: '',
-        component: SettingsComponent,
-      },
+  {
+    path: '',
+    component: SettingsComponent,
+  },
 
-      {
-        path: 'userSettings',
-        component: UserSettingsComponent,
-      },
+  {
+    path: 'userSettings',
+    component: UserSettingsComponent,
+  },
 
-      {
-        path: 'bookingSettings',
-        component: BookingSettingsComponent,
-      },
+  {
+    path: 'bookingSettings',
+    component: BookingSettingsComponent,
+  },
 
-      {
-        path: 'playlistSettings',
-        component: PlaylistSettingsComponent,
-      },
-
-
- 
+  {
+    path: 'playlistSettings',
+    component: PlaylistSettingsComponent,
+  },
+  {
+    path: 'schedulerSettings',
+    component: SchedulerSettingsComponent,
+  },
 ];
 
 @NgModule({
@@ -36,6 +37,6 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class SettingsRoutingModule {
-    static components = [];
-    colors: string[] = ['#EEF0FA', '#F8EEE2', '#DDF0F1', '#FBEAEA'];
+  static components = [];
+  colors: string[] = ['#EEF0FA', '#F8EEE2', '#DDF0F1', '#FBEAEA'];
 }

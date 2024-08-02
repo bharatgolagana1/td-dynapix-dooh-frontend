@@ -15,7 +15,7 @@ interface SubNavState {
   booking: boolean;
   organization: boolean;
   roles: boolean;
-  settings:boolean;
+  settings: boolean;
 }
 
 @Component({
@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
     booking: false,
     organization: false,
     roles: false,
-    settings: false
+    settings: false,
   };
   isSidenavOpened = true;
   isSmallScreen = false;
@@ -46,10 +46,14 @@ export class AppComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private router: Router,
     private readonly keycloak: KeycloakService,
-    private KeycloakOperationService : KeycloakOperationService
+    private KeycloakOperationService: KeycloakOperationService
   ) {
     this.router.events.subscribe((event) => {
       if (router.url.includes('public-screens')) {
+        this.isSidenavOpened = false;
+        this.showToolBar = false;
+      }
+      if (router.url.includes('page-not-found')) {
         this.isSidenavOpened = false;
         this.showToolBar = false;
       }
@@ -82,9 +86,13 @@ export class AppComponent implements OnInit {
         (error: HttpErrorResponse) => {
           console.error('Error fetching user data:', error);
           if (error.status === 0) {
-            console.error('Network error - please check your backend service and CORS configuration.');
+            console.error(
+              'Network error - please check your backend service and CORS configuration.'
+            );
           } else {
-            console.error(`Backend returned code ${error.status}, body was: ${error.message}`);
+            console.error(
+              `Backend returned code ${error.status}, body was: ${error.message}`
+            );
           }
         }
       );

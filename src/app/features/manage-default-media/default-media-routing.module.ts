@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ListMediaComponent } from './components/list-media/list-media.component';
 import { DefaultMediaComponent } from '../manage-default-media/components/default-media/default-media.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ListMediaComponent,
+    component: DefaultMediaComponent,
   },
 
   {
-    path: 'uploa-default-dmedia',
+    path: 'upload-default-dmedia',
     component: DefaultMediaComponent,
   },
 ];
@@ -19,7 +18,7 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class MediaRoutingModule {
+export class DefaultMediaRoutingModule {
   static components = [];
   colors: string[] = ['#eef0fa', '#f8eee2', '#ddf0f1', '#fbeaea'];
 }

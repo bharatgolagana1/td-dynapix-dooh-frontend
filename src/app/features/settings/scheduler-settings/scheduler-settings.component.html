@@ -1,0 +1,15 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav mode="side" opened>
+    <mat-nav-list>
+      <a mat-list-item (click)="selectItem('slotSettings')"
+        >Slot & Cycle Time configurations</a
+      >
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div *ngIf="selectedItem === 'slotSettings'">
+      <app-scheduler-slot-settings></app-scheduler-slot-settings>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

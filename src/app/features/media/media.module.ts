@@ -14,12 +14,26 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 
-
 @NgModule({
-  declarations: [UploadMediaComponent,ListMediaComponent, UploadSuccessDialogComponent, ListMediaDeleteComponent, ListMediaVideoDialogComponent, ListFilterComponent 
+  declarations: [
+    UploadMediaComponent,
+    ListMediaComponent,
+    UploadSuccessDialogComponent,
+    ListMediaDeleteComponent,
+    ListMediaVideoDialogComponent,
+    ListFilterComponent,
   ],
-  imports: [CommonModule, MaterialModule,MediaRoutingModule,MatDialogModule, FormsModule,MatFormFieldModule,MatSelectModule,MatRadioModule   ],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    MediaRoutingModule,
+    MatDialogModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatRadioModule,
+  ],
   providers: [],
-  exports: [ ListMediaComponent , UploadMediaComponent, ],
+  exports: [ListMediaComponent, UploadMediaComponent],
 })
 export class MediaModule {}

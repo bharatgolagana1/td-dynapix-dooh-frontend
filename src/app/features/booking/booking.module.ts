@@ -8,9 +8,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { MaterialModule } from 'src/app/material.module';
 import { MediaModule } from '../media/media.module';
+import { PartialAvailabilityDialogComponent } from './components/partial-availability-dialog/partial-availability-dialog.component';
 
 @NgModule({
-  declarations: [CreateBookingComponent, ListBookingComponent],
+  declarations: [
+    CreateBookingComponent,
+    ListBookingComponent,
+    PartialAvailabilityDialogComponent,
+  ],
   imports: [
     CommonModule,
     MaterialModule,
@@ -19,8 +24,8 @@ import { MediaModule } from '../media/media.module';
     ReactiveFormsModule,
     SlickCarouselModule,
     MatTooltipModule,
-    MediaModule
-],
-  exports: [CreateBookingComponent,ListBookingComponent],
+    MediaModule,
+  ],
+  exports: [CreateBookingComponent, ListBookingComponent],
 })
 export class BookingModule {}

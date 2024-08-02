@@ -1,0 +1,38 @@
+
+.page-container{
+    background: #FFFFFF;
+    margin: 1rem 1rem 0rem 2rem;
+    border-radius: 10px;
+   }
+   .container {
+       text-align: center;
+       padding: 50px;
+     }
+     
+     .container img {
+       max-width: 100%;
+       height: auto;
+     }
+     
+     .container h1 {
+       font-size: 2em;
+       margin: 20px 0;
+     }
+     
+     .container p {
+       margin: 10px 0;
+     }
+     
+     .container button {
+       background-color: #757fef;
+       color: white;
+       padding: 10px 20px;
+       border: none;
+       cursor: pointer;
+       text-transform: uppercase;
+     }
+     
+     .container button:hover {
+       background-color: #757fef;
+     }
+   

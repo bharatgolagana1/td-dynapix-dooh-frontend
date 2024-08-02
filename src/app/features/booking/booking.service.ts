@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class BookingService {
   private baseApiUrl = environment.baseApiUrl;
-
+  // private baseLocalApiUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 
@@ -20,41 +20,21 @@ export class BookingService {
     return this.http.get(`${this.baseApiUrl}/booking`);
   }
 
-screensList(filters: any): Observable<any> {
-  let params = new HttpParams();
-  if (filters.addressOrPincode) {
-    params = params.set('addressOrPincode', filters.addressOrPincode);
+  screensList(filters: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.baseApiUrl}/screen/api/available-screens`,
+      filters
+    );
   }
-  if (filters.screenType !== 'Both') {
-    params = params.set('screenType', filters.screenType);
-  }
-  if (filters.orientation !== 'Both') {
-    params = params.set('orientation', filters.orientation);
-  }
-  if (filters.status !== 'Both') {
-    params = params.set('status', filters.status);
-  }
-  if (filters.date !== 'All Time') {
-    params = params.set('date', filters.date);
-    if (filters.date === 'Date Range') {
-      if (filters.fromDate) {
-        params = params.set('fromDate', filters.fromDate);
-      }
-      if (filters.toDate) {
-        params = params.set('toDate', filters.toDate);
-      }
-    }
-  }
-  return this.http.get<any>(`${this.baseApiUrl}/screen`, { params });
-}
-
 
   getDateOptions(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/date`);
   }
 
   getScreenTypeOptions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/screenType`);
+    return this.http.get<any[]>(
+      `${this.baseApiUrl}/settings/bookings/screenType`
+    );
   }
 
   getStatusOptions(): Observable<any[]> {
@@ -62,10 +42,14 @@ screensList(filters: any): Observable<any> {
   }
 
   getCategoryOptions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/category`);
+    return this.http.get<any[]>(
+      `${this.baseApiUrl}/settings/bookings/category`
+    );
   }
 
   getSlotSizeOptions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/bookings/slotSize`);
+    return this.http.get<any[]>(
+      `${this.baseApiUrl}/settings/bookings/slotSize`
+    );
   }
 }

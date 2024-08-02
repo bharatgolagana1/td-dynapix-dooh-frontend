@@ -3,12 +3,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ScreenService {
-  private baseApiurl = environment.baseApiUrl; 
+  private baseApiurl = environment.baseApiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   listScreens(page: number, pageSize: number, search: string): Observable<any> {
     let params = new HttpParams()
@@ -17,7 +17,9 @@ export class ScreenService {
     if (search) {
       params = params.set('search', search);
     }
-    return this.http.get<any>(`${this.baseApiurl}/screen/api/screens`, { params });
+    return this.http.get<any>(`${this.baseApiurl}/screen/api/screens`, {
+      params,
+    });
   }
 
   deleteScreen(id: string): Observable<any> {
@@ -78,5 +80,11 @@ export class ScreenService {
   bindDevice(Guuid: string, screenId: string): Observable<any> {
     const url = `${this.baseApiurl}/api/register/bind-device`;
     return this.http.post<any>(url, { Guuid, screenId });
+  }
+
+  getSchedulers(): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.baseApiurl}/settings/schedulers/getScheduler`
+    );
   }
 }

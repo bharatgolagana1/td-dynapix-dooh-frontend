@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { AppRoutePaths } from './core/constants';
 import { PublicScreensComponent } from './features/public/public-screens/public-screens.component';
+import { ServerNotfoundComponent } from './features/server-notfound/server-notfound.component';
 
 const routes: Routes = [
   { path: '', redirectTo: AppRoutePaths.dashboard, pathMatch: 'full' },
@@ -33,6 +34,14 @@ const routes: Routes = [
     path: AppRoutePaths.media,
     loadChildren: () =>
       import('./features/media/media.module').then((m) => m.MediaModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: AppRoutePaths.defaultMedia,
+    loadChildren: () =>
+      import(
+        './features/manage-default-media/manage-default-media.module'
+      ).then((m) => m.ManageDefaultMediaModule),
     canActivate: [AuthGuard],
   },
   {
@@ -75,10 +84,15 @@ const routes: Routes = [
   {
     path: AppRoutePaths.settings,
     loadChildren: () =>
-      import('./features/settings/settings.module').then((m) => m.SettingsModule),
+      import('./features/settings/settings.module').then(
+        (m) => m.SettingsModule
+      ),
     canActivate: [AuthGuard],
   },
-  
+  {
+    path: 'page-not-found',
+    component: ServerNotfoundComponent,
+  },
 ];
 
 @NgModule({

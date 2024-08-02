@@ -21,6 +21,7 @@ export enum AppRoutePaths {
   booking = 'booking',
   createBooking = 'create-booking',
   roles = 'roles',
-  organization= 'organization',
-  settings= 'settings'
+  organization = 'organization',
+  settings = 'settings',
+  defaultMedia = 'defaultMedia',
 }

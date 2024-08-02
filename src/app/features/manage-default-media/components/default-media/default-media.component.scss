@@ -1,0 +1,23 @@
+.manage-default-media-container {
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: white;
+  margin: 2rem;
+  display: flex;
+  border-radius: 8px;
+}
+
+.uploaded-media {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.media-item {
+  margin-bottom: 10px;
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+}
