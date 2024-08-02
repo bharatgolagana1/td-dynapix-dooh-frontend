@@ -68,6 +68,8 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     { value: 'Vertical', label: 'Vertical' },
   ];
 
+  selectedDates: { screenId: string; dates: Date[] }[] = [];
+
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
