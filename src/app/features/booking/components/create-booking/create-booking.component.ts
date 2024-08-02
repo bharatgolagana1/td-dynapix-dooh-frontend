@@ -56,7 +56,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
   screens: ScreenAvailability[] = [];
   imageFiles: File[] = [];
   private filterSubject = new Subject<any>();
-
+  extraSlotSizes = [1, 2, 3, 4, 5];
   dateOptions: any[] = [];
   screenTypeOptions: any[] = [];
   statusOptions: any[] = [];
@@ -97,6 +97,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
       }),
       mediaContent: this.fb.array([]),
       screenIds: new FormControl([], [Validators.required]),
+      extraSlotSize: [''],
     });
   }
 
@@ -287,7 +288,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     formData.append('categoryType', formValues.categoryType);
     formData.append('startDate', formValues.dateRange.startDate);
     formData.append('endDate', formValues.dateRange.endDate);
-
+    formData.append('extraSlotSize', formValues.extraSlotSize.toString());
     formValues.screenIds.forEach((screenId: string) => {
       formData.append('screenIds', screenId);
     });
@@ -328,10 +329,12 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
       },
       mediaContent: [],
       screenIds: [],
+      extraSlotSize :'',
     });
     this.imageFiles = [];
     this.screens = [];
     this.selectedDates = [];
+    
     this.loadScreens();
   }
 }

@@ -17,7 +17,7 @@ export class ScreenService {
     if (search) {
       params = params.set('search', search);
     }
-    return this.http.get<any>(`${this.baseApiurl}/screen/api/screens`, {
+    return this.http.get<any>(`${this.baseApiurl}/screen`, {
       params,
     });
   }
@@ -66,7 +66,6 @@ export class ScreenService {
     }
     return this.http.get<any>(`${this.baseApiurl}/screen`, { params });
   }
-  
 
   updateScreenStatus(id: string, status: string): Observable<any> {
     const url = `${this.baseApiurl}/screen/${id}`;

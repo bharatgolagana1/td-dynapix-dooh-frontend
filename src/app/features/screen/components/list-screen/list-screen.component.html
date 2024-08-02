@@ -1,19 +1,19 @@
 <div class="list-screen-container">
   <div class="list-screen-search">
-  <div class="list-screen--title">List Screen</div>
-  <mat-form-field appearance="outline" [style.fontSize.px]="14">
-    <mat-label class="small-label">Search</mat-label>
-    <input
-      type="text"
-      matInput
-      placeholder="Search screens"
-      (input)="onSearchChange($event)"
-      class="search-input"
-    />
-    <button mat-icon-button matSuffix aria-label="Search" class="small-icon">
-      <mat-icon>search</mat-icon>
-    </button>
-  </mat-form-field>
+    <div class="list-screen--title">List Screen</div>
+    <mat-form-field appearance="outline" [style.fontSize.px]="14">
+      <mat-label class="small-label">Search</mat-label>
+      <input
+        type="text"
+        matInput
+        placeholder="Search screens"
+        (input)="onSearchChange($event)"
+        class="search-input"
+      />
+      <button mat-icon-button matSuffix aria-label="Search" class="small-icon">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
   </div>
   <div *ngIf="isLoading" class="spinner-container">
     <mat-spinner diameter="70"></mat-spinner>
@@ -23,101 +23,88 @@
   <div *ngIf="!isLoading && !screens.length" class="user-not-found-message">
     No screens found
   </div>
-<div class="list-table-container">
-  <table
-    *ngIf="!isLoading && screens.length"
-    mat-table
-    [dataSource]="screens"
-    class="mat-elevation-z1"
-  >
-    <ng-container matColumnDef="image">
-      <mat-header-cell *matHeaderCellDef class="mat-header-cell"
-        >Screen</mat-header-cell
-      >
-      <mat-cell *matCellDef="let element" class="mat-cell">
-        <img
-          [src]="element.imageUrls[0]"
-          alt="{{ element.screenName }}"
-          width="70%"
-          class="list-screen--image"
-          (click)="openDialog(element.imageUrls)"
-        />
-      </mat-cell>
-    </ng-container>
+  <div class="list-table-container">
+    <table
+      *ngIf="!isLoading && screens.length"
+      mat-table
+      [dataSource]="screens"
+      class="mat-elevation-z1"
+    >
+      <ng-container matColumnDef="image">
+        <mat-header-cell *matHeaderCellDef class="mat-header-cell"
+          >Screen</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element" class="mat-cell">
+          <img
+            [src]="element.imageUrls[0]"
+            alt="{{ element.screenName }}"
+            width="70%"
+            class="list-screen--image"
+            (click)="openDialog(element.imageUrls)"
+          />
+        </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="screenName">
-      <mat-header-cell *matHeaderCellDef class="mat-header-cell"
-        >Screen Name</mat-header-cell
-      >
-      <mat-cell *matCellDef="let element" class="mat-cell">{{
-        element.screenName
-      }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="screenName">
+        <mat-header-cell *matHeaderCellDef class="mat-header-cell"
+          >Screen Name</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element" class="mat-cell">{{
+          element.screenName
+        }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="nextAvailableDate">
-      <mat-header-cell *matHeaderCellDef class="mat-header-cell"
-        >Next Available Date</mat-header-cell
-      >
-      <mat-cell *matCellDef="let element" class="mat-cell">{{
-        element.NextAvailableDate | date
-      }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="nextAvailableDate">
+        <mat-header-cell *matHeaderCellDef class="mat-header-cell"
+          >Next Available Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element" class="mat-cell">{{
+          element.NextAvailableDate | date
+        }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="size">
-      <mat-header-cell *matHeaderCellDef class="mat-header-cell"
-        >Size</mat-header-cell
-      >
-      <mat-cell *matCellDef="let element" class="mat-cell">{{
-        element.size
-      }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="size">
+        <mat-header-cell *matHeaderCellDef class="mat-header-cell"
+          >Size</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element" class="mat-cell">{{
+          element.size
+        }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="SFT">
-      <mat-header-cell *matHeaderCellDef class="mat-header-cell"
-        >SFT</mat-header-cell
-      >
-      <mat-cell *matCellDef="let element" class="mat-cell">{{
-        element.SFT
-      }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="SFT">
+        <mat-header-cell *matHeaderCellDef class="mat-header-cell"
+          >SFT</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element" class="mat-cell">{{
+          element.SFT
+        }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="edit">
-      <mat-header-cell *matHeaderCellDef class="mat-header-cell"
-        >Edit</mat-header-cell
-      >
-      <mat-cell *matCellDef="let element">
-        <button mat-icon-button (click)="editScreen(element._id)">
-          <img src="assets/images/edit.svg" />
-        </button>
-      </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef class="mat-header-cell"
+          >Edit</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="editScreen(element._id)">
+            <img src="assets/images/edit.svg" />
+          </button>
+        </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="delete">
-      <mat-header-cell *matHeaderCellDef class="mat-header-cell"
-        >Delete</mat-header-cell
-      >
-      <mat-cell *matCellDef="let element">
-        <button mat-icon-button (click)="deleteScreen(element._id)">
-          <img src="assets/images/delete.svg" />
-        </button>
-      </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef class="mat-header-cell"
+          >Delete</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="deleteScreen(element._id)">
+            <img src="assets/images/delete.svg" alt="delete" />
+          </button>
+        </mat-cell>
+      </ng-container>
 
-    <mat-header-row
-      *matHeaderRowDef="[
-        'image',
-        'screenName',
-        'nextAvailableDate',
-        'size',
-        'SFT',
-        'edit',
-        'delete'
-      ]"
-    ></mat-header-row>
-    <mat-row
-      *matRowDef="
-        let row;
-        columns: [
+      <mat-header-row
+        *matHeaderRowDef="[
           'image',
           'screenName',
           'nextAvailableDate',
@@ -125,21 +112,32 @@
           'SFT',
           'edit',
           'delete'
-        ]
-      "
-    ></mat-row>
-  </table>
+        ]"
+      ></mat-header-row>
+      <mat-row
+        *matRowDef="
+          let row;
+          columns: [
+            'image',
+            'screenName',
+            'nextAvailableDate',
+            'size',
+            'SFT',
+            'edit',
+            'delete'
+          ]
+        "
+      ></mat-row>
+    </table>
 
-  <mat-paginator
-    *ngIf="total > 0"
-    [length]="total"
-    [pageSize]="pageSize"
-    [pageSizeOptions]="[2, 5, 10, 20]"
-    (page)="onPageChange($event)"
-    showFirstLastButtons="true"
-  >
-  </mat-paginator>
+    <mat-paginator
+      *ngIf="total > 0"
+      [length]="total"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[2, 5, 10, 20]"
+      (page)="onPageChange($event)"
+      showFirstLastButtons="true"
+    >
+    </mat-paginator>
+  </div>
 </div>
-</div>
-
-
