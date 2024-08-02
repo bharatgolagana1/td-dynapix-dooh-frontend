@@ -23,6 +23,8 @@ import { RolesModule } from './features/roles-matrix/roles.module';
 import { PublicScreensComponent } from './features/public/public-screens/public-screens.component';
 import { ScreenMapComponent } from './features/public/screen-map/screen-map.component';
 import { ServerNotfoundComponent } from './features/server-notfound/server-notfound.component';
+import { ManageDefaultMediaModule } from './features/manage-default-media/manage-default-media.module';
+import { SharedModule } from './shared/shared.module';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -52,7 +54,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     NewInventoryComponent,
     PublicScreensComponent,
     ScreenMapComponent,
-    ServerNotfoundComponent
+    ServerNotfoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +70,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     BookingModule,
     KeycloakAngularModule,
     RolesModule,
+    ManageDefaultMediaModule,
+    SharedModule,
   ],
   providers: [
     {

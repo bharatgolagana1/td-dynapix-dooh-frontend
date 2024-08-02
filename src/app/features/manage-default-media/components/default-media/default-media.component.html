@@ -1,0 +1,37 @@
+<div class="manage-default-media-container">
+  <h2>Manage Default Media</h2>
+  <form (ngSubmit)="onUpload()" enctype="multipart/form-data">
+    <mat-form-field>
+      <mat-label>Media Type</mat-label>
+      <mat-select [(value)]="mediaType">
+        <mat-option value="image">Image</mat-option>
+        <mat-option value="video">Video</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <app-file-upload
+      (filesSelected)="onFilesSelected($event)"
+    ></app-file-upload>
+    <button mat-raised-button color="primary" type="submit">Upload</button>
+  </form>
+
+  <div class="uploaded-media">
+    <h3>Uploaded Media</h3>
+    <div *ngIf="defaultMedia.length > 0; else noMedia">
+      <div *ngFor="let media of defaultMedia" class="media-item">
+        <img
+          *ngIf="media.type === 'image'"
+          [src]="media.url"
+          alt="Default Media"
+        />
+        <video
+          *ngIf="media.type === 'video'"
+          [src]="media.url"
+          controls
+        ></video>
+      </div>
+    </div>
+    <ng-template #noMedia>
+      <p>No media uploaded yet.</p>
+    </ng-template>
+  </div>
+</div>

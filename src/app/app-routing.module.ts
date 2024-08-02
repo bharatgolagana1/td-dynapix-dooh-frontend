@@ -37,6 +37,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: AppRoutePaths.defaultMedia,
+    loadChildren: () =>
+      import(
+        './features/manage-default-media/manage-default-media.module'
+      ).then((m) => m.ManageDefaultMediaModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: AppRoutePaths.screen,
     loadChildren: () =>
       import('./features/screen/screen.module').then((m) => m.ScreenModule),
@@ -76,13 +84,15 @@ const routes: Routes = [
   {
     path: AppRoutePaths.settings,
     loadChildren: () =>
-      import('./features/settings/settings.module').then((m) => m.SettingsModule),
+      import('./features/settings/settings.module').then(
+        (m) => m.SettingsModule
+      ),
     canActivate: [AuthGuard],
   },
   {
-    path: 'server-not-found',
+    path: 'page-not-found',
     component: ServerNotfoundComponent,
-  }
+  },
 ];
 
 @NgModule({

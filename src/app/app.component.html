@@ -128,7 +128,7 @@
         </div>
       </a>
       <mat-nav-list *ngIf="isSubNavOpen('media')">
-        <a mat-list-item routerLink="/media/uploadmedia">Upload Media</a>
+        <a mat-list-item routerLink="defaultMedia">Default Upload Media</a>
         <!-- Add more sublinks as needed -->
       </mat-nav-list>
       <a mat-list-item (click)="toggleSubNav('roles')" class="parent-link">
@@ -145,7 +145,7 @@
           <mat-icon *ngIf="!isSubNavOpen('roles')">expand_more</mat-icon>
         </div>
       </a>
-  
+
       <mat-nav-list *ngIf="isSubNavOpen('roles')">
         <a mat-list-item routerLink="/booking/create-booking">Roles</a>
       </mat-nav-list>
@@ -160,10 +160,7 @@
           settings</span
         >
       </a>
-
-  
     </mat-nav-list>
-
   </mat-sidenav>
 
   <mat-sidenav-content>

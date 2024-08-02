@@ -10,7 +10,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserRoleComponent } from './user-role/user-role.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserIdentificationTypeComponent } from './user-identification-type/user-identification-type.component';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component'; 
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { SchedulerSettingsComponent } from './scheduler-settings/scheduler-settings.component';
+import { SchedulerSlotSettingsComponent } from './scheduler-slot-settings/scheduler-slot-settings.component';
+import { EditSchedulerDialogComponent } from './edit-scheduler-dialog/edit-scheduler-dialog.component'; 
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
  UserRoleComponent,
  UserProfileComponent,
  UserIdentificationTypeComponent,
- DeleteDialogComponent
+ DeleteDialogComponent,
+ SchedulerSettingsComponent,
+ SchedulerSlotSettingsComponent,
+ EditSchedulerDialogComponent
   ],
   imports: [CommonModule, MaterialModule, SettingsRoutingModule, FormsModule,],
   providers: [],

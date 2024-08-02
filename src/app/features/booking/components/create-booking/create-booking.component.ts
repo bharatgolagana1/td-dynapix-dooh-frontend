@@ -21,6 +21,7 @@ import { ImageDialogComponent } from 'src/app/features/screen/components/image-d
 import { DateRangeDialogComponent } from 'src/app/features/screen/components/date-range-dialog/date-range-dialog.component';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { Router } from '@angular/router';
+import { PartialAvailabilityDialogComponent } from '../partial-availability-dialog/partial-availability-dialog.component';
 
 export interface Screen {
   id: any;
@@ -35,8 +36,13 @@ export interface Screen {
   screenStatus: string;
   createdAt: Date;
   imageUrls: string[];
-  selected?: boolean;
   Guuid?: string | null;
+}
+
+export interface ScreenAvailability {
+  screen: Screen;
+  availability: { date: Date; availableSlots: number }[];
+  selected?: boolean;
 }
 
 @Component({
@@ -47,7 +53,7 @@ export interface Screen {
 export class CreateBookingComponent implements OnInit, AfterViewInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
   bookingForm: FormGroup;
-  screens: Screen[] = [];
+  screens: ScreenAvailability[] = [];
   imageFiles: File[] = [];
   private filterSubject = new Subject<any>();
 
@@ -56,11 +62,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
   statusOptions: any[] = [];
   categoryOption: any[] = [];
   slotSize: any[] = [];
-  orientationOptions = [
-    { value: 'Both', label: 'Both' },
-    { value: 'Horizontal', label: 'Horizontal' },
-    { value: 'Vertical', label: 'Vertical' }
-  ];
+  selectedDates: { screenId: string; dates: Date[] }[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -124,11 +126,13 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
   }
 
   onFilterChange() {
-    if (this.bookingForm.get('filters')?.get('date')?.value === 'Date Range') {
-      this.openDateRangeDialog();
-    } else {
-      this.filterSubject.next(this.bookingForm.get('filters')?.value);
-    }
+    const filters = this.bookingForm.get('filters')?.value;
+    const dateRange = this.bookingForm.get('dateRange')?.value;
+    filters.slotSize = this.bookingForm.get('slotSize')?.value;
+    filters.startDate = dateRange.startDate;
+    filters.endDate = dateRange.endDate;
+
+    this.filterSubject.next(filters);
   }
 
   openDateRangeDialog(): void {
@@ -159,7 +163,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     this.bookingService
       .screensList(this.bookingForm.get('filters')?.value)
       .subscribe(
-        (data: { screens: Screen[] }) => {
+        (data: { screens: ScreenAvailability[] }) => {
           this.ngZone.run(() => {
             this.screens = data.screens.map((screen) => ({
               ...screen,
@@ -185,17 +189,39 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onScreenSelectionChange(screen: Screen): void {
-    screen.selected = !screen.selected;
+  isFullyAvailable(availability: { date: Date, availableSlots: number }[]): boolean {
+    return availability.every(a => a.availableSlots > 0);
+  }
+  onScreenSelectionChange(screenAvailability: ScreenAvailability): void {
+    screenAvailability.selected = !screenAvailability.selected;
     const selectedScreenIds = this.screens
       .filter((s) => s.selected)
-      .map((s) => s._id)
+      .map((s) => s.screen._id)
       .filter((id) => !!id);
     this.ngZone.run(() => {
       this.bookingForm.patchValue({
         screenIds: selectedScreenIds,
       });
       this.cdr.detectChanges();
+    });
+  }
+
+  openPartialAvailabilityDialog(
+    screen: Screen,
+    availability: { date: Date; availableSlots: number }[]
+  ): void {
+    const dialogRef = this.dialog.open(PartialAvailabilityDialogComponent, {
+      width: '300px',
+      data: { availability },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.selectedDates) {
+        this.selectedDates.push({
+          screenId: screen._id,
+          dates: result.selectedDates,
+        });
+      }
     });
   }
 
@@ -274,5 +300,32 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
         this.loaderService.hideLoader(); 
       }
     );
+  }
+
+  resetForm(): void {
+    this.bookingForm.reset({
+      customerName: '',
+      slotSize: '',
+      totalAmount: '',
+      categoryType: 'Internal',
+      dateRange: {
+        startDate: '',
+        endDate: '',
+      },
+      filters: {
+        addressOrPincode: '',
+        screenType: 'Both',
+        size: 'All',
+        status: 'Both',
+        date: 'All Time',
+      },
+      mediaContent: [],
+      screenIds: [],
+    });
+    this.imageFiles = [];
+    this.screens = [];
+    this.selectedDates = [];
+    this.isLoading = true;
+    this.loadScreens();
   }
 }
