@@ -177,21 +177,24 @@ export class CreateScreenComponent implements OnInit {
         'dd/MM/yyyy'
       );
       formData.append('NextAvailableDate', formattedDate || ''); // Ensure fallback in case formattedDate is null
-  
+
       // Calculate and append orientation
+      const width = this.screenForm.value.width;
+      const height = this.screenForm.value.height;
       if (width && height) {
         const parsedWidth = parseFloat(width);
         const parsedHeight = parseFloat(height);
-        const orientation = parsedWidth > parsedHeight ? 'Horizontal' : 'Vertical';
+        const orientation =
+          parsedWidth > parsedHeight ? 'Horizontal' : 'Vertical';
         formData.append('orientation', orientation);
       }
-  
+
       if (this.imageFiles && this.imageFiles.length > 0) {
         for (let i = 0; i < this.imageFiles.length; i++) {
           formData.append('imageFiles', this.imageFiles[i]);
         }
       }
-  
+
       this.screenService.createScreen(formData).subscribe(
         (response) => {
           console.log('Screen created successfully:', response);
@@ -213,7 +216,6 @@ export class CreateScreenComponent implements OnInit {
       );
     }
   }
-  
 
   onSchedulerChange(event: any): void {
     const schedulerId = event.value;

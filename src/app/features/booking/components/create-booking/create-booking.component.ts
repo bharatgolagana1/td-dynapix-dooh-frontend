@@ -62,7 +62,11 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
   statusOptions: any[] = [];
   categoryOption: any[] = [];
   slotSize: any[] = [];
-  selectedDates: { screenId: string; dates: Date[] }[] = [];
+  orientationOptions = [
+    { value: 'Both', label: 'Both' },
+    { value: 'Horizontal', label: 'Horizontal' },
+    { value: 'Vertical', label: 'Vertical' },
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -85,7 +89,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
       filters: this.fb.group({
         addressOrPincode: [''],
         screenType: ['Both'],
-        orientation: ['Both'], 
+        orientation: ['Both'],
         status: ['Both'],
         date: ['All Time'],
       }),
@@ -159,7 +163,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
   }
 
   loadScreens() {
-    this.loaderService.showLoader(); 
+    this.loaderService.showLoader();
     this.bookingService
       .screensList(this.bookingForm.get('filters')?.value)
       .subscribe(
@@ -169,7 +173,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
               ...screen,
               selected: false,
             }));
-            this.cdr.detectChanges(); 
+            this.cdr.detectChanges();
             this.loaderService.hideLoader();
           });
         },
@@ -189,8 +193,10 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     });
   }
 
-  isFullyAvailable(availability: { date: Date, availableSlots: number }[]): boolean {
-    return availability.every(a => a.availableSlots > 0);
+  isFullyAvailable(
+    availability: { date: Date; availableSlots: number }[]
+  ): boolean {
+    return availability.every((a) => a.availableSlots > 0);
   }
   onScreenSelectionChange(screenAvailability: ScreenAvailability): void {
     screenAvailability.selected = !screenAvailability.selected;
@@ -269,7 +275,7 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     if (this.bookingForm.invalid) {
       return;
     }
-    this.loaderService.showLoader(); 
+    this.loaderService.showLoader();
     const formValues = this.bookingForm.value;
     console.log('Form Values:', formValues);
     const formData = new FormData();
@@ -292,12 +298,11 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
       (response) => {
         console.log('Booking created successfully:', response);
         this.loaderService.hideLoader();
-        this.router.navigate(['/booking']); 
-        
+        this.router.navigate(['/booking']);
       },
       (error) => {
         console.error('Error creating booking:', error);
-        this.loaderService.hideLoader(); 
+        this.loaderService.hideLoader();
       }
     );
   }
@@ -325,7 +330,6 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     this.imageFiles = [];
     this.screens = [];
     this.selectedDates = [];
-    this.isLoading = true;
     this.loadScreens();
   }
 }
