@@ -25,6 +25,7 @@ import { ScreenMapComponent } from './features/public/screen-map/screen-map.comp
 import { ServerNotfoundComponent } from './features/server-notfound/server-notfound.component';
 import { ManageDefaultMediaModule } from './features/manage-default-media/manage-default-media.module';
 import { SharedModule } from './shared/shared.module';
+import { QuoteModule } from './features/quote/quote.module';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -72,6 +73,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     RolesModule,
     ManageDefaultMediaModule,
     SharedModule,
+    QuoteModule
   ],
   providers: [
     {

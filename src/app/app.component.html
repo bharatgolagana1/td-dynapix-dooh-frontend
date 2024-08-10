@@ -74,6 +74,22 @@
         <a mat-list-item routerLink="/schedulers/playScheduler">Play</a>
         <!-- Add more sublinks as needed -->
       </mat-nav-list>
+      <a mat-list-item (click)="toggleSubNav('quote')" class="parent-link">
+        <span class="dashboard--title"
+          ><img
+            class="users-logo--image"
+            src="assets/icons/quote.svg"
+            alt="logo"
+          />Quote</span
+        >
+        <div class="expand-icon-container">
+          <mat-icon *ngIf="isSubNavOpen('quote')">expand_less</mat-icon>
+          <mat-icon *ngIf="!isSubNavOpen('quote')">expand_more</mat-icon>
+        </div>
+      </a>
+      <mat-nav-list *ngIf="isSubNavOpen('quote')">
+        <a mat-list-item routerLink="/quote/create-quote">Create Quote</a>
+      </mat-nav-list>
       <a mat-list-item (click)="toggleSubNav('schedulers')" class="parent-link">
         <span class="dashboard--title"
           ><img
