@@ -1,14 +1,24 @@
+.default-media--title {
+  color: #757fef;
+  font-family: Manrope;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2rem;
+  margin-bottom: 2rem;
+  padding-top: 1rem;
+}
+
 .manage-default-media-container {
   flex-direction: column;
-  align-items: center;
-  padding: 20px;
+  padding: 2rem;
   background: white;
-  margin: 2rem;
+  margin: 3rem 2rem;
   display: flex;
   border-radius: 8px;
 }
 
-.uploaded-media {
+.default-media--uploaded{
   margin-top: 20px;
   width: 100%;
 }
@@ -20,4 +30,19 @@
     max-width: 100%;
     height: auto;
   }
+}
+
+.default-media-button{
+  margin: 1rem 0rem;
+}
+
+.default-media--uploaded{
+color: #757fef;
+font-family: Manrope;
+font-size: 1.5rem;
+font-style: normal;
+font-weight: 600;
+line-height: 1rem;
+margin-bottom: 1.5rem;
+padding-top: 1rem;
 }

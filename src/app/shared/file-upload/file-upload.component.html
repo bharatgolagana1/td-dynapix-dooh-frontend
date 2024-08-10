@@ -1,12 +1,13 @@
-<div
-  class="drag-drop-area"
-  (dragover)="onDragOver($event)"
-  (drop)="onFileDropped($event)"
-  (click)="openFileSelector()"
->
-  <img src="assets/images/upload-file.svg" />
-  <p>Drag and drop files here or click to select files</p>
-</div>
+<div class="media-upload-container">
+  <div
+    class="drop-area"
+    (dragover)="onDragOver($event)"
+    (drop)="onFileDropped($event)"
+    (click)="openFileSelector()"
+  >
+    <img src="assets/images/upload-file.svg" />
+    <p>Drag and drop files here or click to select files</p>
+  </div>
 
 <input
   type="file"
@@ -16,11 +17,12 @@
   hidden
 />
 
-<div *ngIf="files.length > 0">
-  <div *ngFor="let file of files; let i = index" class="file-item">
-    <span>{{ file.name }}</span>
-    <button type="button" class="remove-button" (click)="removeFile(i)">
-      <mat-icon>cancel</mat-icon>
-    </button>
+  <div *ngIf="files.length > 0">
+    <div *ngFor="let file of files; let i = index" class="file-item">
+      <span>{{ file.name }}</span>
+      <button type="button" class="remove-button" (click)="removeFile(i)">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </div>
   </div>
 </div>
