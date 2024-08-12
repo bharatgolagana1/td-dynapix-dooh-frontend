@@ -1,5 +1,5 @@
 <div class="manage-default-media-container">
-  <h2>Manage Default Media</h2>
+  <div class="default-media--title">Manage Default Media</div>
   <form (ngSubmit)="onUpload()" enctype="multipart/form-data">
     <mat-form-field>
       <mat-label>Media Type</mat-label>
@@ -8,14 +8,16 @@
         <mat-option value="video">Video</mat-option>
       </mat-select>
     </mat-form-field>
+    <div>
     <app-file-upload
       (filesSelected)="onFilesSelected($event)"
     ></app-file-upload>
-    <button mat-raised-button color="primary" type="submit">Upload</button>
+    <button mat-raised-button color="primary" type="submit" class="default-media-button">Upload</button>
+  </div>
   </form>
-
+<mat-divider></mat-divider>
   <div class="uploaded-media">
-    <h3>Uploaded Media</h3>
+    <div class="default-media--uploaded">Uploaded Media</div>
     <div *ngIf="defaultMedia.length > 0; else noMedia">
       <div *ngFor="let media of defaultMedia" class="media-item">
         <img

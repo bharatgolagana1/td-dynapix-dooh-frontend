@@ -1,18 +1,19 @@
-.media-upload-container {
-  margin: 2rem;
-}
+
 .drop-area {
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   border: 0.1rem dashed #757fef;
-  border-radius: 0.2rem;
-  padding: 1rem;
+  padding: 20px;
   text-align: center;
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
+  transition: border-color 0.3s;
+  border-radius: 8px;
+  margin-bottom: 1rem;
   background: #ffff;
 }
+
 .media-upload--title {
   color: #000000;
   font-family: Manrope;
@@ -22,6 +23,7 @@
   line-height: 2rem;
   margin-bottom: 2rem;
 }
+
 .drop-container p {
   margin: 0;
 }
@@ -37,4 +39,40 @@
 .upload-button {
   padding-left: 1rem;
   margin-bottom: 1rem;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 5px;
+  transition: background-color 0.3s;
+}
+
+.file-item:hover {
+  background-color: #eee;
+}
+
+.file-item span {
+  flex-grow: 1;
+}
+
+.file-item button {
+  background-color: transparent;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-item mat-icon {
+  font-size: 20px;
 }
