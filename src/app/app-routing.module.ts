@@ -78,6 +78,12 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: AppRoutePaths.quote,
+    loadChildren: () =>
+      import('./features/quote/quote.module').then((m) => m.QuoteModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'public-screens',
     component: PublicScreensComponent,
   },

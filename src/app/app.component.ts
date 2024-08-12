@@ -16,6 +16,7 @@ interface SubNavState {
   organization: boolean;
   roles: boolean;
   settings: boolean;
+  quote:boolean;
 }
 
 @Component({
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit {
     organization: false,
     roles: false,
     settings: false,
+    quote:false
   };
   isSidenavOpened = true;
   isSmallScreen = false;

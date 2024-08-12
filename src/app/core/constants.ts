@@ -24,4 +24,6 @@ export enum AppRoutePaths {
   organization = 'organization',
   settings = 'settings',
   defaultMedia = 'defaultMedia',
+  quote = 'quote',
+  createQuote = 'create-quote'
 }
