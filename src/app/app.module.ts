@@ -40,6 +40,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         silentCheckSsoRedirectUri:
           window.location.origin + '/assets/silent-check-sso.html',
         checkLoginIframe: false,
+        redirectUri: `${window.location.origin}/login`,
       },
     });
 }
@@ -73,7 +74,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     RolesModule,
     ManageDefaultMediaModule,
     SharedModule,
-    QuoteModule
+    QuoteModule,
   ],
   providers: [
     {
