@@ -63,6 +63,10 @@ export class AppComponent implements OnInit {
         this.isSidenavOpened = false;
         this.showToolBar = false;
       }
+      if (router.url.includes('public-case')) {
+        this.isSidenavOpened = false;
+        this.showToolBar = false;
+      }
     });
   }
 
