@@ -24,7 +24,7 @@ export class CreateScreenComponent implements OnInit {
   screenForm: FormGroup;
   imageFiles: File[] = [];
   fileUrls: string[] = [];
-  tenantId: string = '12345';
+  organizationId: string = '12345';
   localIP: string = '192.168.1.2';
   MACID: string = '00-B0-D0-63-C2-26';
   lastHeartbeat: string = '60';
@@ -36,6 +36,11 @@ export class CreateScreenComponent implements OnInit {
   schedulers: any[] = [];
   slotSize: string = '';
   cycleTime: string = '';
+  cities: string[] = ['City1', 'City2', 'City3'];
+  screenCategories: string[] = ['Category1', 'Category2', 'Category3'];
+  screenNetworks: string[] = ['Network1', 'Network2', 'Network3'];
+  cardinalPoints: string[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  tags: string[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -74,6 +79,17 @@ export class CreateScreenComponent implements OnInit {
       slotSize: new FormControl({ value: '', disabled: true }),
       cycleTime: new FormControl({ value: '', disabled: true }),
       imageFiles: [''],
+      cityName: new FormControl('', [Validators.required]),
+      screenCategory: new FormControl('', [Validators.required]),
+      screenNetwork: new FormControl('', [Validators.required]),
+      cardinalPoint: new FormControl('', [Validators.required]),
+      cardRate: new FormControl(null, [Validators.required]),
+      minimumPrice: new FormControl(null, [Validators.required]),
+      footfallPerMonth: new FormControl(null, [Validators.required]),
+      footfallPerDay: new FormControl(null, [Validators.required]),
+      locality: new FormControl('', [Validators.required]),
+      landmark: new FormControl('', [Validators.required]),
+      tags: new FormControl([], [Validators.required]),
     });
 
     this.screenForm.valueChanges.subscribe(() => {
@@ -126,7 +142,7 @@ export class CreateScreenComponent implements OnInit {
       console.log('screen Form', this.screenForm);
       this.loaderService.showLoader();
       const formData = new FormData();
-      formData.append('tenantId', this.tenantId);
+      formData.append('organizationId', this.organizationId); // Changed from tenantId to organizationId
       formData.append('screenName', this.screenForm.value.screenName);
       formData.append('address', this.screenForm.value.address);
       formData.append(
@@ -171,12 +187,32 @@ export class CreateScreenComponent implements OnInit {
       formData.append('slotSize', this.slotSize ? this.slotSize : '');
       formData.append('cycleTime', this.cycleTime ? this.cycleTime : '');
 
-      const nextAvailableDate = this.screenForm.value.nextAvailableDate; // Retrieve the date from the form
+      const nextAvailableDate = this.screenForm.value.nextAvailableDate; 
       const formattedDate = this.datePipe.transform(
         nextAvailableDate,
         'dd/MM/yyyy'
       );
-      formData.append('NextAvailableDate', formattedDate || ''); // Ensure fallback in case formattedDate is null
+      formData.append('NextAvailableDate', formattedDate || ''); 
+      formData.append('cityName', this.screenForm.value.cityName);
+      formData.append('screenCategory', this.screenForm.value.screenCategory);
+      formData.append('screenNetwork', this.screenForm.value.screenNetwork);
+      formData.append('cardinalPoint', this.screenForm.value.cardinalPoint);
+      formData.append('cardRate', this.screenForm.value.cardRate?.toString());
+      formData.append(
+        'minimumPrice',
+        this.screenForm.value.minimumPrice?.toString()
+      );
+      formData.append(
+        'footfallPerMonth',
+        this.screenForm.value.footfallPerMonth?.toString()
+      );
+      formData.append(
+        'footfallPerDay',
+        this.screenForm.value.footfallPerDay?.toString()
+      );
+      formData.append('locality', this.screenForm.value.locality);
+      formData.append('landmark', this.screenForm.value.landmark);
+      formData.append('tags', JSON.stringify(this.screenForm.value.tags));
 
       // Calculate and append orientation
       const width = this.screenForm.value.width;
@@ -288,5 +324,26 @@ export class CreateScreenComponent implements OnInit {
       );
       this.screenForm.patchValue({ nextAvailableDate: formattedDate });
     }
+  }
+
+  addTag(event: any): void {
+    const input = event.input;
+    const value = event.value;
+    if ((value || '').trim()) {
+      this.tags.push(value.trim());
+    }
+    if (input) {
+      input.value = '';
+    }
+    this.screenForm.get('tags')?.setValue(this.tags);
+  }
+
+  removeTag(tag: string): void {
+    const index = this.tags.indexOf(tag);
+
+    if (index >= 0) {
+      this.tags.splice(index, 1);
+    }
+    this.screenForm.get('tags')?.setValue(this.tags);
   }
 }

@@ -56,7 +56,7 @@
         <div class="create-screen--content">
           <mat-form-field
             appearance="outline"
-            [style.fontSize.px]="14"
+            [style.fontSize.px]="12"
             class="matform-full-width"
           >
             <mat-label>Screen Name</mat-label>
@@ -71,7 +71,7 @@
 
           <mat-form-field
             appearance="outline"
-            [style.fontSize.px]="14"
+            [style.fontSize.px]="12"
             class="matform-full-width"
           >
             <mat-label>Screen Type</mat-label>
@@ -90,7 +90,7 @@
 
           <mat-form-field
             appearance="outline"
-            [style.fontSize.px]="14"
+            [style.fontSize.px]="12"
             class="matform-full-width"
           >
             <mat-label>Screen Size</mat-label>
@@ -107,9 +107,154 @@
             </mat-hint>
           </mat-form-field>
 
+          <!-- New Fields -->
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>City Name</mat-label>
+            <mat-select formControlName="cityName" required>
+              <mat-option *ngFor="let city of cities" [value]="city">
+                {{ city }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Screen Category</mat-label>
+            <mat-select formControlName="screenCategory" required>
+              <mat-option
+                *ngFor="let category of screenCategories"
+                [value]="category"
+              >
+                {{ category }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Screen Network</mat-label>
+            <mat-select formControlName="screenNetwork" required>
+              <mat-option
+                *ngFor="let network of screenNetworks"
+                [value]="network"
+              >
+                {{ network }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Cardinal Points</mat-label>
+            <mat-select formControlName="cardinalPoint" required>
+              <mat-option *ngFor="let point of cardinalPoints" [value]="point">
+                {{ point }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Card Rate</mat-label>
+            <input matInput formControlName="cardRate" type="number" required />
+            <mat-hint
+              style="color: red"
+              *ngIf="screenForm.get('cardRate')?.touched && screenForm.get('cardRate')?.errors?.['required']"
+            >
+              Card Rate is required
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Minimum Price</mat-label>
+            <input
+              matInput
+              formControlName="minimumPrice"
+              type="number"
+              required
+            />
+            <mat-hint
+              style="color: red"
+              *ngIf="screenForm.get('minimumPrice')?.touched && screenForm.get('minimumPrice')?.errors?.['required']"
+            >
+              Minimum Price is required
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Footfall Per Month</mat-label>
+            <input
+              matInput
+              formControlName="footfallPerMonth"
+              type="number"
+              required
+            />
+            <mat-hint
+              style="color: red"
+              *ngIf="screenForm.get('footfallPerMonth')?.touched && screenForm.get('footfallPerMonth')?.errors?.['required']"
+            >
+              Footfall Per Month is required
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Footfall Per Day</mat-label>
+            <input
+              matInput
+              formControlName="footfallPerDay"
+              type="number"
+              required
+            />
+            <mat-hint
+              style="color: red"
+              *ngIf="screenForm.get('footfallPerDay')?.touched && screenForm.get('footfallPerDay')?.errors?.['required']"
+            >
+              Footfall Per Day is required
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Locality</mat-label>
+            <input matInput formControlName="locality" required />
+            <mat-hint
+              style="color: red"
+              *ngIf="screenForm.get('locality')?.touched && screenForm.get('locality')?.errors?.['required']"
+            >
+              Locality is required
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Landmark</mat-label>
+            <input matInput formControlName="landmark" required />
+            <mat-hint
+              style="color: red"
+              *ngIf="screenForm.get('landmark')?.touched && screenForm.get('landmark')?.errors?.['required']"
+            >
+              Landmark is required
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="example-form-field">
+            <mat-label>Tags</mat-label>
+            <mat-chip-grid
+              #chipGrid
+              aria-label="Enter tags"
+              formControlName="tags"
+            >
+              <mat-chip-row *ngFor="let tag of tags" (removed)="removeTag(tag)">
+                {{ tag }}
+                <button matChipRemove aria-label="Remove tag">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            </mat-chip-grid>
+            <input
+              placeholder="New tag..."
+              [matChipInputFor]="chipGrid"
+              (matChipInputTokenEnd)="addTag($event)"
+            />
+          </mat-form-field>
+
           <mat-form-field
             appearance="outline"
-            [style.fontSize.px]="14"
+            [style.fontSize.px]="12"
             class="matform-full-width"
           >
             <mat-label>Screen Status</mat-label>
@@ -128,7 +273,7 @@
           <div class="create-screen-size--content">
             <mat-form-field
               appearance="outline"
-              [style.fontSize.px]="14"
+              [style.fontSize.px]="12"
               class="matform-full-width"
             >
               <mat-label>Width (ft)</mat-label>
@@ -149,7 +294,7 @@
 
             <mat-form-field
               appearance="outline"
-              [style.fontSize.px]="14"
+              [style.fontSize.px]="12"
               class="matform-full-width"
             >
               <mat-label>Height</mat-label>
@@ -171,7 +316,7 @@
 
           <mat-form-field
             appearance="outline"
-            [style.fontSize.px]="14"
+            [style.fontSize.px]="12"
             class="matform-full-width"
           >
             <mat-label>SFT</mat-label>
@@ -186,7 +331,7 @@
 
           <mat-form-field
             appearance="outline"
-            [style.fontSize.px]="14"
+            [style.fontSize.px]="12"
             class="matform-full-width"
           >
             <mat-label>Scheduler</mat-label>
@@ -212,7 +357,7 @@
 
           <mat-form-field
             appearance="outline"
-            [style.fontSize.px]="14"
+            [style.fontSize.px]="12"
             class="matform-full-width"
           >
             <mat-label>Slot Size</mat-label>
@@ -221,7 +366,7 @@
 
           <mat-form-field
             appearance="outline"
-            [style.fontSize.px]="14"
+            [style.fontSize.px]="12"
             class="matform-full-width"
           >
             <mat-label>Cycle</mat-label>
@@ -266,7 +411,7 @@
 
           <mat-form-field
             appearance="outline"
-            [style.fontSize.px]="14"
+            [style.fontSize.px]="12"
             class="matform-full-width"
           >
             <mat-label>Pincode</mat-label>
@@ -281,7 +426,7 @@
 
           <mat-form-field
             appearance="outline"
-            [style.fontSize.px]="14"
+            [style.fontSize.px]="12"
             class="matform-full-width"
           >
             <mat-label>Address</mat-label>

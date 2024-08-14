@@ -17,17 +17,19 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import {VgCoreModule} from '@videogular/ngx-videogular/core';
-import {VgControlsModule} from '@videogular/ngx-videogular/controls';
-import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
-import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
+import { VgCoreModule } from '@videogular/ngx-videogular/core';
+import { VgControlsModule } from '@videogular/ngx-videogular/controls';
+import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
+import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatChipsModule } from '@angular/material/chips';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -60,8 +62,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSlideToggleModule,
     DragDropModule,
     MatMenuModule,
-    MatDividerModule
-
+    MatDividerModule,
+    MatChipsModule,
   ],
   exports: [
     MatButtonModule,
@@ -93,7 +95,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSlideToggleModule,
     DragDropModule,
     MatMenuModule,
-    MatDividerModule
+    MatDividerModule,
+    MatChipsModule,
   ],
 })
 export class MaterialModule {}
