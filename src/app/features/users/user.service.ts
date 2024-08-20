@@ -19,6 +19,15 @@ export class UserService {
     return params;
   }
 
+
+  private appendOrganizationId(params: any = {}) {
+    const organizationId = this.keycloakOperationService.getOrganizationId();
+    if (organizationId) {
+      params['organizationId'] = organizationId;
+    }
+    return params;
+  }
+
   private userCreatedSubject: Subject<void> = new Subject<void>();
 
   constructor(private http: HttpClient ,private keycloakOperationService: KeycloakOperationService) { }
