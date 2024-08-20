@@ -10,16 +10,6 @@ import { KeycloakOperationService } from 'src/app/core/services/keycloak.service
 export class UserService {
   private baseApiUrl = environment.baseApiUrl;
 
-
-  private appendOrganizationId(params: any = {}) {
-    const organizationId = this.keycloakOperationService.getOrganizationId();
-    if (organizationId) {
-      params['organizationId'] = organizationId;
-    }
-    return params;
-  }
-
-
   private appendOrganizationId(params: any = {}) {
     const organizationId = this.keycloakOperationService.getOrganizationId();
     if (organizationId) {
