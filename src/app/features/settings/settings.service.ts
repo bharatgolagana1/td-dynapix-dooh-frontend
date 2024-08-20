@@ -99,25 +99,25 @@ export class SettingsService {
   }
 
   getSchedulers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/schedulers/getScheduler`);
+    return this.http.get<any[]>(`${this.apiUrl}/settings/schedulers/getScheduler`);
   }
 
   createScheduler(scheduler: any): Observable<any> {
     return this.http.post<any>(
-      `${this.apiUrl}/schedulers/createScheduler`,
+      `${this.apiUrl}/settings/schedulers/createScheduler`,
       scheduler
     );
   }
 
   updateScheduler(scheduler: any): Observable<any> {
     return this.http.put<any>(
-      `${this.apiUrl}/schedulers/updateScheduler`,
+      `${this.apiUrl}/settings/schedulers/updateScheduler`,
       scheduler
     );
   }
 
   deleteScheduler(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/schedulers/deleteScheduler`, {
+    return this.http.delete<any>(`${this.apiUrl}/settings/schedulers/deleteScheduler`, {
       body: { id },
     });
   }
