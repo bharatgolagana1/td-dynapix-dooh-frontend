@@ -39,6 +39,7 @@ export interface Screen {
   Guuid?: string | null;
 }
 
+
 export interface ScreenAvailability {
   screen: Screen;
   availability: { date: Date; availableSlots: number }[];
@@ -55,8 +56,9 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
   bookingForm: FormGroup;
   screens: ScreenAvailability[] = [];
   imageFiles: File[] = [];
+  customerNames: any[] = [];
   private filterSubject = new Subject<any>();
-  extraSlotSizes = [1, 2, 3, 4, 5];
+  extraSlotSizes :  any[] = [];
   dateOptions: any[] = [];
   screenTypeOptions: any[] = [];
   statusOptions: any[] = [];
@@ -108,10 +110,23 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     });
     this.loadScreens();
     this.loadOptions();
+    this.loadCustomerNames();
   }
 
   ngAfterViewInit() {
     this.cdr.detectChanges();
+  }
+
+  loadCustomerNames(): void {
+    this.bookingService.getCustomerNames().subscribe(
+      (data: { customerNames: any[] }) => {
+        this.customerNames = data.customerNames;
+        this.cdr.detectChanges();
+      },
+      (error) => {
+        console.error('Error fetching customer names:', error);
+      }
+    );
   }
 
   loadOptions(): void {
@@ -129,6 +144,9 @@ export class CreateBookingComponent implements OnInit, AfterViewInit {
     });
     this.bookingService.getSlotSizeOptions().subscribe((data) => {
       this.slotSize = data;
+    });
+    this.bookingService.getExtraSlotSize().subscribe((data) => {
+      this.extraSlotSizes = data;
     });
   }
 

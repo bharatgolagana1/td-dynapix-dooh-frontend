@@ -13,7 +13,11 @@ import { UserIdentificationTypeComponent } from './user-identification-type/user
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { SchedulerSettingsComponent } from './scheduler-settings/scheduler-settings.component';
 import { SchedulerSlotSettingsComponent } from './scheduler-slot-settings/scheduler-slot-settings.component';
-import { EditSchedulerDialogComponent } from './edit-scheduler-dialog/edit-scheduler-dialog.component'; 
+import { EditSchedulerDialogComponent } from './edit-scheduler-dialog/edit-scheduler-dialog.component';
+import { CampaignSettingsComponent } from './campaign-settings/campaign-settings.component';
+import { CustomerNameSettingsComponent } from './customer-name-settings/customer-name-settings.component';
+import { CategoryOptionSettingsComponent } from './category-option-settings/category-option-settings.component';
+import { ExtraSlotSizeSettingsComponent } from './extra-slot-size-settings/extra-slot-size-settings.component'; 
 
 @NgModule({
   declarations: [
@@ -27,7 +31,11 @@ import { EditSchedulerDialogComponent } from './edit-scheduler-dialog/edit-sched
  DeleteDialogComponent,
  SchedulerSettingsComponent,
  SchedulerSlotSettingsComponent,
- EditSchedulerDialogComponent
+ EditSchedulerDialogComponent,
+ CampaignSettingsComponent,
+ CustomerNameSettingsComponent,
+ CategoryOptionSettingsComponent,
+ ExtraSlotSizeSettingsComponent
   ],
   imports: [CommonModule, MaterialModule, SettingsRoutingModule, FormsModule,],
   providers: [],
