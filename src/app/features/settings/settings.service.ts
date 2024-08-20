@@ -27,10 +27,9 @@ export class SettingsService {
 
 
   deleteIdentificationType(identificationType: string): Observable<any> {
-    const params = this.appendOrganizationId();
     return this.http.delete(
       `${this.apiUrl}/settings/user/deleteIdentificationtype`,
-      { body: { identificationType, ...params } }
+      { body: { identificationType } }
     );
   }
 
@@ -47,7 +46,7 @@ export class SettingsService {
   }
 
   updateIdentificationTypeStatus(identificationType: string, status: boolean): Observable<any> {
-    const body = this.appendOrganizationId({ status });
+    const body = { status };
     return this.http.put(`${this.apiUrl}/settings/user/updateIdentificationType/${identificationType}`, body);
   }
 
@@ -57,8 +56,7 @@ export class SettingsService {
   }
 
   deleteRole(role: string): Observable<any> {
-    const params = this.appendOrganizationId();
-    return this.http.delete(`${this.apiUrl}/settings/user/deleteRole`, { body: { role, ...params } });
+    return this.http.delete(`${this.apiUrl}/settings/user/deleteRole`, { body: { role } });
   }
 
   getRoles(): Observable<any> {
@@ -72,7 +70,7 @@ export class SettingsService {
   }
 
   updateRoleStatus(role: string, status: boolean): Observable<any> {
-    const body = this.appendOrganizationId({ status });
+    const body = { status };
     return this.http.put(`${this.apiUrl}/settings/user/updateRole/${role}`, body);
   }
 
@@ -83,8 +81,7 @@ export class SettingsService {
   }
 
   deleteProfile(profile: string): Observable<any> {
-    const params = this.appendOrganizationId();
-    return this.http.delete(`${this.apiUrl}/settings/user/deleteProfile`, { body: { profile, ...params } });
+    return this.http.delete(`${this.apiUrl}/settings/user/deleteProfile`, { body: { profile } });
   }
 
   getProfiles(): Observable<any> {
@@ -96,14 +93,11 @@ export class SettingsService {
     const params = this.appendOrganizationId();
     return this.http.get(`${this.apiUrl}/settings/user/getActiveProfiles`, { params });
   }
-
   updateProfileStatus(profile: string, status: boolean): Observable<any> {
-    const body = this.appendOrganizationId({ status });
+    const body = { status };
     return this.http.put(`${this.apiUrl}/settings/user/updateProfile/${profile}`, body);
   }
 
-
-  
   getSchedulers(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/schedulers/getScheduler`);
   }
@@ -132,10 +126,8 @@ export class SettingsService {
     const params = this.appendOrganizationId({ name, status });
     return this.http.post(`${this.apiUrl}/settings/campaign/createCustomerNames`, params);
   }
-
   deleteCustomerName(name: string): Observable<any> {
-    const params = this.appendOrganizationId({ name });
-    return this.http.delete(`${this.apiUrl}/settings/campaign/deleteCustomerNames`, { body: params });
+    return this.http.delete(`${this.apiUrl}/settings/campaign/deleteCustomerNames`, { body: { name } });
   }
 
   getCustomerNames(): Observable<any> {
@@ -144,8 +136,7 @@ export class SettingsService {
   }
 
   updateCustomerNameStatus(name: string, status: boolean): Observable<any> {
-    const body = this.appendOrganizationId({ status });
-    return this.http.put(`${this.apiUrl}/settings/campaign/customerNames/${name}`, body);
+    return this.http.put(`${this.apiUrl}/settings/campaign/customerNames/${name}`, { status });
   }
 
 
@@ -155,8 +146,7 @@ export class SettingsService {
   }
 
   deleteCategoryOption(categoryOption: string): Observable<any> {
-    const params = this.appendOrganizationId({ categoryOption });
-    return this.http.delete(`${this.apiUrl}/settings/campaign/deleteCategoryOption`, { body: params });
+    return this.http.delete(`${this.apiUrl}/settings/campaign/deleteCategoryOption`, { body: { categoryOption } });
   }
 
   getCategoryOptions(): Observable<any> {
@@ -165,8 +155,7 @@ export class SettingsService {
   }
 
   updateCategoryOption(categoryOption: string, status: boolean): Observable<any> {
-    const body = this.appendOrganizationId({ status });
-    return this.http.put(`${this.apiUrl}/settings/campaign/updateCategoryOption/${categoryOption}`, body);
+    return this.http.put(`${this.apiUrl}/settings/campaign/updateCategoryOption/${categoryOption}`, { status });
   }
 
   createExtraSlotSize(slotSize: number, status: boolean): Observable<any> {
@@ -180,13 +169,11 @@ export class SettingsService {
   }
 
   updateExtraSlotSizeStatus(slotSize: number, status: boolean): Observable<any> {
-    const body = this.appendOrganizationId({ status });
-    return this.http.put(`${this.apiUrl}/settings/campaign/updateExtraSlotSize/${slotSize}`, body);
+    return this.http.put(`${this.apiUrl}/settings/campaign/updateExtraSlotSize/${slotSize}`, { status });
   }
 
   deleteExtraSlotSize(slotSize: number): Observable<any> {
-    const params = this.appendOrganizationId({ slotSize });
-    return this.http.delete(`${this.apiUrl}/settings/campaign/deleteExtraSlotSize`, { body: params });
+    return this.http.delete(`${this.apiUrl}/settings/campaign/deleteExtraSlotSize`, { body: { slotSize } });
   }
   
 }
