@@ -5,6 +5,7 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { BookingSettingsComponent } from './booking-settings/booking-settings.component';
 import { PlaylistSettingsComponent } from './playlist-settings/playlist-settings.component';
 import { SchedulerSettingsComponent } from './scheduler-settings/scheduler-settings.component';
+import { CampaignSettingsComponent } from './campaign-settings/campaign-settings.component';
 
 const routes: Routes = [
   {
@@ -18,8 +19,8 @@ const routes: Routes = [
   },
 
   {
-    path: 'bookingSettings',
-    component: BookingSettingsComponent,
+    path: 'campaignSettings',
+    component: CampaignSettingsComponent,
   },
 
   {

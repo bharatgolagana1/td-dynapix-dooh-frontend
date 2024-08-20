@@ -47,8 +47,8 @@ export class CreateUserComponent implements OnInit {
 
   loadIdentificationTypes(): void {
     this.userService.getIdentificationTypes().subscribe(
-      (data) => {
-        this.identificationTypes = data;
+      (data: { identificationTypes: any[] }) => {
+        this.identificationTypes = data.identificationTypes;
         if (this.identificationTypes.length > 0 && !this.createUserForm.get('identificationType')?.value) {
           this.createUserForm.get('identificationType')?.setValue('Internal User');
         }
@@ -61,8 +61,8 @@ export class CreateUserComponent implements OnInit {
 
   loadRoles(): void {
     this.userService.getRoles().subscribe(
-      (data) => {
-        this.roles = data;
+      (data: { roles: any[]}) => {
+        this.roles = data.roles;
         if (this.roles.length > 0 && !this.createUserForm.get('role')?.value) {
           this.createUserForm.get('role')?.setValue('scheduler');
         }
@@ -75,8 +75,8 @@ export class CreateUserComponent implements OnInit {
 
   loadProfiles(): void {
     this.userService.getProfiles().subscribe(
-      (data) => {
-        this.profiles = data;
+      (data: { profiles: any[]}) => {
+        this.profiles = data.profiles;
         if (this.profiles.length > 0 && !this.createUserForm.get('profile')?.value) {
           this.createUserForm.get('profile')?.setValue('Chief Executive Officer (CEO)');
         }

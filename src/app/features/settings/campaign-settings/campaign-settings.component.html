@@ -1,0 +1,28 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side" opened>
+      <mat-nav-list>
+        <a mat-list-item (click)="selectItem('customerName')">CustomerName</a>
+        <a mat-list-item (click)="selectItem('extraSlotSize')">Extra slotSize</a>
+        <a mat-list-item (click)="selectItem('categoryTpe')">Category Type</a>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <div *ngIf="selectedItem === 'customerName'" >
+        <app-customer-name-settings></app-customer-name-settings>
+      </div>
+
+
+      <div *ngIf="selectedItem === 'extraSlotSize'">
+        <app-extra-slot-size-settings></app-extra-slot-size-settings>
+      </div>
+
+
+      <div *ngIf="selectedItem === 'categoryTpe'">
+        <app-category-option-settings></app-category-option-settings>
+      </div>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  
+

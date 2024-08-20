@@ -13,9 +13,9 @@ export class SettingsComponent {
       route: '/settings/userSettings',
     },
     {
-      title: 'Bookings',
+      title: 'Campaign',
       image: 'assets/icons/screen.svg',
-      route: '/settings/bookingSettings',
+      route: '/settings/campaignSettings',
     },
     {
       title: 'Playlist',
