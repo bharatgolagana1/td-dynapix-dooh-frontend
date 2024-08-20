@@ -26,6 +26,10 @@ import { ServerNotfoundComponent } from './features/server-notfound/server-notfo
 import { ManageDefaultMediaModule } from './features/manage-default-media/manage-default-media.module';
 import { SharedModule } from './shared/shared.module';
 import { QuoteModule } from './features/quote/quote.module';
+import { CampaignModule } from './features/campaign/campaign.module';
+import { UserService } from './core/services/user.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { OrgIdInterceptor } from './core/interceptors/org.interceptor';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -40,7 +44,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         silentCheckSsoRedirectUri:
           window.location.origin + '/assets/silent-check-sso.html',
         checkLoginIframe: false,
-        redirectUri: `${window.location.origin}/login`,
+        redirectUri: `${window?.location?.origin}/`,
       },
     });
 }
@@ -75,6 +79,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     ManageDefaultMediaModule,
     SharedModule,
     QuoteModule,
+    CampaignModule,
   ],
   providers: [
     {
@@ -83,6 +88,12 @@ function initializeKeycloak(keycloak: KeycloakService) {
       multi: true,
       deps: [KeycloakService],
     },
+    UserService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: OrgIdInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 })

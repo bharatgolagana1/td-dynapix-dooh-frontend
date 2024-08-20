@@ -5,6 +5,7 @@ import { KeycloakService } from 'keycloak-angular';
 import { KeycloakOperationService } from './core/services/keycloak.service';
 import { KeycloakProfile } from 'keycloak-js';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UserService } from './core/services/user.service';
 
 interface SubNavState {
   dashboard: boolean;
@@ -16,7 +17,8 @@ interface SubNavState {
   organization: boolean;
   roles: boolean;
   settings: boolean;
-  quote:boolean;
+  quote: boolean;
+  campaign: boolean;
 }
 
 @Component({
@@ -36,7 +38,8 @@ export class AppComponent implements OnInit {
     organization: false,
     roles: false,
     settings: false,
-    quote:false
+    quote: false,
+    campaign: false,
   };
   isSidenavOpened = true;
   isSmallScreen = false;
@@ -48,7 +51,8 @@ export class AppComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private router: Router,
     private readonly keycloak: KeycloakService,
-    private KeycloakOperationService: KeycloakOperationService
+    private KeycloakOperationService: KeycloakOperationService,
+    private userService: UserService
   ) {
     this.router.events.subscribe((event) => {
       if (router.url.includes('public-screens')) {
@@ -76,14 +80,16 @@ export class AppComponent implements OnInit {
 
     if (this.isLoggedIn) {
       this.userProfile = await this.keycloak.loadUserProfile();
-      this.router.navigate(['/${window.location.origin}']);
+      this.router.navigate([`${window.location.origin}/dashboard`]);
 
       this.KeycloakOperationService.getUserData().subscribe(
         (data) => {
           console.log('User data fetched successfully:', data);
+          this.userService.loadOrgId(data?.organizationId);
           this.firstName = data.firstName;
           this.lastName = data.lastName;
           this.role = data.role;
+          this.userService.loadUserData();
         },
         (error: HttpErrorResponse) => {
           console.error('Error fetching user data:', error);

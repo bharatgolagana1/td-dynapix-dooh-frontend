@@ -4,35 +4,38 @@ import { Observable, Subject, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
   private baseApiUrl = environment.baseApiUrl;
-  private tenantId = '123456';
 
   private userCreatedSubject: Subject<void> = new Subject<void>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   createUser(userData: any): Observable<any> {
     console.log('Creating user:', userData);
-    return this.http.post<any>(`${this.baseApiUrl}/users/create`, { ...userData, tenantId: this.tenantId })
-    .pipe(
-      tap(() => this.userCreatedSubject.next())
-    );
-}
-  
-getUsers(pageIndex: number, pageSize: number, search: string, sortBy: string, sortOrder: string): Observable<any> {
-  const params = new HttpParams()
-    .set('tenantId', this.tenantId)
-    .set('pageIndex', pageIndex.toString())
-    .set('pageSize', pageSize.toString())
-    .set('search', search)
-    .set('sortBy', sortBy)
-    .set('sortOrder', sortOrder);
+    return this.http
+      .post<any>(`${this.baseApiUrl}/users/create`, { ...userData })
+      .pipe(tap(() => this.userCreatedSubject.next()));
+  }
 
-  return this.http.get<any[]>(`${this.baseApiUrl}/users`, { params });
-}
+  getUsers(
+    pageIndex: number,
+    pageSize: number,
+    search: string,
+    sortBy: string,
+    sortOrder: string
+  ): Observable<any> {
+    const params = new HttpParams()
+      .set('pageIndex', pageIndex.toString())
+      .set('pageSize', pageSize.toString())
+      .set('search', search)
+      .set('sortBy', sortBy)
+      .set('sortOrder', sortOrder);
+
+    return this.http.get<any[]>(`${this.baseApiUrl}/users`, { params });
+  }
 
   userCreated(): Observable<void> {
     return this.userCreatedSubject.asObservable();
@@ -40,24 +43,25 @@ getUsers(pageIndex: number, pageSize: number, search: string, sortBy: string, so
 
   deleteUser(user: any): Observable<any> {
     console.log('Deleting user:', user);
-    return this.http.delete<any[]>(`${this.baseApiUrl}/users/${user._id}`); 
+    return this.http.delete<any[]>(`${this.baseApiUrl}/users/${user._id}`);
   }
-  
+
   updateUser(user: any): Observable<any> {
     console.log('Updating user:', user);
     return this.http.put<any[]>(`${this.baseApiUrl}/users/${user._id}`, user);
   }
-  
+
   getIdentificationTypes(): Observable<any> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/user/getIdentificationtypes`);
+    return this.http.get<any[]>(
+      `${this.baseApiUrl}/settings/user/getIdentificationtypes`
+    );
   }
 
   getRoles(): Observable<any> {
     return this.http.get<any[]>(`${this.baseApiUrl}/settings/user/getRoles`);
   }
 
-  getProfiles(): Observable<any>{
+  getProfiles(): Observable<any> {
     return this.http.get<any[]>(`${this.baseApiUrl}/settings/user/getProfiles`);
   }
-  
 }

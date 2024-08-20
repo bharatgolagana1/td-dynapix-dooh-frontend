@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { DatePipe } from '@angular/common';
 import { DateAdapter } from '@angular/material/core';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-create-screen',
@@ -24,7 +25,6 @@ export class CreateScreenComponent implements OnInit {
   screenForm: FormGroup;
   imageFiles: File[] = [];
   fileUrls: string[] = [];
-  organizationId: string = '12345';
   localIP: string = '192.168.1.2';
   MACID: string = '00-B0-D0-63-C2-26';
   lastHeartbeat: string = '60';
@@ -49,9 +49,10 @@ export class CreateScreenComponent implements OnInit {
     private notificationService: NotificationService,
     public loaderService: LoaderService,
     private datePipe: DatePipe,
+    private userService: UserService,
     private dateAdapter: DateAdapter<Date>
   ) {
-    this.dateAdapter.setLocale('en-GB'); // Set locale for date picker to en-GB (dd/MM/yyyy)
+    this.dateAdapter.setLocale('en-GB');
     this.screenForm = this.formBuilder.group({
       screenName: new FormControl('', [Validators.required]),
       address: new FormControl('', [Validators.required]),
@@ -90,6 +91,8 @@ export class CreateScreenComponent implements OnInit {
       locality: new FormControl('', [Validators.required]),
       landmark: new FormControl('', [Validators.required]),
       tags: new FormControl([], [Validators.required]),
+      breakStartTime: new FormControl('', []),
+      breakEndTime: new FormControl('', []),
     });
 
     this.screenForm.valueChanges.subscribe(() => {
@@ -142,7 +145,10 @@ export class CreateScreenComponent implements OnInit {
       console.log('screen Form', this.screenForm);
       this.loaderService.showLoader();
       const formData = new FormData();
-      formData.append('organizationId', this.organizationId); // Changed from tenantId to organizationId
+
+      const orgId = '6694b19c27c601925e91eb0c';
+      formData.append('organizationId', orgId);
+
       formData.append('screenName', this.screenForm.value.screenName);
       formData.append('address', this.screenForm.value.address);
       formData.append(
@@ -187,12 +193,12 @@ export class CreateScreenComponent implements OnInit {
       formData.append('slotSize', this.slotSize ? this.slotSize : '');
       formData.append('cycleTime', this.cycleTime ? this.cycleTime : '');
 
-      const nextAvailableDate = this.screenForm.value.nextAvailableDate; 
+      const nextAvailableDate = this.screenForm.value.nextAvailableDate;
       const formattedDate = this.datePipe.transform(
         nextAvailableDate,
         'dd/MM/yyyy'
       );
-      formData.append('NextAvailableDate', formattedDate || ''); 
+      formData.append('NextAvailableDate', formattedDate || '');
       formData.append('cityName', this.screenForm.value.cityName);
       formData.append('screenCategory', this.screenForm.value.screenCategory);
       formData.append('screenNetwork', this.screenForm.value.screenNetwork);

@@ -25,5 +25,6 @@ export enum AppRoutePaths {
   settings = 'settings',
   defaultMedia = 'defaultMedia',
   quote = 'quote',
-  createQuote = 'create-quote'
+  createQuote = 'create-quote',
+  campaignCreate = 'campign-create',
 }

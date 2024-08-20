@@ -1,0 +1,28 @@
+<div mat-dialog-content>
+  <h2 mat-dialog-title>Upload Media for Campaign</h2>
+  <div>
+    <input
+      type="file"
+      (change)="onFileSelected($event)"
+      accept="image/*,video/*"
+      multiple
+    />
+  </div>
+  <div *ngIf="selectedFiles.length > 0">
+    <p>Selected Files:</p>
+    <ul>
+      <li *ngFor="let file of selectedFiles">{{ file.name }}</li>
+    </ul>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!selectedFiles.length"
+    (click)="onUpload()"
+  >
+    Upload
+  </button>
+</div>

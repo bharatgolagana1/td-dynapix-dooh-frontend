@@ -6,9 +6,13 @@ import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class KeycloakOperationService {
-  private baseUrl = environment.baseApiUrl;
+  // private baseUrl = environment.baseApiUrl;
+  private baseUrl = 'http://localhost:3000';
 
-  constructor(private readonly keycloak: KeycloakService ,private http: HttpClient) {}
+  constructor(
+    private readonly keycloak: KeycloakService,
+    private http: HttpClient
+  ) {}
 
   isLoggedIn(): boolean {
     return this.keycloak.isLoggedIn();
@@ -24,5 +28,4 @@ export class KeycloakOperationService {
   getUserData(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/me`);
   }
-
 }

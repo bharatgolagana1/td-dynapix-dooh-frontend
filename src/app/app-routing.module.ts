@@ -78,6 +78,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: AppRoutePaths.campaign,
+    loadChildren: () =>
+      import('./features/campaign/campaign.module').then(
+        (m) => m.CampaignModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: AppRoutePaths.quote,
     loadChildren: () =>
       import('./features/quote/quote.module').then((m) => m.QuoteModule),

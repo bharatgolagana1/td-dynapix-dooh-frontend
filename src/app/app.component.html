@@ -74,6 +74,26 @@
         <a mat-list-item routerLink="/schedulers/playScheduler">Play</a>
         <!-- Add more sublinks as needed -->
       </mat-nav-list>
+
+      <a mat-list-item (click)="toggleSubNav('campaign')" class="parent-link">
+        <span class="dashboard--title"
+          ><img
+            class="users-logo--image"
+            src="assets/icons/screen.svg"
+            alt="logo"
+          />Campaign</span
+        >
+        <div class="expand-icon-container">
+          <mat-icon *ngIf="isSubNavOpen('campaign')">expand_less</mat-icon>
+          <mat-icon *ngIf="!isSubNavOpen('campaign')">expand_more</mat-icon>
+        </div>
+      </a>
+      <mat-nav-list *ngIf="isSubNavOpen('campaign')">
+        <a mat-list-item routerLink="/campaign/create-campaign"
+          >Create Campaign</a
+        >
+        <!-- Add more sublinks as needed -->
+      </mat-nav-list>
       <a mat-list-item (click)="toggleSubNav('quote')" class="parent-link">
         <span class="dashboard--title"
           ><img
