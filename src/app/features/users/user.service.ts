@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { KeycloakOperationService } from 'src/app/core/services/keycloak.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,9 +10,17 @@ import { environment } from 'src/environments/environment';
 export class UserService {
   private baseApiUrl = environment.baseApiUrl;
 
+  private appendOrganizationId(params: any = {}) {
+    const organizationId = this.keycloakOperationService.getOrganizationId();
+    if (organizationId) {
+      params['organizationId'] = organizationId;
+    }
+    return params;
+  }
+
   private userCreatedSubject: Subject<void> = new Subject<void>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient ,private keycloakOperationService: KeycloakOperationService) { }
 
   createUser(userData: any): Observable<any> {
     console.log('Creating user:', userData);
@@ -52,16 +61,19 @@ export class UserService {
   }
 
   getIdentificationTypes(): Observable<any> {
-    return this.http.get<any[]>(
-      `${this.baseApiUrl}/settings/user/getIdentificationtypes`
+    const params = this.appendOrganizationId();
+    return this.http.get(
+      `${this.baseApiUrl}/settings/user/getActiveIdentificationtypes`, { params }
     );
   }
 
   getRoles(): Observable<any> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/user/getRoles`);
+    const params = this.appendOrganizationId();
+    return this.http.get(`${this.baseApiUrl}/settings/user/getActiveRoles`, { params });
   }
 
-  getProfiles(): Observable<any> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/user/getProfiles`);
+  getProfiles(): Observable<any>{
+    const params = this.appendOrganizationId();
+    return this.http.get(`${this.baseApiUrl}/settings/user/getActiveProfiles`, { params });
   }
 }
