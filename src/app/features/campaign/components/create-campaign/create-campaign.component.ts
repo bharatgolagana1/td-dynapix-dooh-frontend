@@ -51,7 +51,8 @@ export class CreateCampaignComponent implements OnInit, AfterViewInit {
   campaignForm: FormGroup;
   screens: ScreenAvailability[] = [];
   private filterSubject = new Subject<any>();
-  extraSlotSizes = [1, 2, 3, 4, 5];
+  extraSlotSizes :  any[] = [];
+  customerNames: any[] = [];
   dateOptions: any[] = [];
   screenTypeOptions: any[] = [];
   statusOptions: any[] = [];
@@ -102,10 +103,23 @@ export class CreateCampaignComponent implements OnInit, AfterViewInit {
     });
     this.loadScreens();
     this.loadOptions();
+    this.loadCustomerNames();
   }
 
   ngAfterViewInit() {
     this.cdr.detectChanges();
+  }
+
+  loadCustomerNames(): void {
+    this.campaignService.getCustomerNames().subscribe(
+      (data: { customerNames: any[] }) => {
+        this.customerNames = data.customerNames;
+        this.cdr.detectChanges();
+      },
+      (error) => {
+        console.error('Error fetching customer names:', error);
+      }
+    );
   }
 
   loadOptions(): void {
@@ -123,6 +137,9 @@ export class CreateCampaignComponent implements OnInit, AfterViewInit {
     });
     this.campaignService.getSlotSizeOptions().subscribe((data) => {
       this.slotSize = data;
+    });
+    this.campaignService.getExtraSlotSize().subscribe((data) => {
+      this.extraSlotSizes = data;
     });
   }
 

@@ -7,16 +7,24 @@ import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component'
 import { SettingsService } from '../settings.service';
 import { EditSchedulerDialogComponent } from '../edit-scheduler-dialog/edit-scheduler-dialog.component';
 
+export interface scheduler{
+  schedulerName : string,
+  slotSize : number,
+  cycleTime : number,
+  status : boolean,
+  _id:string
+}
 @Component({
   selector: 'app-scheduler-slot-settings',
   templateUrl: './scheduler-slot-settings.component.html',
   styleUrls: ['./scheduler-slot-settings.component.scss'],
 })
 export class SchedulerSlotSettingsComponent {
+  schedulers : scheduler[] = []
   schedulerName: string = '';
   slotSize: number | null = null;
   cycleTime: number | null = null;
-  status: string = 'active';
+  status: boolean = true;
   searchQuery: string = '';
   displayedColumns: string[] = [
     'schedulerName',
@@ -40,8 +48,9 @@ export class SchedulerSlotSettingsComponent {
   }
 
   loadSchedulers() {
-    this.settingsService.getSchedulers().subscribe((data) => {
-      this.dataSource.data = data;
+    this.settingsService.getSchedulers().subscribe((schedulerList : any) => {
+      this.schedulers = schedulerList.schedulers;
+      this.dataSource.data = this.schedulers;
       this.dataSource.paginator = this.paginator;
     });
   }
@@ -63,7 +72,7 @@ export class SchedulerSlotSettingsComponent {
           this.schedulerName = '';
           this.slotSize = null;
           this.cycleTime = null;
-          this.status = 'active';
+          this.status = true;
           this.loadSchedulers();
         },
         (error) => {
@@ -76,32 +85,20 @@ export class SchedulerSlotSettingsComponent {
     }
   }
 
-  editScheduler(scheduler: any) {
-    const dialogRef = this.dialog.open(EditSchedulerDialogComponent, {
-      width: '300px',
-      data: scheduler,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.settingsService.updateScheduler(result).subscribe(
-          (response) => {
-            this.notificationService.showNotification(
-              'Scheduler updated successfully',
-              'success'
-            );
-            this.loadSchedulers();
-          },
-          (error) => {
-            this.notificationService.showNotification(
-              'Failed to update scheduler',
-              'error'
-            );
-          }
-        );
-      }
-    });
+  updateScheduler(element: any) {
+    this.settingsService.updateScheduler(element._id, element.status)
+      .subscribe(
+        response => {
+          this.notificationService.showNotification('scheduler status updated successfully', 'success');
+        },
+        error => {
+          console.error('Error updating scheduler status:', error);
+          this.notificationService.showNotification('scheduler status not updated', 'error');
+        }
+      );
   }
+
+
 
   deleteScheduler(scheduler: any) {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
@@ -135,5 +132,10 @@ export class SchedulerSlotSettingsComponent {
   applyFilter() {
     const filterValue = this.searchQuery.trim().toLowerCase();
     this.dataSource.filter = filterValue;
+  }
+
+  onStatusChange(element: any) {
+    element.status = !element.status;
+    this.updateScheduler(element);
   }
 }

@@ -109,11 +109,9 @@ export class SettingsService {
     );
   }
 
-  updateScheduler(scheduler: any): Observable<any> {
-    return this.http.put<any>(
-      `${this.apiUrl}/settings/schedulers/updateScheduler`,
-      scheduler
-    );
+
+  updateScheduler( id:string , status: boolean): Observable<any> {
+    return this.http.put(`${this.apiUrl}/settings/schedulers/updateScheduler/${id}`, { status });
   }
 
   deleteScheduler(id: string): Observable<any> {

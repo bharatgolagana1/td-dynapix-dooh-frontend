@@ -1,7 +1,8 @@
 <div class="campaign-list-container">
   <mat-card>
-    <mat-card-title>Campaign List</mat-card-title>
-    <table mat-table [dataSource]="campaigns" class="mat-elevation-z8">
+    <div class="campaign--title">Campaign List</div>
+    <div class="campaign--table">
+    <table mat-table [dataSource]="campaigns" class="mat-elevation-z0" >
       <ng-container matColumnDef="campaignName">
         <th mat-header-cell *matHeaderCellDef>Campaign Name</th>
         <td mat-cell *matCellDef="let campaign">{{ campaign.campaignName }}</td>
@@ -39,8 +40,14 @@
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-cell"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns" class="mat-cell"></tr>
     </table>
+    <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+  ></mat-paginator>
+  </div>
+   
   </mat-card>
 </div>
