@@ -19,6 +19,11 @@ import { LoaderService } from 'src/app/core/services/loader.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/core/services/user.service';
 
+export interface CategoryOption {
+  categoryOption: string;
+  status: boolean;
+}
+
 export interface Screen {
   id: any;
   _id: string;
@@ -51,12 +56,12 @@ export class CreateCampaignComponent implements OnInit, AfterViewInit {
   campaignForm: FormGroup;
   screens: ScreenAvailability[] = [];
   private filterSubject = new Subject<any>();
-  extraSlotSizes :  any[] = [];
+  extraSlotSizes: any[] = [];
   customerNames: any[] = [];
   dateOptions: any[] = [];
   screenTypeOptions: any[] = [];
   statusOptions: any[] = [];
-  categoryOption: any[] = [];
+  categoryOption: CategoryOption[] = [];
   slotSize: any[] = [];
   orientationOptions = [
     { value: 'Both', label: 'Both' },
@@ -204,30 +209,32 @@ export class CreateCampaignComponent implements OnInit, AfterViewInit {
     }
     this.loaderService.showLoader();
     const formValues = this.campaignForm.value;
-    const formData = new FormData();
-    const orgId = this.userService.getOrgId();
-    console.log('orgId', orgId);
-    // if (orgId) {
-    //   const formData = new FormData();
-    //   formData.append('organizationId', orgId);
-    // }
 
+    const formData = new FormData();
     formData.append('customerName', formValues.customerName);
-    formData.append('slotSize', formValues.slotSize.toString());
-    formData.append('totalAmount', formValues.totalAmount.toString());
+    formData.append('slotSize', formValues.slotSize);
+    formData.append('totalAmount', formValues.totalAmount);
+
     formData.append('categoryType', formValues.categoryType);
+
     formData.append('startDate', formValues.dateRange.startDate);
     formData.append('endDate', formValues.dateRange.endDate);
-    formData.append('extraSlotSize', formValues.extraSlotSize.toString());
-    formValues.screenIds.forEach((screenId: string) => {
-      formData.append('screenIds', screenId);
-    });
+
+    if (formValues.extraSlotSize) {
+      formData.append('extraSlotSize', formValues.extraSlotSize);
+    }
+
+    if (formValues.screenIds && formValues.screenIds.length > 0) {
+      formValues.screenIds.forEach((screenId: string) => {
+        formData.append('screenIds', screenId);
+      });
+    }
 
     this.campaignService.createCampaign(formData).subscribe(
       (response) => {
         console.log('Campaign created successfully:', response);
         this.loaderService.hideLoader();
-        this.router.navigate([`/campaigns/${response._id}/uploadmedia`]);
+        this.router.navigate([`/campaign`]);
       },
       (error) => {
         console.error('Error creating campaign:', error);
@@ -235,7 +242,6 @@ export class CreateCampaignComponent implements OnInit, AfterViewInit {
       }
     );
   }
-
   resetForm(): void {
     this.campaignForm.reset({
       customerName: '',

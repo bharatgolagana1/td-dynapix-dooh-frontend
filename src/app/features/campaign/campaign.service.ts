@@ -4,14 +4,16 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { KeycloakOperationService } from 'src/app/core/services/keycloak.service';
 
-
 @Injectable({
   providedIn: 'root',
 })
 export class CampaignService {
   private baseApiUrl = environment.baseApiUrl;
 
-  constructor(private http: HttpClient, private keycloakOperationService: KeycloakOperationService) {}
+  constructor(
+    private http: HttpClient,
+    private keycloakOperationService: KeycloakOperationService
+  ) {}
 
   private appendOrganizationId(params: any = {}) {
     const organizationId = this.keycloakOperationService.getOrganizationId();
@@ -23,22 +25,30 @@ export class CampaignService {
 
   getCustomerNames(): Observable<any> {
     const params = this.appendOrganizationId();
-    return this.http.get(`${this.baseApiUrl}/settings/campaign/getActiveCustomerNames`, { params });
+    return this.http.get(
+      `${this.baseApiUrl}/settings/campaign/getActiveCustomerNames`,
+      { params }
+    );
   }
 
   getExtraSlotSize(): Observable<any[]> {
     const params = this.appendOrganizationId();
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/campaign/getActiveExtraSlotSize`, { params });
+    return this.http.get<any[]>(
+      `${this.baseApiUrl}/settings/campaign/getActiveExtraSlotSize`,
+      { params }
+    );
   }
-
 
   getCategoryOptions(): Observable<any[]> {
     const params = this.appendOrganizationId();
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/campaign/getActiveCategoryOptions`, { params });
+    return this.http.get<any[]>(
+      `${this.baseApiUrl}/settings/campaign/getActiveCategoryOptions`,
+      { params }
+    );
   }
 
   getCampaigns(): Observable<any[]> {
-    return this.http.get<any[]>(`${environment.baseApiUrl}/campaigns`);
+    return this.http.get<any[]>(`${this.baseApiUrl}/campaign`);
   }
 
   getDateOptions(): Observable<any[]> {
@@ -46,7 +56,9 @@ export class CampaignService {
   }
 
   getScreenTypeOptions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/campaign/screenType`);
+    return this.http.get<any[]>(
+      `${this.baseApiUrl}/settings/campaign/screenType`
+    );
   }
 
   getStatusOptions(): Observable<any[]> {
@@ -54,19 +66,23 @@ export class CampaignService {
   }
 
   getSlotSizeOptions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/campaign/slotSize`);
+    return this.http.get<any[]>(
+      `${this.baseApiUrl}/settings/campaign/slotSize`
+    );
   }
 
   createCampaign(formData: FormData): Observable<any> {
-    return this.http.post(`${this.baseApiUrl}/campaign`, formData);
+    return this.http.post(`${this.baseApiUrl}/campaign/create`, formData);
   }
 
   uploadMedia(formData: FormData): Observable<any> {
     return this.http.post(`${this.baseApiUrl}/uploadMedia`, formData);
   }
 
-
   screensList(filters: any): Observable<any> {
-    return this.http.post(`${this.baseApiUrl}/screen/api/available-screens`, filters);
+    return this.http.post(
+      `${this.baseApiUrl}/screen/api/available-screens`,
+      filters
+    );
   }
 }

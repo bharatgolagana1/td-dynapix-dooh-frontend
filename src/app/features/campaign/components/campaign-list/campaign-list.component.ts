@@ -32,7 +32,8 @@ export class CampaignListComponent implements OnInit {
     this.loaderService.showLoader();
     this.campaignService.getCampaigns().subscribe(
       (data) => {
-        this.campaigns = data;
+        //@ts-ignore
+        this.campaigns = data.campaigns;
         this.loaderService.hideLoader();
       },
       (error) => {
@@ -43,6 +44,6 @@ export class CampaignListComponent implements OnInit {
   }
 
   onUploadMedia(campaignId: string) {
-    this.router.navigate([`/campaigns/${campaignId}/uploadmedia`]);
+    this.router.navigate([`/campaign/${campaignId}/uploadmedia`]);
   }
 }

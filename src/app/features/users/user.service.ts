@@ -20,7 +20,10 @@ export class UserService {
 
   private userCreatedSubject: Subject<void> = new Subject<void>();
 
-  constructor(private http: HttpClient ,private keycloakOperationService: KeycloakOperationService) { }
+  constructor(
+    private http: HttpClient,
+    private keycloakOperationService: KeycloakOperationService
+  ) {}
 
   createUser(userData: any): Observable<any> {
     console.log('Creating user:', userData);
@@ -63,17 +66,22 @@ export class UserService {
   getIdentificationTypes(): Observable<any> {
     const params = this.appendOrganizationId();
     return this.http.get(
-      `${this.baseApiUrl}/settings/user/getActiveIdentificationtypes`, { params }
+      `${this.baseApiUrl}/settings/user/getActiveIdentificationtypes`,
+      { params }
     );
   }
 
   getRoles(): Observable<any> {
     const params = this.appendOrganizationId();
-    return this.http.get(`${this.baseApiUrl}/settings/user/getActiveRoles`, { params });
+    return this.http.get(`${this.baseApiUrl}/settings/user/getActiveRoles`, {
+      params,
+    });
   }
 
-  getProfiles(): Observable<any>{
+  getProfiles(): Observable<any> {
     const params = this.appendOrganizationId();
-    return this.http.get(`${this.baseApiUrl}/settings/user/getActiveProfiles`, { params });
+    return this.http.get(`${this.baseApiUrl}/settings/user/getActiveProfiles`, {
+      params,
+    });
   }
 }

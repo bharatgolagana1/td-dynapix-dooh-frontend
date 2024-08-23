@@ -29,7 +29,6 @@ export class KeycloakOperationService {
     return this.http.get<any>(`${this.baseUrl}/me`).pipe(
       tap(user => {
         this.organizationId = user.organizationId; 
-        localStorage.setItem('organizationId', user.organizationId); 
       })
     );
   }

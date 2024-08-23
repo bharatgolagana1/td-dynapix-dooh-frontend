@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
       this.KeycloakOperationService.getUserData().subscribe(
         (data) => {
           console.log('User data fetched successfully:', data);
-          this.userService.loadOrgId(data?.organizationId);
+          this.userService.loadOrgData(data);
           this.firstName = data.firstName;
           this.lastName = data.lastName;
           this.role = data.role;

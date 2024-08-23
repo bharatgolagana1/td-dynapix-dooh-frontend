@@ -17,7 +17,10 @@
             <mat-form-field appearance="outline">
               <mat-label>Customer Name</mat-label>
               <mat-select formControlName="customerName">
-                <mat-option *ngFor="let customer of customerNames" [value]="customer">
+                <mat-option
+                  *ngFor="let customer of customerNames"
+                  [value]="customer"
+                >
                   {{ customer }}
                 </mat-option>
               </mat-select>
@@ -54,7 +57,10 @@
             <mat-form-field appearance="outline">
               <mat-label>Extra Slot Size</mat-label>
               <mat-select formControlName="extraSlotSize">
-                <mat-option *ngFor="let size of extraSlotSizes" [value]="size.slotSize">
+                <mat-option
+                  *ngFor="let size of extraSlotSizes"
+                  [value]="size.slotSize"
+                >
                   {{ size.slotSize }}
                 </mat-option>
               </mat-select>
@@ -120,7 +126,7 @@
               <mat-select formControlName="categoryType" required>
                 <mat-option
                   *ngFor="let option of categoryOption"
-                  [value]="categoryOption"
+                  [value]="option.categoryOption"
                 >
                   {{ option.categoryOption }}
                 </mat-option>
