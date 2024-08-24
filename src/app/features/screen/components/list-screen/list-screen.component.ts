@@ -10,7 +10,7 @@ import { DeleteScreenListComponent } from '../delete-screen-list/delete-screen-l
 @Component({
   selector: 'app-list-screen',
   templateUrl: './list-screen.component.html',
-  styleUrls: ['./list-screen.component.scss']
+  styleUrls: ['./list-screen.component.scss'],
 })
 export class ListScreenComponent implements OnInit {
   screens: any[] = [];
@@ -33,42 +33,50 @@ export class ListScreenComponent implements OnInit {
 
   openDialog(imageUrls: string[]) {
     const dialogRef = this.dialog.open(ImageDialogComponent, {
-      data: { images: imageUrls }
+      data: { images: imageUrls },
     });
   }
 
   loadScreens() {
     this.isLoading = true;
-    this.screenService.listScreens(this.page, this.pageSize, this.search).subscribe(
-      data => {
-        this.screens = data.screens;
-        this.total = data.total;
-        this.isLoading = false;
-      },
-      error => {
-        console.error('Error fetching screens:', error);
-        this.isLoading = false;
-      }
-    );
+    this.screenService
+      .listScreens(this.page, this.pageSize, this.search)
+      .subscribe(
+        (data) => {
+          this.screens = data.screens;
+          this.total = data.screens.total;
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error('Error fetching screens:', error);
+          this.isLoading = false;
+        }
+      );
   }
 
   deleteScreen(id: string) {
     const dialogRef = this.dialog.open(DeleteScreenListComponent, {
       width: '400px',
-      data: { id: id }
+      data: { id: id },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.isLoading = true;
         this.screenService.deleteScreen(id).subscribe(
-          response => {
-            this.notificationService.showNotification('Screen deleted successfully', 'success');
-            this.loadScreens(); 
+          (response) => {
+            this.notificationService.showNotification(
+              'Screen deleted successfully',
+              'success'
+            );
+            this.loadScreens();
           },
-          error => {
+          (error) => {
             console.error('Error deleting screen:', error);
-            this.notificationService.showNotification('Error deleting screen', 'error');
+            this.notificationService.showNotification(
+              'Error deleting screen',
+              'error'
+            );
             this.isLoading = false;
           }
         );

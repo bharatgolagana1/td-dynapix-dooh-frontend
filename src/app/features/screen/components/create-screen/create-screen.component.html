@@ -386,6 +386,53 @@
             ></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
+          <mat-form-field
+  appearance="outline"
+  [style.fontSize.px]="12"
+  class="matform-full-width"
+>
+  <mat-label>Width in Pixels</mat-label>
+  <input matInput formControlName="widthInPixels" type="number" required />
+  <mat-hint
+    style="color: red"
+    *ngIf="screenForm.get('widthInPixels')?.touched && screenForm.get('widthInPixels')?.errors?.['required']"
+  >
+    Width in Pixels is required
+  </mat-hint>
+</mat-form-field>
+
+<mat-form-field
+  appearance="outline"
+  [style.fontSize.px]="12"
+  class="matform-full-width"
+>
+  <mat-label>Height in Pixels</mat-label>
+  <input matInput formControlName="heightInPixels" type="number" required />
+  <mat-hint
+    style="color: red"
+    *ngIf="screenForm.get('heightInPixels')?.touched && screenForm.get('heightInPixels')?.errors?.['required']"
+  >
+    Height in Pixels is required
+  </mat-hint>
+</mat-form-field>
+<mat-form-field
+  appearance="outline"
+  [style.fontSize.px]="12"
+  class="matform-full-width"
+>
+  <mat-label>State</mat-label>
+  <mat-select formControlName="state" required>
+    <mat-option *ngFor="let state of states" [value]="state">
+      {{ state }}
+    </mat-option>
+  </mat-select>
+  <mat-hint
+    style="color: red"
+    *ngIf="screenForm.get('state')?.touched && screenForm.get('state')?.errors?.['required']"
+  >
+    State is required
+  </mat-hint>
+</mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Location Coordinates</mat-label>

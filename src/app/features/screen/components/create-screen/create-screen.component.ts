@@ -41,6 +41,7 @@ export class CreateScreenComponent implements OnInit {
   screenNetworks: string[] = ['Network1', 'Network2', 'Network3'];
   cardinalPoints: string[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
   tags: string[] = [];
+  states: string[] = ['State1', 'State2', 'State3'];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -93,6 +94,9 @@ export class CreateScreenComponent implements OnInit {
       tags: new FormControl([], [Validators.required]),
       breakStartTime: new FormControl('', []),
       breakEndTime: new FormControl('', []),
+      widthInPixels: ['', Validators.required],
+      heightInPixels: ['', Validators.required],
+      state: ['', Validators.required],
     });
 
     this.screenForm.valueChanges.subscribe(() => {
@@ -145,10 +149,6 @@ export class CreateScreenComponent implements OnInit {
       console.log('screen Form', this.screenForm);
       this.loaderService.showLoader();
       const formData = new FormData();
-
-      const orgId = '6694b19c27c601925e91eb0c';
-      formData.append('organizationId', orgId);
-
       formData.append('screenName', this.screenForm.value.screenName);
       formData.append('address', this.screenForm.value.address);
       formData.append(
@@ -220,6 +220,9 @@ export class CreateScreenComponent implements OnInit {
       formData.append('landmark', this.screenForm.value.landmark);
       formData.append('tags', JSON.stringify(this.screenForm.value.tags));
 
+      formData.append('widthInPixels', this.screenForm.value.widthInPixels);
+      formData.append('heightInPixels', this.screenForm.value.heightInPixels);
+      formData.append('state', this.screenForm.value.state);
       // Calculate and append orientation
       const width = this.screenForm.value.width;
       const height = this.screenForm.value.height;
@@ -245,7 +248,7 @@ export class CreateScreenComponent implements OnInit {
             'success'
           );
           this.loaderService.hideLoader();
-          this.router.navigate(['/schedulers/createScheduler']);
+          this.router.navigate(['/screen']);
         },
         (error) => {
           console.error('Error creating screen:', error);
