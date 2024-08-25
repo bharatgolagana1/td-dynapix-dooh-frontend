@@ -1,1 +1,269 @@
-<p>create-quote works!</p>
+<div class="create-quote-main--container">
+    <form [formGroup]="quoteForm" class="create-quote-form">
+      <div class="create-quote-main--content">
+        <mat-card class="create-quote--card">
+          <div class="create-quote-card--container">
+            <div class="create-quote--title">Create Quote</div>
+            <div
+            *ngIf="loaderService.loaderState | async"
+            class="spinner-overlay"
+          >
+            <div class="spinner-container">
+              <mat-spinner></mat-spinner>
+              <p>Quote creation in progress...</p>
+            </div>
+          </div>
+            <div class="create-quote-card--content">
+              <mat-form-field appearance="outline">
+                <mat-label>Customer Name</mat-label>
+                <mat-select formControlName="customerName">
+                  <mat-option *ngFor="let customer of customerNames" [value]="customer">
+                    {{ customer }}
+                  </mat-option>
+                </mat-select>
+                <mat-hint
+                  *ngIf="quoteForm.get('customerName')?.touched && quoteForm.get('customerName')?.errors?.['required']"
+                  style="color: red"
+                >
+                  Customer Name is required
+                </mat-hint>
+              </mat-form-field>
+            
+              <!-- City -->
+              <mat-form-field appearance="outline" class="matform-full-width">
+                <mat-label>City</mat-label>
+                <mat-select formControlName="city" required>
+                  <mat-option
+                    *ngFor="let city of quoteCity" [value]="city">
+                    {{ city }}
+                  </mat-option>
+                </mat-select>
+                <mat-hint *ngIf="quoteForm.get('city')?.touched && quoteForm.get('city')?.hasError('required')" style="color: red">
+                  city is required
+                </mat-hint>
+              </mat-form-field>
+
+              <!-- Media Identity -->
+              <mat-form-field appearance="outline">
+                <mat-label>Media Identity</mat-label>
+                <mat-select formControlName="mediaIdentity" required>
+                  <mat-option
+                    *ngFor="let identity of mediaIdentityOptions" [value]="identity">
+                    {{ identity }}
+                  </mat-option>
+                </mat-select>
+                <mat-hint *ngIf="quoteForm.get('mediaIdentity')?.touched && quoteForm.get('mediaIdentity')?.hasError('required')" style="color: red">
+                  Media Identity is required
+                </mat-hint>
+              </mat-form-field>
+
+               <!-- Network -->
+               <mat-form-field appearance="outline">
+                <mat-label>Network</mat-label>
+                     <mat-select formControlName="network" required>
+                  <mat-option
+                    *ngFor="let network of networkOptions" [value]="network">
+                    {{ network }}
+                  </mat-option>
+                </mat-select>
+                <mat-hint *ngIf="quoteForm.get('network')?.touched && quoteForm.get('network')?.hasError('required')" style="color: red">
+                  Network is required
+                </mat-hint>
+              </mat-form-field>
+
+              <!-- Date Range -->
+              <mat-form-field appearance="outline">
+                <mat-label>Date Range</mat-label>
+                <mat-date-range-input formGroupName="dateRange" [rangePicker]="picker">
+                  <input matStartDate formControlName="startDate" placeholder="Start Date" (dateChange)="onFilterChange()" />
+                  <input matEndDate formControlName="endDate" placeholder="End Date" (dateChange)="onFilterChange()" />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <mat-hint style="color: red" *ngIf="quoteForm.get('dateRange')?.get('startDate')?.touched && quoteForm.get('dateRange')?.get('startDate')?.errors?.['required']">
+                  Start Date is required
+                </mat-hint>
+                <mat-hint style="color: red" *ngIf="quoteForm.get('dateRange')?.get('endDate')?.touched && quoteForm.get('dateRange')?.get('endDate')?.errors?.['required']">
+                  End Date is required
+                </mat-hint>
+              </mat-form-field>
+
+
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+
+          <div class="create-quote-card--container">
+            <div class="create-quote--title">Available Screens</div>
+            <div
+              class="create-quote-container-header--content"
+              formGroupName="filters"
+            >
+              <mat-form-field appearance="outline">
+                <mat-label>Address / Pincode</mat-label>
+                <input
+                  matInput
+                  formControlName="addressOrPincode"
+                  (ngModelChange)="onFilterChange()"
+                  placeholder="Search by address or pincode"
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  aria-label="Search"
+                  class="small-icon"
+                >
+                  <mat-icon>search</mat-icon>
+                </button>
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline">
+                <mat-label>Screen Type</mat-label>
+                <mat-select
+                  formControlName="screenType"
+                  (selectionChange)="onFilterChange()"
+                >
+                  <mat-option
+                    *ngFor="let option of screenTypeOptions"
+                    [value]="option.value"
+                  >
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline">
+                <mat-label>Size</mat-label>
+                <mat-select
+                  formControlName="size"
+                  (selectionChange)="onFilterChange()"
+                >
+                  <mat-option value="All">All</mat-option>
+                  <mat-option value="Small">Small</mat-option>
+                  <mat-option value="Medium">Medium</mat-option>
+                  <mat-option value="Large">Large</mat-option>
+                </mat-select>
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select
+                  formControlName="status"
+                  (selectionChange)="onFilterChange()"
+                >
+                  <mat-option
+                    *ngFor="let option of statusOptions"
+                    [value]="option.value"
+                  >
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div *ngIf="screens.length > 0; else noScreens">
+            <div class="create-quote-screens-card">
+              <mat-card
+                *ngFor="let screen of screens"
+                class="create-quote-screen-card--container"
+              >
+                <div class="create-quote-screen-card--content">
+                  <div>
+
+                    <img
+                    *ngIf="screen.screen.imageUrls && screen.screen.imageUrls.length > 0"
+                    [src]="screen.screen.imageUrls[0]"
+                    class="create-quote-card--image"
+                    alt="screen-im"
+                  />
+                  <div *ngIf="!screen.screen.imageUrls || screen.screen.imageUrls.length === 0">
+                    <p>No image available</p>
+                  </div>
+                  </div>
+                  <div>
+                    <div class="create-quote-card--name">
+                      {{ screen.screen.screenName }}
+                    </div>
+                    <div class="create-quote-card--address">
+                      {{ screen.screen.address }}
+                    </div>
+                    <div>
+                      <div class="create-quote-card--subcontent">
+                        Size: {{ screen.screen.screenSize }}
+                      </div>
+                      <div class="create-quote-card--subcontent">
+                        SFT: {{ screen.screen.SFT }}
+                      </div>
+                      <div class="create-quote-card--subcontent">
+                        Next Available Date:
+                        {{ screen.screen.NextAvailableDate | date }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="create-quote-card--actions">
+                    <mat-checkbox [checked]="screen.selected" (change)="onScreenSelectionChange(screen)"></mat-checkbox>
+                  </div>
+                </div>
+              </mat-card>
+            </div>
+            </div>
+            <ng-template #noScreens>
+              <p>No screens available. Please select date range to view screens.</p>
+            </ng-template>
+          </div>
+        </mat-card>
+        <mat-card class="create-quote--card" *ngIf="showPreview" >
+          <div class="create-quote-card--container">
+            <div class="create-quote--title">Preview</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>City</th>
+                  <th>Media Identity</th>
+                  <th>Network</th>
+                  <th>Screen Identity</th>
+                  <th>Type of Media</th>
+                  <th>Screen Dimensions</th>
+                  <th>No. of Screens</th>
+                  <th>Slot Duration</th>
+                  <th>Loop Time</th>
+                  <th>No. of Impressions</th>
+                  <th>Avg Foot Falls</th>
+                  <th>Quoted Price</th>
+                  <th>GST(18%)</th>
+                  <th>Grand Total</th>
+                  <th>Creative Requirement</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let screen of previewData; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ quoteForm.value.city }}</td>
+                  <td>{{ quoteForm.value.mediaIdentity }}</td>
+                  <td>{{ quoteForm.value.network }}</td>
+                  <td>{{ screen.screenIdentity}}</td>
+                  <td>{{ screen.typeOfMedia }}</td>
+                  <td>{{ screen.screenDimensions }}</td>
+                  <td>{{ screen.noOfScreens }}</td>
+                  <td>{{ screen.slotDuration }}</td>
+                  <td>{{ screen.loopTime }}</td>
+                  <td>{{ screen.noOfImpressions }}</td>
+                  <td>{{ screen.avgFootFall }}</td>
+                  <td>{{ screen.quotedPrice }}</td> 
+                  <td>{{ screen.GST }}</td> 
+                  <td>{{ screen.grandTotal }}</td>
+                  <td>{{ screen.creativeRequirement }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-card>
+      </div>
+
+      <div class="create-quote-footer--content">
+            <button mat-stroked-button color="primary" (click)="submitQuote('Draft')">Draft</button>
+            <button mat-stroked-button color="accent" (click)="submitQuote('Generated')">Generate</button>
+            <button mat-stroked-button color="warn" (click)="submitQuote('Submitted')">Submit</button>
+      </div>      
+    </form>
+</div>
