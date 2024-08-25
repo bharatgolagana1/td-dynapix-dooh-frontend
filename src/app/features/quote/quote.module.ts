@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { QuoteRoutingModule } from './quote-routing.module';
 import { ListQuoteComponent } from './components/list-quote/list-quote.component';
 import { CreateQuoteComponent } from './components/create-quote/create-quote.component';
-
+import { MaterialModule } from 'src/app/material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     CreateQuoteComponent,
@@ -12,7 +13,10 @@ import { CreateQuoteComponent } from './components/create-quote/create-quote.com
   ],
   imports: [
     CommonModule,
-    QuoteRoutingModule
+    QuoteRoutingModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule 
   ]
 })
 export class QuoteModule { }

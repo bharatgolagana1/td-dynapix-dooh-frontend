@@ -104,9 +104,10 @@ export class CreateCampaignComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.loaderService.hideLoader();
     this.filterSubject.pipe(debounceTime(300)).subscribe(() => {
-      this.loadScreens();
+      if (this.isFilterValid()) {
+        this.loadScreens();
+      }
     });
-    this.loadScreens();
     this.loadOptions();
     this.loadCustomerNames();
   }
@@ -156,6 +157,12 @@ export class CreateCampaignComponent implements OnInit, AfterViewInit {
     filters.endDate = dateRange.endDate;
 
     this.filterSubject.next(filters);
+  }
+
+  isFilterValid(): boolean {
+    const filters = this.campaignForm.get('filters')?.value;
+    const dateRange = this.campaignForm.get('dateRange')?.value;
+    return filters.slotSize && dateRange.startDate && dateRange.endDate;
   }
 
   loadScreens() {
@@ -265,6 +272,7 @@ export class CreateCampaignComponent implements OnInit, AfterViewInit {
     this.screens = [];
     this.selectedDates = [];
 
-    this.loadScreens();
+    // Optional: Only reload screens if needed
+    // this.loadScreens();
   }
 }
