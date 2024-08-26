@@ -86,4 +86,21 @@ export class ScreenService {
       `${this.baseApiurl}/settings/schedulers/getScheduler`
     );
   }
+
+  getActiveCityNames(): Observable<any> {
+    return this.http.get(`${this.baseApiurl}/settings/screen/getActiveCityNames`);
+  }
+
+  getActiveScreenCategories(): Observable<any> {
+    return this.http.get(`${this.baseApiurl}/settings/screen/getActiveScreenCategories`);
+  }
+
+  getActiveScreenNetworks(): Observable<any> {
+    return this.http.get(`${this.baseApiurl}/settings/screen/getActiveScreenNetworks`);
+  }
+
+
+  getActiveStates(): Observable<any> {
+    return this.http.get(`${this.baseApiurl}/settings/state/getActiveStates`);
+  }
 }

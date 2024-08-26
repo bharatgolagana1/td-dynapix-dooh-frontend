@@ -6,6 +6,7 @@ import { BookingSettingsComponent } from './booking-settings/booking-settings.co
 import { PlaylistSettingsComponent } from './playlist-settings/playlist-settings.component';
 import { SchedulerSettingsComponent } from './scheduler-settings/scheduler-settings.component';
 import { CampaignSettingsComponent } from './campaign-settings/campaign-settings.component';
+import { ScreenSettingsComponent } from './screen/screen-settings/screen-settings.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
   {
     path: 'schedulerSettings',
     component: SchedulerSettingsComponent,
+  },
+  {
+    path: 'screenSettings',
+    component: ScreenSettingsComponent,
   },
 ];
 

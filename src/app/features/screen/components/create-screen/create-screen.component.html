@@ -111,7 +111,7 @@
           <mat-form-field appearance="outline" class="matform-full-width">
             <mat-label>City Name</mat-label>
             <mat-select formControlName="cityName" required>
-              <mat-option *ngFor="let city of cities" [value]="city">
+              <mat-option *ngFor="let city of cityNames" [value]="cityNames">
                 {{ city }}
               </mat-option>
             </mat-select>
