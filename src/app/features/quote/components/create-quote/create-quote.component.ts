@@ -1,5 +1,16 @@
-import { Component, OnInit, ChangeDetectorRef,NgZone, AfterViewInit} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  NgZone,
+  AfterViewInit,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { QuoteService } from '../../quote.service';
 import { debounceTime, Subject } from 'rxjs';
 import { LoaderService } from 'src/app/core/services/loader.service';
@@ -36,7 +47,7 @@ export interface ScreenAvailability {
 @Component({
   selector: 'app-create-quote',
   templateUrl: './create-quote.component.html',
-  styleUrls: ['./create-quote.component.scss']
+  styleUrls: ['./create-quote.component.scss'],
 })
 export class CreateQuoteComponent implements OnInit, AfterViewInit {
   quoteForm!: FormGroup;
@@ -53,12 +64,17 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
   private filterSubject = new Subject<any>();
   quoteCity: string[] = ['City1', 'City2', 'City3'];
   creativeRequirement: string = '1920 X 1080';
-  statusOptionsList: string[] = ['Generated', 'Approved', 'Submitted', 'Closed', 'On Hold'];
+  statusOptionsList: string[] = [
+    'Generated',
+    'Approved',
+    'Submitted',
+    'Closed',
+    'On Hold',
+  ];
   mediaIdentityOptions: string[] = ['Identity1', 'Identity2', 'Identity3'];
   networkOptions: string[] = ['Network1', 'Network2', 'Network3'];
   selectedDates: { screenId: string; dates: Date[] }[] = [];
   showPreview = false;
-
 
   constructor(
     private fb: FormBuilder,
@@ -86,7 +102,9 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
         status: ['Both'],
         date: ['All Time'],
       }),
-      creativeRequirement: new FormControl(this.creativeRequirement, [Validators.required])
+      creativeRequirement: new FormControl(this.creativeRequirement, [
+        Validators.required,
+      ]),
     });
   }
 
@@ -97,9 +115,8 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
     });
     this.loadOptions();
     this.loadCustomerNames();
-    this.fetchUserData();  
+    this.fetchUserData();
   }
-  
 
   ngAfterViewInit() {
     this.cdr.detectChanges();
@@ -125,17 +142,17 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
       this.statusOptions = data;
     });
   }
- 
+
   fetchUserData(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.keycloakOperationService.getUserData().subscribe(
         (data) => {
           // Check if data contains the necessary fields
-          if (data && data._id && data.email && data.organizationId) {
+          if (data && data.userId && data.email && data.organizationId) {
             this.userData = {
-              userId: data._id,           // Map _id to userId
-              email: data.email,
-              organizationId: data.organizationId
+              userId: data.userId,
+              userEmail: data.email,
+              organizationId: data.organizationId,
             };
             console.log('User data fetched and set:', this.userData);
             resolve();
@@ -151,7 +168,7 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
       );
     });
   }
-  
+
   onFilterChange() {
     const filters = this.quoteForm.get('filters')?.value;
     const dateRange = this.quoteForm.get('dateRange')?.value;
@@ -168,28 +185,32 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
 
   loadScreens() {
     this.loaderService.showLoader();
-    this.quoteService.screensList(this.quoteForm.get('filters')?.value).subscribe(
-      (data: { screens: ScreenAvailability[] }) => {
-        this.ngZone.run(() => {
-          this.screens = (data.screens || []).map((screen) => ({
-            ...screen,
-            selected: false,
-          }));
-          this.cdr.detectChanges();
-          this.loaderService.hideLoader();
-        });
-      },
-      (error) => {
-        console.error('Error fetching screens:', error);
-        this.ngZone.run(() => {
-          this.cdr.detectChanges();
-          this.loaderService.hideLoader();
-        });
-      }
-    );
+    this.quoteService
+      .screensList(this.quoteForm.get('filters')?.value)
+      .subscribe(
+        (data: { screens: ScreenAvailability[] }) => {
+          this.ngZone.run(() => {
+            this.screens = (data.screens || []).map((screen) => ({
+              ...screen,
+              selected: false,
+            }));
+            this.cdr.detectChanges();
+            this.loaderService.hideLoader();
+          });
+        },
+        (error) => {
+          console.error('Error fetching screens:', error);
+          this.ngZone.run(() => {
+            this.cdr.detectChanges();
+            this.loaderService.hideLoader();
+          });
+        }
+      );
   }
 
-  isFullyAvailable(availability: { date: Date; availableSlots: number }[]): boolean {
+  isFullyAvailable(
+    availability: { date: Date; availableSlots: number }[]
+  ): boolean {
     return availability.every((a) => a.availableSlots > 0);
   }
 
@@ -205,7 +226,7 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
 
   onScreenSelectionChange(screen: ScreenAvailability) {
     screen.selected = !screen.selected;
-    const anySelected = this.screens.some(s => s.selected);
+    const anySelected = this.screens.some((s) => s.selected);
     if (anySelected) {
       this.showPreviewCard();
     } else {
@@ -215,26 +236,28 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
 
   generatePreviewData() {
     const dateRange = this.quoteForm.get('dateRange')?.value;
-    
+
     // Ensure dateRange is valid
     if (!dateRange || !dateRange.startDate || !dateRange.endDate) {
       console.warn('Invalid date range');
       return;
     }
-  
+
     const days =
       (new Date(dateRange.endDate).getTime() -
         new Date(dateRange.startDate).getTime()) /
-      (1000 * 3600 * 24) + 1;
-  
+        (1000 * 3600 * 24) +
+      1;
+
     this.previewData = this.screens
-      .filter(screen => screen.selected)
-      .map(screen => {
-        const noOfImpressions = screen.screen.slotSize + screen.screen.cycleTime * days;
+      .filter((screen) => screen.selected)
+      .map((screen) => {
+        const noOfImpressions =
+          screen.screen.slotSize + screen.screen.cycleTime * days;
         const quotedPrice = screen.screen.minimumPrice;
         const totalGst = quotedPrice * this.gstRate;
         const grandTotal = quotedPrice + totalGst;
-  
+
         return {
           screenName: screen.screen.screenName,
           typeOfMedia: screen.screen.screenType,
@@ -245,29 +268,29 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
           noOfImpressions,
           avgFootFall: screen.screen.footfallPerMonth,
           noOfScreens: 1,
-          quotedPrice,  
-          GST: totalGst,  
+          quotedPrice,
+          GST: totalGst,
           grandTotal,
           creativeRequirement: '1920 X 1080',
         };
       });
   }
-  
+
   submitQuote(status: string) {
     console.log('submitQuote called with status:', status);
-  
+
     // Show loader when starting the submission process
     this.loaderService.showLoader();
-  
+
     if (this.quoteForm.invalid) {
       console.warn('Form is invalid. Please correct the errors.');
       this.quoteForm.markAllAsTouched();
-      
+
       // Hide loader when form is invalid
       this.loaderService.hideLoader();
       return;
     }
-  
+
     const quoteData = {
       customerName: this.quoteForm.get('customerName')?.value,
       city: this.quoteForm.get('city')?.value || '',
@@ -278,13 +301,23 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
       startDate: this.quoteForm.get('dateRange')?.value.startDate,
       expiryDate: this.quoteForm.get('dateRange')?.value.endDate,
       creativeRequirement: this.quoteForm.get('creativeRequirement')?.value,
-      slotDuration: this.previewData.length > 0
-        ? this.previewData.reduce((sum, screen) => sum + parseFloat(screen.slotDuration), 0) / this.previewData.length
-        : 0,
-      quotedPrice: this.previewData.reduce((sum, screen) => sum + screen.quotedPrice, 0),
+      slotDuration:
+        this.previewData.length > 0
+          ? this.previewData.reduce(
+              (sum, screen) => sum + parseFloat(screen.slotDuration),
+              0
+            ) / this.previewData.length
+          : 0,
+      quotedPrice: this.previewData.reduce(
+        (sum, screen) => sum + screen.quotedPrice,
+        0
+      ),
       GST: this.previewData.reduce((sum, screen) => sum + screen.GST, 0),
-      grandTotal: this.previewData.reduce((sum, screen) => sum + screen.grandTotal, 0),
-      preview: this.previewData.map(screen => ({
+      grandTotal: this.previewData.reduce(
+        (sum, screen) => sum + screen.grandTotal,
+        0
+      ),
+      preview: this.previewData.map((screen) => ({
         city: this.quoteForm.get('city')?.value || '',
         mediaIdentity: this.quoteForm.get('mediaIdentity')?.value || '',
         network: this.quoteForm.get('network')?.value || '',
@@ -298,15 +331,15 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
         avgFootFall: screen.avgFootFall,
         quotedPrice: screen.quotedPrice,
         GST: screen.GST,
-        total: screen.grandTotal
+        total: screen.grandTotal,
       })),
-      organizationId: this.userData?.organizationId || '', 
-      userEmail: this.userData?.email || '', 
-      status: status
+      organizationId: this.userData?.organizationId || '',
+      userEmail: this.userData?.email || '',
+      status: status,
     };
-  
+
     console.log('Quote Data before sending:', quoteData);
-  
+
     this.quoteService.createQuote(quoteData).subscribe(
       (response) => {
         console.log('Quote created successfully:', response);
@@ -319,12 +352,10 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
       },
       (error) => {
         console.error('Error creating quote:', error);
-        
+
         // Hide loader on error response
         this.loaderService.hideLoader();
       }
     );
   }
-  
-  
 }
