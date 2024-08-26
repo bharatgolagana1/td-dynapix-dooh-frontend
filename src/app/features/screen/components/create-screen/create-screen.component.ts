@@ -36,12 +36,12 @@ export class CreateScreenComponent implements OnInit {
   schedulers: any[] = [];
   slotSize: string = '';
   cycleTime: string = '';
-  cities: string[] = ['City1', 'City2', 'City3'];
-  screenCategories: string[] = ['Category1', 'Category2', 'Category3'];
-  screenNetworks: string[] = ['Network1', 'Network2', 'Network3'];
+  cityNames: any[] = [];
+  screenCategories: any[] = [];
+  screenNetworks: any[] = [];
   cardinalPoints: string[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
   tags: string[] = [];
-  states: string[] = ['State1', 'State2', 'State3'];
+  states: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -106,6 +106,10 @@ export class CreateScreenComponent implements OnInit {
 
   ngOnInit() {
     this.loadSchedulers();
+    this.loadCityNames();
+    this.loadScreenCategories();
+    this.loadScreenNetwork();
+    this.loadState();
   }
 
   loadSchedulers() {
@@ -113,6 +117,50 @@ export class CreateScreenComponent implements OnInit {
       // @ts-ignore
       this.schedulers = data?.schedulers;
     });
+  }
+  
+  loadCityNames(): void {
+    this.screenService.getActiveCityNames().subscribe(
+      (data: { cityNames: any[] }) => {
+        this.cityNames = data.cityNames;
+      },
+      (error) => {
+        console.error('Error fetching customer names:', error);
+      }
+    );
+  }
+
+  loadScreenCategories(): void {
+    this.screenService.getActiveScreenCategories().subscribe(
+      (data: { screenCategories: any[] }) => {
+        this.screenCategories = data.screenCategories;
+      },
+      (error) => {
+        console.error('Error fetching customer names:', error);
+      }
+    );
+  }
+
+  loadScreenNetwork(): void {
+    this.screenService.getActiveScreenNetworks().subscribe(
+      (data: { screenNetworks: any[] }) => {
+        this.screenNetworks = data.screenNetworks;
+      },
+      (error) => {
+        console.error('Error fetching customer names:', error);
+      }
+    );
+  }
+
+  loadState(): void {
+    this.screenService.getActiveStates().subscribe(
+      (data: { states: any[] }) => {
+        this.states = data.states;
+      },
+      (error) => {
+        console.error('Error fetching customer names:', error);
+      }
+    );
   }
 
   coordinateValidator() {

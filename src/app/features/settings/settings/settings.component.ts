@@ -27,5 +27,10 @@ export class SettingsComponent {
       image: 'assets/images/scheduler.svg',
       route: '/settings/schedulerSettings',
     },
+    {
+      title: 'Screens',
+      image: 'assets/icons/screen.svg',
+      route: '/settings/screenSettings',
+    },
   ];
 }

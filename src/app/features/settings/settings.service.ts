@@ -173,5 +173,84 @@ export class SettingsService {
   deleteExtraSlotSize(slotSize: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/settings/campaign/deleteExtraSlotSize`, { body: { slotSize } });
   }
+
+  createCityName(cityName: string, status: boolean): Observable<any> {
+    const params = this.appendOrganizationId({ cityName, status });
+    return this.http.post(`${this.apiUrl}/settings/screen/createCityNames`, params);
+  }
+
+  getCityNames(): Observable<any> {
+    const params = this.appendOrganizationId();
+    return this.http.get(`${this.apiUrl}/settings/screen/getCityNames`, { params });
+  }
+
+
+  updateCityNameStatus(cityName: string, status: boolean): Observable<any> {
+    const body = { status };
+    return this.http.put(`${this.apiUrl}/settings/screen/cityNames/${cityName}`, body);
+  }
+
+  deleteCityName(cityName: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/settings/screen/deleteCityNames`, { body: { cityName } });
+  }
+
+  createScreenCategory(categoryName: string, status: boolean): Observable<any> {
+    const params = this.appendOrganizationId({ categoryName, status });
+    return this.http.post(`${this.apiUrl}/settings/screen/createScreenCategories`, params);
+  }
+
+  deleteScreenCategory(categoryName: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/settings/screen/deleteScreenCategories`, { body: { categoryName } });
+  }
+
+  getScreenCategories(): Observable<any> {
+    const params = this.appendOrganizationId();
+    return this.http.get(`${this.apiUrl}/settings/screen/getScreenCategories`, { params });
+  }
+
+  updateScreenCategoryStatus(categoryName: string, status: boolean): Observable<any> {
+    const body = { status };
+    return this.http.put(`${this.apiUrl}/settings/screen/screenCategories/${categoryName}`, body);
+  }
+
+  createScreenNetwork(networkName: string, status: boolean): Observable<any> {
+    const params = this.appendOrganizationId({ networkName, status });
+    return this.http.post(`${this.apiUrl}/settings/screen/createScreenNetworks`, params);
+  }
+
+  deleteScreenNetwork(networkName: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/settings/screen/deleteScreenNetworks`, { body: { networkName } });
+  }
+
+  getScreenNetworks(): Observable<any> {
+    const params = this.appendOrganizationId();
+    return this.http.get(`${this.apiUrl}/settings/screen/getScreenNetworks`, { params });
+  }
+
+
+  updateScreenNetworkStatus(networkName: string, status: boolean): Observable<any> {
+    const body = { status };
+    return this.http.put(`${this.apiUrl}/settings/screen/screenNetworks/${networkName}`, body);
+  }
+
+  createState(stateName: string, status: boolean): Observable<any> {
+    const params = this.appendOrganizationId({ stateName, status });
+    return this.http.post(`${this.apiUrl}/settings/state/createStates`, params);
+  }
+
+  deleteState(stateName: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/settings/state/deleteStates`, { body: { stateName } });
+  }
+
+  getStates(): Observable<any> {
+    const params = this.appendOrganizationId();
+    return this.http.get(`${this.apiUrl}/settings/state/getStates`, { params });
+  }
+
+  updateStateStatus(stateName: string, status: boolean): Observable<any> {
+    const body = { status };
+    return this.http.put(`${this.apiUrl}/settings/state/updateStates/${stateName}`, body);
+  }
+
   
 }

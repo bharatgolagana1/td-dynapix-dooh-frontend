@@ -1,0 +1,26 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side" opened>
+      <mat-nav-list>
+        <a mat-list-item (click)="selectItem('cityName')">City Name</a>
+        <a mat-list-item (click)="selectItem('screenCategory')">Screen Category</a>
+        <a mat-list-item (click)="selectItem('screenNetwork')">Screen Network</a>
+        <a mat-list-item (click)="selectItem('state')">State</a>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <div *ngIf="selectedItem === 'cityName'">
+        <app-city-name></app-city-name>
+      </div>
+      <div *ngIf="selectedItem === 'screenCategory'">
+        <app-screen-category></app-screen-category>
+      </div>
+      <div *ngIf="selectedItem === 'screenNetwork'">
+        <app-screen-network></app-screen-network>
+      </div>
+      <div *ngIf="selectedItem === 'state'">
+        <app-state></app-state>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

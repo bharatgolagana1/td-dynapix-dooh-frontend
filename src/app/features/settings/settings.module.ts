@@ -17,7 +17,12 @@ import { EditSchedulerDialogComponent } from './edit-scheduler-dialog/edit-sched
 import { CampaignSettingsComponent } from './campaign-settings/campaign-settings.component';
 import { CustomerNameSettingsComponent } from './customer-name-settings/customer-name-settings.component';
 import { CategoryOptionSettingsComponent } from './category-option-settings/category-option-settings.component';
-import { ExtraSlotSizeSettingsComponent } from './extra-slot-size-settings/extra-slot-size-settings.component'; 
+import { ExtraSlotSizeSettingsComponent } from './extra-slot-size-settings/extra-slot-size-settings.component';
+import { ScreenSettingsComponent } from './screen/screen-settings/screen-settings.component';
+import { CityNameComponent } from './screen/city-name/city-name.component';
+import { ScreenCategoryComponent } from './screen/screen-category/screen-category.component';
+import { ScreenNetworkComponent } from './screen/screen-network/screen-network.component';
+import { StateComponent } from './screen/state/state.component'; 
 
 @NgModule({
   declarations: [
@@ -35,7 +40,12 @@ import { ExtraSlotSizeSettingsComponent } from './extra-slot-size-settings/extra
  CampaignSettingsComponent,
  CustomerNameSettingsComponent,
  CategoryOptionSettingsComponent,
- ExtraSlotSizeSettingsComponent
+ ExtraSlotSizeSettingsComponent,
+ ScreenSettingsComponent,
+ CityNameComponent,
+ ScreenCategoryComponent,
+ ScreenNetworkComponent,
+ StateComponent
   ],
   imports: [CommonModule, MaterialModule, SettingsRoutingModule, FormsModule,],
   providers: [],
