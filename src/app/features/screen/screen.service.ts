@@ -6,8 +6,8 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class ScreenService {
-  // private baseApiurl = environment.baseApiUrl;
-  private baseApiurl = `http://localhost:3000`;
+  private baseApiurl = environment.baseApiUrl;
+  // private baseApiurl = `http://localhost:3000`;
 
   constructor(private http: HttpClient) {}
 
