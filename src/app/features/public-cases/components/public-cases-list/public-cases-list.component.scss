@@ -1,0 +1,49 @@
+.mat-header-cell {
+background-color: #F7F7F7 !important;
+font-family: Arial, sans-serif;
+font-size: 12px;
+font-weight: 600;
+line-height: 16px;
+text-align: left;
+color: #757fef;
+}
+.mat-cell {
+font-family: Arial, sans-serif;
+font-size: 12px;
+font-weight: 600;
+line-height: 16px;
+text-align: left;
+color: #808080;
+}
+.publicCase--title{
+color: #757fef;
+font-family: Manrope;
+font-size: 1.5rem;
+font-style: normal;
+font-weight: 600;
+line-height: 2rem;
+margin: 2rem 0rem;
+}
+.publicCase--container{
+padding: 2rem;
+}
+.mat-mdc-icon-button {
+color: #757fef;
+}
+.spinner-container{
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 2rem;
+} 
+.no-data-found {
+text-align: center;
+font-family: Arial, sans-serif;
+font-size: 12px;
+font-weight: 600;
+line-height: 16px;
+margin-top: 20px;
+font-size: 18px;
+color:  #757fef;
+}
+  

@@ -19,7 +19,7 @@
         <input matInput type="text" formControlName="screenName" />
       </mat-form-field>
       <button
-        mat-button
+        mat-raised-button
         class="add-screen-name--button"
         type="button"
         (click)="addScreenName()"
@@ -94,6 +94,7 @@
     </div>
     <div>
       <mat-checkbox
+      color="primary"
         formControlName="documentsUpload"
         (change)="onCheckboxChange($event)"
       >
@@ -107,13 +108,14 @@
       (drop)="onDrop($event)"
       (dragover)="onDragOver($event)"
     >
+      <img src="assets/images/upload-file.svg" />
       <p>Drag and drop files here or click to select files.</p>
       <input type="file" (change)="onFileSelected($event)" multiple />
     </div>
     <div *ngIf="uploadedFiles.length > 0" class="uploaded-files-list">
       <h3>Uploaded Files:</h3>
       <ul>
-        <li *ngFor="let file of uploadedFiles; let i = index">
+        <li *ngFor="let file of uploadedFiles; let i = index" class="file-item">
           {{ file.name }} ({{ file.type }})
           <button mat-button (click)="removeFile(i)">
             <mat-icon>cancel</mat-icon>

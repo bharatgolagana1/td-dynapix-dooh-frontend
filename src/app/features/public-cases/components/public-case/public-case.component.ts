@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PublicCasesService } from '../../public-cases.service';
+import { KeycloakOperationService } from 'src/app/core/services/keycloak.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NotificationService } from 'src/app/core/services/notification.service';
 
 interface ScreenName {
   screenName: string;
@@ -22,14 +25,17 @@ export class PublicCaseComponent implements OnInit {
   screenNames: ScreenName[] = [];
   caseTypes: string[] = [];
   caseStatus: string[] = [];
+  userData: any
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private publicCasesService: PublicCasesService
+    private publicCasesService: PublicCasesService,
+    private keycloakOperationService: KeycloakOperationService,
+    private notificationService: NotificationService,
   ) {
     this.publicCaseForm = this.fb.group({
-      screenNames: this.fb.array([]),
+      screenName: [''], 
       caseSubject: ['', Validators.required],
       caseType: ['', Validators.required],
       caseStatus: ['', Validators.required],
@@ -43,6 +49,7 @@ export class PublicCaseComponent implements OnInit {
   ngOnInit(): void {
     this.loadCaseTypes();
     this.loadCaseStatus();
+    this.fetchUserData();
   }
 
   loadCaseTypes(): void {
@@ -56,6 +63,31 @@ export class PublicCaseComponent implements OnInit {
     this.publicCasesService.getCaseStatus().subscribe({
       next: (status) => this.caseStatus = status,
       error: (error) => console.error('Error loading case status', error)
+    });
+  }
+
+  fetchUserData(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.keycloakOperationService.getUserData().subscribe(
+        (data) => {
+          if (data && data.userId && data.email && data.organizationId) {
+            this.userData = {
+              userId: data.userId,
+              userEmail: data.email,
+              organizationId: data.organizationId,
+            };
+            console.log('User data fetched and set:', this.userData);
+            resolve();
+          } else {
+            console.error('Incomplete user data received:', data);
+            reject(new Error('Incomplete user data received'));
+          }
+        },
+        (error: HttpErrorResponse) => {
+          console.error('Error fetching user data:', error);
+          reject(error);
+        }
+      );
     });
   }
 
@@ -93,9 +125,19 @@ export class PublicCaseComponent implements OnInit {
 
   addScreenName(): void {
     const screenName = this.publicCaseForm.get('screenName')?.value;
+    
     if (screenName && !this.screenNames.some(name => name.screenName === screenName)) {
-      this.screenNames.push({ screenName, serialNumber: 'NA', location: 'NA', screenId: 'NA' });
-      this.publicCaseForm.get('screenName')?.reset();
+      const newScreenName: ScreenName = {
+        screenName,
+        serialNumber: 'NA', 
+        location: 'NA', 
+        screenId: 'NA' 
+      };
+      
+      this.screenNames.push(newScreenName);
+      this.publicCaseForm.get('screenName')?.reset(); 
+    } else {
+      console.warn('Screen Name is either empty or already exists');
     }
   }
 
@@ -106,6 +148,7 @@ export class PublicCaseComponent implements OnInit {
   onSubmit(): void {
     if (this.publicCaseForm.valid) {
       const formData = new FormData();
+
       formData.append('screenNames', JSON.stringify(this.screenNames));
       formData.append('caseSubject', this.publicCaseForm.get('caseSubject')?.value);
       formData.append('caseType', this.publicCaseForm.get('caseType')?.value);
@@ -113,18 +156,22 @@ export class PublicCaseComponent implements OnInit {
       formData.append('caseDescription', this.publicCaseForm.get('caseDescription')?.value);
       formData.append('customerName', this.publicCaseForm.get('customerName')?.value);
       formData.append('phoneNumber', this.publicCaseForm.get('phoneNumber')?.value);
+      formData.append('organizationId', this.userData.organizationId);
 
       this.uploadedFiles.forEach((file, index) => {
-        formData.append('mediaContent', file, file.name); 
+        formData.append('mediaContent', file, file.name);
       });
 
       this.publicCasesService.createPublicCase(formData).subscribe({
         next: (response) => {
-          console.log('Form Data:', response);
+          console.log('Public case created successfully:', response);
+          this.notificationService.showNotification('Public Case created successfully', 'success');
           this.router.navigate(['/successful-submission']);
         },
         error: (error) => console.error('Error creating public case', error)
       });
+    } else {
+      this.notificationService.showNotification('Error creating Public case', 'error');
     }
   }
 }

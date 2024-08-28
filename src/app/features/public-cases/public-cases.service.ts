@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -15,8 +15,21 @@ export class PublicCasesService {
     return this.http.post<any>(`${this.baseApiUrl}/publicCase`, publicCase);
   }
 
-  getPublicCases(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseApiUrl}`);
+  getPublicCases(
+    pageIndex: number = 0,
+    pageSize: number = 10,
+    search: string = '',
+    sortBy: string = 'createdAt',
+    sortOrder: 'asc' | 'desc' = 'desc'
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('pageIndex', pageIndex.toString())
+      .set('pageSize', pageSize.toString())
+      .set('search', search)
+      .set('sortBy', sortBy)
+      .set('sortOrder', sortOrder);
+
+    return this.http.get<any>(`${this.baseApiUrl}/publicCase/cases`, { params });
   }
 
   getCaseTypes(): Observable<string[]> {
@@ -28,6 +41,6 @@ export class PublicCasesService {
   }
 
   deletePublicCase(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.baseApiUrl}/${id}`);
+    return this.http.delete<any>(`${this.baseApiUrl}/publicCase/cases/${id}`);
   }
 }
