@@ -30,6 +30,7 @@ import { CampaignModule } from './features/campaign/campaign.module';
 import { UserService } from './core/services/user.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { OrgIdInterceptor } from './core/interceptors/org.interceptor';
+import { PublicCasesModule } from './features/public-cases/public-cases.module';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -80,6 +81,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     SharedModule,
     QuoteModule,
     CampaignModule,
+    PublicCasesModule
   ],
   providers: [
     {
