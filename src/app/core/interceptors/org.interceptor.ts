@@ -74,7 +74,7 @@ export class OrgIdInterceptor implements HttpInterceptor {
           body,
         });
       }
-    } else if (req.method === 'GET' && data.organizationId) {
+    } else if ((req.method === 'GET' || req.method === 'DELETE' || req.method === 'PUT') && data.organizationId) {
       clonedRequest = req.clone({
         headers: req.headers
           .set('OrganizationId', data.organizationId)

@@ -18,6 +18,9 @@ import { KeycloakOperationService } from 'src/app/core/services/keycloak.service
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Router } from '@angular/router';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
+
 export interface Screen {
   id: any;
   _id: string;
@@ -57,6 +60,7 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
   role: string = '';
   customerNames: any[] = [];
   screens: ScreenAvailability[] = [];
+  termsAndConditions: any[] = [];
   screenTypeOptions: any[] = [];
   statusOptions: any[] = [];
   previewData: any[] = [];
@@ -116,6 +120,7 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
     this.loadOptions();
     this.loadCustomerNames();
     this.fetchUserData();
+    this.fetchTermsAndConditions();
   }
 
   ngAfterViewInit() {
@@ -133,7 +138,17 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
       }
     );
   }
-
+  fetchTermsAndConditions(): void {
+    this.quoteService.getTermsAndConditions().subscribe(
+      (response) => {
+        this.termsAndConditions = response;
+      },
+      (error) => {
+        console.error('Error fetching terms and conditions:', error);
+      }
+    );
+  }
+  
   loadOptions(): void {
     this.quoteService.getScreenTypeOptions().subscribe((data) => {
       this.screenTypeOptions = data;
@@ -147,7 +162,6 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
     return new Promise((resolve, reject) => {
       this.keycloakOperationService.getUserData().subscribe(
         (data) => {
-          // Check if data contains the necessary fields
           if (data && data.userId && data.email && data.organizationId) {
             this.userData = {
               userId: data.userId,
@@ -237,7 +251,6 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
   generatePreviewData() {
     const dateRange = this.quoteForm.get('dateRange')?.value;
 
-    // Ensure dateRange is valid
     if (!dateRange || !dateRange.startDate || !dateRange.endDate) {
       console.warn('Invalid date range');
       return;
@@ -263,7 +276,7 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
           typeOfMedia: screen.screen.screenType,
           screenDimensions: screen.screen.size,
           slotDuration: screen.screen.slotSize,
-          screenIdentity: screen.screen.address,
+          screenIdentity: screen.screen.screenName,
           loopTime: screen.screen.cycleTime,
           noOfImpressions,
           avgFootFall: screen.screen.footfallPerMonth,
@@ -279,14 +292,12 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
   submitQuote(status: string) {
     console.log('submitQuote called with status:', status);
 
-    // Show loader when starting the submission process
     this.loaderService.showLoader();
 
     if (this.quoteForm.invalid) {
       console.warn('Form is invalid. Please correct the errors.');
       this.quoteForm.markAllAsTouched();
 
-      // Hide loader when form is invalid
       this.loaderService.hideLoader();
       return;
     }
@@ -353,9 +364,88 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
       (error) => {
         console.error('Error creating quote:', error);
 
-        // Hide loader on error response
         this.loaderService.hideLoader();
       }
     );
   }
+  isSubmitDisabled(): boolean {
+    return this.quoteForm.invalid || !this.screens.some(screen => screen.selected);
+  }
+  generatePDF() {
+    const doc = new jsPDF();
+  
+    doc.setFontSize(16);
+    
+    doc.setFontSize(12);
+    const startDate = new Date(this.quoteForm.value.dateRange.startDate);
+    const endDate = new Date(this.quoteForm.value.dateRange.endDate);
+
+    const startDateString = `${startDate.getUTCDate()} ${startDate.toLocaleString('default', { month: 'long' })} ${startDate.getUTCFullYear()}`;
+    const endDateString = `${endDate.getUTCDate()} ${endDate.toLocaleString('default', { month: 'long' })} ${endDate.getUTCFullYear()}`;
+
+   
+    doc.text(`Customer Name: ${this.quoteForm.value.customerName}`, 10, 20);
+    doc.text(`Date: ${startDateString} - ${endDateString}`, 10, 30);
+    
+    const tableRows: Array<Array<string | number>> = [];
+  
+    const tableColumn = [
+      "S.No", 
+      "City", 
+      "Media Identity", 
+      "Network", 
+      "Screen Identity", 
+      "Type of Media", 
+      "Screen Dimensions", 
+      "No. of Screens", 
+      "Slot Duration", 
+      "Loop Time", 
+      "No. of Impressions", 
+      "Avg Foot Falls", 
+      "Quoted Price", 
+      "GST(18%)", 
+      "Grand Total", 
+      "Creative Requirement"
+    ];
+  
+    this.previewData.forEach((screen, index) => {
+      const screenData: Array<string | number> = [
+        (index + 1).toString(),
+        this.quoteForm.value.city,
+        this.quoteForm.value.mediaIdentity,
+        this.quoteForm.value.network,
+        screen.screenIdentity,
+        screen.typeOfMedia,
+        screen.screenDimensions,
+        screen.noOfScreens,
+        screen.slotDuration,
+        screen.loopTime,
+        screen.noOfImpressions,
+        screen.avgFootFall,
+        screen.quotedPrice,
+        screen.GST,
+        screen.grandTotal,
+        screen.creativeRequirement
+      ];
+      tableRows.push(screenData);
+    });
+  
+    (doc as any).autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 40,
+      theme: 'grid',
+      margin: { right: 10, left: 10 }
+    });
+  
+    let finalY = (doc as any).lastAutoTable.finalY + 10; 
+    doc.text('Terms and Conditions', 10, finalY);
+    doc.setFontSize(7);
+    this.termsAndConditions.forEach((term, index) => {
+      doc.text(`${index + 1}. ${term.content}`, 10, finalY + (index + 1) * 10);
+    });
+  
+    doc.save('quote.pdf');
+  }
+  
 }

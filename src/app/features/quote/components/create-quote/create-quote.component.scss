@@ -10,6 +10,15 @@
   line-height: 2rem;
   margin-bottom: 2rem;
 }
+.create-quote-sub--title {
+  color: #757fef;
+  font-family: Manrope;
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2rem;
+
+}
 .create-quote-card--container{
   padding: 2rem ;
 }
@@ -96,11 +105,9 @@
   .create-quote-card--name{
   font-size: 15px;
   font-weight: 550;
-  line-height: 16px;
   text-align: left;
   color: #333333;
   font-family: Arial;
-  
   }
   
   .create-quote-card--address{
@@ -118,102 +125,92 @@
   display: flex;
   justify-content:flex-end;
   }
-
-/* Table Style */
-table {
-  width: 100%; /* Ensure table fits within the container */
-  border-collapse: collapse;
-  margin: 20px 0;
-  table-layout: fixed; /* Enable fixed table layout */
-  overflow-wrap: break-word; /* Allow text to wrap within cells */
-}
-
-/* Table Header */
-thead {
-  background-color: #f4f4f4; /* Keep header background */
-}
-
-thead th {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 2px solid #ddd;
-  font-weight: bold;
-}
-
-/* Table Rows */
-tbody tr {
-  background-color: #fff; /* Default row background */
-}
-
-tbody tr:nth-child(even) {
-  background-color: #f9f9f9; /* Alternate row background */
-}
-
-tbody td {
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
-  word-wrap: break-word; /* Wrap text within cells */
-}
-
-/* Hover Effect */
-tbody tr:hover {
-  background-color: #eaeaea;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .create-quote-card--container {
-    padding: 0; /* Remove extra padding for small screens */
-  }
-
   table {
-    width: 100%; /* Ensure full width */
+    width: 100%; 
+    border-collapse: collapse;
+    margin: 20px 0;
+    table-layout: fixed; 
+    overflow-wrap: break-word; 
   }
-
   thead {
-    display: none; /* Hide header in responsive view */
+    background-color: #f4f4f4; 
   }
-
-  tbody, tr, td {
-    display: block;
-    width: 100%;
-  }
-
-  tr {
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    background-color: inherit; /* Maintain background color */
-  }
-
-  td {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border: none;
+  thead th {
+    padding: 12px;
     text-align: left;
-    white-space: normal; /* Allow text to wrap */
-    background-color: inherit; /* Maintain background color */
-  }
-
-  td::before {
-    content: attr(data-label);
+    border: 1px solid #ddd;
     font-weight: bold;
-    margin-right: 10px;
+    color: #757fef;
   }
-
-  /* Restore alternating row colors in responsive view */
+  tbody tr {
+    background-color: #fff; 
+  }
   tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #f9f9f9; 
   }
-
-  tbody tr:nth-child(odd) {
-    background-color: #fff;
+  tbody td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    word-wrap: break-word;
+    border: 1px solid #ddd;
   }
-
   tbody tr:hover {
     background-color: #eaeaea;
   }
-}
+  
+
+  @media (max-width: 768px) {
+    .create-quote-card--container {
+      padding: 0; 
+    }
+  
+    table {
+      width: 100%;
+    }
+  
+    thead {
+      display: none; 
+    }
+  
+    tbody, tr, td {
+      display: block;
+      width: 100%;
+    }
+  
+    tr {
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      background-color: inherit;
+    }
+  
+    td {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      border: none;
+      text-align: left;
+      white-space: normal;
+      background-color: inherit; 
+    }
+  
+    td::before {
+      content: attr(data-label);
+      font-weight: bold;
+      margin-right: 10px;
+    }
+  
+    tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  
+    tbody tr:nth-child(odd) {
+      background-color: #fff;
+    }
+  
+    tbody tr:hover {
+      background-color: #eaeaea;
+    }
+  }
 .spinner-overlay {
   position: fixed;
   top: 0;
@@ -230,4 +227,13 @@ tbody tr:hover {
 
 .spinner-container {
   text-align: center;
+}
+
+.create-quote-preview-header--content{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.create-quote-preview-sub--content{
+  display: flex;
 }

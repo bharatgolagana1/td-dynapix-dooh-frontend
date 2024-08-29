@@ -5,10 +5,12 @@ import { ListQuoteComponent } from './components/list-quote/list-quote.component
 import { CreateQuoteComponent } from './components/create-quote/create-quote.component';
 import { MaterialModule } from 'src/app/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DeleteQuoteComponent } from './components/delete-quote/delete-quote.component';
 @NgModule({
   declarations: [
     CreateQuoteComponent,
-    ListQuoteComponent
+    ListQuoteComponent,
+    DeleteQuoteComponent
    
   ],
   imports: [
