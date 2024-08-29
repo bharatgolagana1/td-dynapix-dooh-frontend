@@ -7,12 +7,12 @@ import { PublicCasesListComponent } from './components/public-cases-list/public-
 const routes: Routes = [
 
       {
-        path: 'public-case-list',
+        path: 'publicCase',
         component: PublicCasesListComponent,
       },
 
      {
-        path: 'public-case',
+        path: '',
         component: PublicCaseComponent,
       },
 
