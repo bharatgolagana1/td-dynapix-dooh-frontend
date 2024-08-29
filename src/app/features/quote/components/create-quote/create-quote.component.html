@@ -214,6 +214,10 @@
         <mat-card class="create-quote--card" *ngIf="showPreview" >
           <div class="create-quote-card--container">
             <div class="create-quote--title">Preview</div>
+            <div class="create-quote-preview-header--content">
+            <div class="create-quote-card--name">{{ quoteForm.value.customerName }}</div>
+            <div class="create-quote-preview-sub--content"><p class="create-quote-card--name">Date:</p> {{ quoteForm.value.dateRange.startDate | date:'mediumDate' }} - {{ quoteForm.value.dateRange.endDate | date:'mediumDate' }}</div>
+           </div>
             <table>
               <thead>
                 <tr>
@@ -256,14 +260,27 @@
                 </tr>
               </tbody>
             </table>
+            <div>
+              <div class="create-quote-sub--title">Terms and Conditions</div>
+              <ul>
+                <li *ngFor="let term of termsAndConditions">
+                  {{ term.content }}
+                </li>
+              </ul>
+            </div>
           </div>
+       
         </mat-card>
       </div>
 
       <div class="create-quote-footer--content">
             <button mat-stroked-button color="primary" (click)="submitQuote('Draft')">Draft</button>
-            <button mat-stroked-button color="accent" (click)="submitQuote('Generated')">Generate</button>
-            <button mat-stroked-button color="warn" (click)="submitQuote('Submitted')">Submit</button>
+            <button mat-stroked-button color="accent" (click)="generatePDF(); submitQuote('Generated')">Generate</button>
+            <button mat-stroked-button color="warn" (click)="submitQuote('Submitted')" 
+              [disabled]="isSubmitDisabled()">
+                Submit
+           </button>
+
       </div>      
     </form>
 </div>
