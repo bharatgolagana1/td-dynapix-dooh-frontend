@@ -8,6 +8,7 @@ import { MaterialModule } from 'src/app/material.module';
 import { CampaignListComponent } from './components/campaign-list/campaign-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CampaignRoutingModule } from './campaign-routing.module';
+import { PlayMediaComponent } from './components/play-media/play-media.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { CampaignRoutingModule } from './campaign-routing.module';
     UploadMediaDialogComponent,
     CampaignUploadMediaComponent,
     CampaignListComponent,
+    PlayMediaComponent,
   ],
   imports: [
     CommonModule,

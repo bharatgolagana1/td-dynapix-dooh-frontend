@@ -89,9 +89,8 @@
         </div>
       </a>
       <mat-nav-list *ngIf="isSubNavOpen('campaign')">
-        <a mat-list-item routerLink="/campaign/create-campaign"
-          >Create Campaign</a
-        >
+        <a mat-list-item routerLink="/campaign/create-campaign">Create Campaign</a>
+      <a mat-list-item routerLink="/campaign/play-media">Play Media</a>
         <!-- Add more sublinks as needed -->
       </mat-nav-list>
       <a mat-list-item (click)="toggleSubNav('quote')" class="parent-link">

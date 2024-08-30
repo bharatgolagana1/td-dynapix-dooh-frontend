@@ -12,7 +12,7 @@ const routes: Routes = [
       },
 
      {
-        path: '',
+        path: 'public-case',
         component: PublicCaseComponent,
       },
 
