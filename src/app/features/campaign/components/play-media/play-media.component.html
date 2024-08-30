@@ -1,0 +1,54 @@
+<div class="play-media--container">
+    <div class="play-media--title">Play Media</div>
+    <div class="play-media--sub-container">
+      <form class="paly-media--search">
+        <mat-form-field class="example-full-width" appearance="outline" [style.fontSize.px]="14">
+          <mat-label>Screen Name</mat-label>
+          <input
+            type="text"
+            placeholder="Search screens"
+            aria-label="Screen Name"
+            matInput
+            [formControl]="myControl"
+            [matAutocomplete]="auto"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            aria-label="Search"
+            class="small-icon"
+            (click)="generateScreenName()"
+          >
+            <mat-icon>search</mat-icon>
+          </button>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.screenName">
+              {{ option.screenName }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+      <div class="play-media--button">
+        <button mat-raised-button color="primary" (click)="generateScreenName()">Generate Media</button>
+      </div>
+      <div>
+        <button mat-icon-button (click)="reset()" class="logout-btn">
+          <img src="assets/icons/reset.svg" alt="reset" />
+        </button>
+      </div>
+    </div>
+  
+    <div *ngIf="noMediaFoundMessage">
+      <p class="playMedia--message">{{ noMediaFoundMessage }}</p>
+    </div>
+  
+    <div class="image-display" *ngIf="!noMediaFoundMessage">
+      <img *ngIf="currentImageUrl" [src]="currentImageUrl" alt="Current Media" class="video-player"/>
+      <div class="image-info">
+        <p class="text--video">Current Media: {{ getCurrentImageUrl() }}</p>
+        <p class="text--video">Slot Size: {{ slotSize }} seconds</p>
+        <p class="text--video">Cycle Time: {{ cycleTime }} minutes</p>
+      </div>
+    </div>
+  </div>
+  

@@ -23,6 +23,17 @@ export class CampaignService {
     return params;
   }
 
+  searchScreensByName(screenName: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseApiUrl}/campaign/search`, {
+      params: { screenName }
+    });
+  }
+
+  getScreenDetailsByName(screenName: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseApiUrl}/campaign/screen/details?screenName=${screenName}`);
+  }
+  
+
   getCustomerNames(): Observable<any> {
     const params = this.appendOrganizationId();
     return this.http.get(

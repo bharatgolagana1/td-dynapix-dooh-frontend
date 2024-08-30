@@ -1,0 +1,67 @@
+.play-media--container{
+margin: 2rem;
+}
+.play-media--title {
+color: #757fef;
+font-family: Manrope;
+font-size: 1.5rem;
+font-style: normal;
+font-weight: 600;
+line-height: 2rem;
+margin-bottom: 2rem;
+}
+.mat-mdc-icon-button {
+color: #757fef;
+}
+.video-player{
+max-width: 800px;
+height: 400px;
+}
+
+.video-info {
+margin-top: 10px; 
+padding-bottom: 2rem;
+}
+.text--video{
+font-family: Arial;
+font-size: 14px;
+font-weight: 600;
+line-height: 16px;
+text-align: left;
+color: #757fef;
+}
+.play-media--sub-container{
+display: flex;
+}
+.paly-media--search{
+margin-right: 2rem;
+}
+.play-media--button{
+margin-top: 10px;
+margin-right: 2rem;
+}
+.logout-btn{
+margin-right: 1rem;
+}
+.logout-btn {
+position: relative;
+}
+
+.logout-btn::after {
+content: "reset";
+font-size: 1rem;
+position: absolute;
+bottom: -20px;
+left: 50%;
+transform: translateX(-50%);
+background-color: white;
+color:black;
+padding: 4px 8px;
+border-radius: 4px;
+opacity: 0;
+transition: opacity 0.3s ease;
+}
+
+.logout-btn:hover::after {
+opacity: 1;
+}
