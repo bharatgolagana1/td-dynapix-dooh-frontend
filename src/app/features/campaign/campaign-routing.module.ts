@@ -9,7 +9,7 @@ import { PlayMediaComponent } from './components/play-media/play-media.component
 const routes: Routes = [
   { path: '', component: CampaignListComponent },
   {
-    path: ':campaignId/uploadmedia',
+    path: 'campaign/:campaignId/uploadmedia',
     component: CampaignUploadMediaComponent,
   },
   { path: 'create-campaign', component: CreateCampaignComponent },
