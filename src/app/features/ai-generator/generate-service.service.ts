@@ -8,7 +8,8 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class GenerateService {
-  private baseApiUrl = 'http://localhost:3000';
+  private baseApiUrl = environment.baseApiUrl;
+  // private baseApiUrl = 'http://localhost:3000';
   private apiUrl = '/generate/image';
 
   constructor(private http: HttpClient) {}
