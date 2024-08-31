@@ -1,3 +1,63 @@
-<div class="media-upload-container">
+<div class="campaign-upload-media-main--container">
+    <mat-card class="campaign-upload-media--card">
+      <div class="campaign-upload-media-card--container">
+        <div class="campaign-upload-media--title">Add Media</div>
+      </div>
+        <mat-divider></mat-divider>
+        <div class="campaign-upload-media-checkbox--selection" *ngIf="getSelectedCount() > 0">
+          <div>{{ getSelectedCount() }} Selected</div>
+          <button mat-button style="color: #ffffff;" (click)="clearSelection()"><mat-icon>close</mat-icon></button>
+        </div>
+        
+        <div class="campaign-upload-media-card--container">
+          <table mat-table [dataSource]="screens" class="mat-elevation-z0">
+            <!-- Screens Column -->
+            <ng-container matColumnDef="screens">
+              <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox 
+                  color="primary" 
+                  [checked]="isAllSelected" 
+                  (change)="toggleSelectAll()">
+                </mat-checkbox> Screens
+              </th>
+              <td mat-cell *matCellDef="let screen">
+                <div class="campaign-upload-media-cell--content">
+                  <mat-checkbox 
+                    color="primary" 
+                    [checked]="screen.isSelected" 
+                    (change)="toggleSelection(screen)">
+                  </mat-checkbox>
+                  <mat-card class="campaign-upload-media-screen-card">
+                    <img [src]="screen.imageUrls[0]" alt="{{ screen.screenName }}">
+                    <mat-card-content class="campaign-upload-media-screen-card--content">
+                      <div class="campaign-upload-media-screen-card--title">{{screen.screenName}}</div>
+                      <div class="campaign-upload-media-screen-card--subtitle">
+                        {{ screen.size }} &bull; {{ screen.SFT }} sqft &bull; {{ screen.NextAvailableDate | date }}
+                      </div>
+                      <div class="campaign-upload-media-screen-card--subtitle">{{ screen.address }}</div>
+                      <div class="campaign-upload-media-screen-card--subtitle">{{ screen.locationCoordinates }}</div>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+              </td>
+            </ng-container>
     
+            <!-- Date Range Column -->
+            <ng-container matColumnDef="dateRange">
+              <th mat-header-cell *matHeaderCellDef>Date Range</th>
+              <td mat-cell *matCellDef="let element"></td> <!-- Empty Cell -->
+            </ng-container>
+    
+            <!-- Media Column -->
+            <ng-container matColumnDef="media">
+              <th mat-header-cell *matHeaderCellDef>Media</th>
+              <td mat-cell *matCellDef="let element"></td> <!-- Empty Cell -->
+            </ng-container>
+    
+            <!-- Header and Row Definitions -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+          </div>
+    </mat-card>
 </div>

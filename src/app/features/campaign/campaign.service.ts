@@ -81,7 +81,12 @@ export class CampaignService {
       `${this.baseApiUrl}/settings/campaign/slotSize`
     );
   }
-
+  getCampaignById(campaignId: string): Observable<any> {
+    return this.http.get(`${this.baseApiUrl}/campaign/${campaignId}`);
+  }
+  getScreensByIds(screenIds: string[]): Observable<any> {
+    return this.http.post(`${this.baseApiUrl}/screen//get-by-ids`, { screenIds });
+  }
   createCampaign(formData: FormData): Observable<any> {
     return this.http.post(`${this.baseApiUrl}/campaign/create`, formData);
   }
