@@ -31,6 +31,7 @@ import { UserService } from './core/services/user.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { OrgIdInterceptor } from './core/interceptors/org.interceptor';
 import { PublicCasesModule } from './features/public-cases/public-cases.module';
+import { AiGeneratorModule } from './features/ai-generator/ai-generator.module';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -81,7 +82,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     SharedModule,
     QuoteModule,
     CampaignModule,
-    PublicCasesModule
+    PublicCasesModule,
+    AiGeneratorModule,
   ],
   providers: [
     {
@@ -94,8 +96,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: OrgIdInterceptor,
-      multi: true
-    }
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

@@ -29,6 +29,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 
 @NgModule({
   declarations: [],
@@ -64,6 +65,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatMenuModule,
     MatDividerModule,
     MatChipsModule,
+    CarouselModule,
   ],
   exports: [
     MatButtonModule,
@@ -97,6 +99,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatMenuModule,
     MatDividerModule,
     MatChipsModule,
+    CarouselModule,
   ],
 })
 export class MaterialModule {}

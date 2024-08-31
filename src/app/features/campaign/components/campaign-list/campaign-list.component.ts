@@ -44,6 +44,7 @@ export class CampaignListComponent implements OnInit {
   }
 
   onUploadMedia(campaignId: string) {
+    
     this.router.navigate([`/campaign/${campaignId}/uploadmedia`]);
   }
 }

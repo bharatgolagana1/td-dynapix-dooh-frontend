@@ -20,6 +20,7 @@ interface SubNavState {
   quote: boolean;
   campaign: boolean;
   publicCase:boolean
+  generate: boolean;
 }
 
 @Component({
@@ -42,6 +43,7 @@ export class AppComponent implements OnInit {
     quote: false,
     campaign: false,
     publicCase:false
+    generate: false,
   };
   isSidenavOpened = true;
   isSmallScreen = false;

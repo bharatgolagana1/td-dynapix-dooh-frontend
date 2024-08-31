@@ -27,4 +27,5 @@ export enum AppRoutePaths {
   quote = 'quote',
   createQuote = 'create-quote',
   campaignCreate = 'campign-create',
+  generate = 'generate',
 }

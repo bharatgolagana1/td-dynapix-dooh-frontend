@@ -1,0 +1,65 @@
+.image-generator-container {
+  margin: 3rem 2rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  min-height: -webkit-fill-available;
+  padding: 1rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.loader-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container {
+  margin-top: 20px;
+}
+
+.image-preview img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+mat-tab-group {
+  margin-bottom: 20px;
+}
+.image-generator-container--download-btn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.wrapper {
+  position: relative;
+  height: 100vh;
+}
+
+::ng-deep owl-carousel-o {
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+::ng-deep .owl-item {
+  height: 100vh;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+}

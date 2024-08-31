@@ -130,7 +130,6 @@
         <a mat-list-item routerLink="/schedulers/publicScreens"
           >Public Screens</a
         >
-        <!-- Add more sublinks as needed -->
       </mat-nav-list>
 
       <a mat-list-item (click)="toggleSubNav('screen')" class="parent-link">
@@ -181,6 +180,18 @@
         </div>
       </a>
 
+      <a mat-list-item (click)="toggleSubNav('generate')" class="parent-link">
+        <span class="dashboard--title"
+          ><img
+            class="users-logo--image"
+            src="assets/icons/ai_generate.svg"
+            alt="logo"
+          />Generate</span
+        >
+      </a>
+      <mat-nav-list *ngIf="isSubNavOpen('generate')">
+        <a mat-list-item routerLink="/generate/image">Image Templates</a>
+      </mat-nav-list>
       <mat-nav-list *ngIf="isSubNavOpen('roles')">
         <a mat-list-item routerLink="/booking/create-booking">Roles</a>
       </mat-nav-list>

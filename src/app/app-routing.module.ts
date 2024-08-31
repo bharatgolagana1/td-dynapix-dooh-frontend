@@ -104,6 +104,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: AppRoutePaths.generate,
+    loadChildren: () =>
+      import('./features/ai-generator/ai-generator-routing.module').then(
+        (m) => m.AIGeneratorRoutingModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'page-not-found',
     component: ServerNotfoundComponent,
   },

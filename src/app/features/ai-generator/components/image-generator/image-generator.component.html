@@ -1,0 +1,53 @@
+<div class="image-generator-container">
+  <div *ngIf="loading" class="loader-container">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <!-- <div class="wrapper">
+    <owl-carousel-o [options]="customOptions">
+      <ng-container *ngFor="let slide of apiData">
+        <ng-template class="slide" carouselSlide [id]="slide.id?.toString() || 'default-id'">
+          <img [src]="slide.url" [alt]="slide.id" [title]="slide.id" />
+        </ng-template>
+      </ng-container>
+    </owl-carousel-o>
+  </div> -->
+
+  <div *ngIf="!loading" class="image-container">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Enter a Description to generate image</mat-label>
+      <textarea
+        matInput
+        name="description"
+        [(ngModel)]="description"
+        placeholder="Enter a description"
+        rows="5"
+      ></textarea>
+    </mat-form-field>
+
+    <div class="button-container">
+      <button mat-raised-button color="primary" (click)="generateImage()">
+        Generate Image
+      </button>
+      <button mat-raised-button color="warn" (click)="reset()">Reset</button>
+    </div>
+
+    <div class="image-container">
+      <p>Generated Image:</p>
+      <!-- <a [href]="imageUrl" target="_blank">{{ imageUrl }}</a> -->
+      <div class="image-preview" *ngIf="imageUrl">
+        <img [src]="imageUrl" alt="Generated Img using gpt" />
+      </div>
+      <div class="image-generator-container--download-btn">
+        <button
+          mat-raised-button
+          color="primary"
+          *ngIf="imageUrl"
+          (click)="downloadImage()"
+        >
+          Download Image
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
