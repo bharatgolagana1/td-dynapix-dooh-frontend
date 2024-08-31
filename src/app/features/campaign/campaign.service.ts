@@ -25,14 +25,15 @@ export class CampaignService {
 
   searchScreensByName(screenName: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseApiUrl}/campaign/search`, {
-      params: { screenName }
+      params: { screenName },
     });
   }
 
   getScreenDetailsByName(screenName: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/campaign/screen/details?screenName=${screenName}`);
+    return this.http.get<any[]>(
+      `${this.baseApiUrl}/campaign/screen/details?screenName=${screenName}`
+    );
   }
-  
 
   getCustomerNames(): Observable<any> {
     const params = this.appendOrganizationId();
@@ -85,7 +86,9 @@ export class CampaignService {
     return this.http.get(`${this.baseApiUrl}/campaign/${campaignId}`);
   }
   getScreensByIds(screenIds: string[]): Observable<any> {
-    return this.http.post(`${this.baseApiUrl}/screen//get-by-ids`, { screenIds });
+    return this.http.post(`${this.baseApiUrl}/screen/get-by-ids`, {
+      screenIds,
+    });
   }
   createCampaign(formData: FormData): Observable<any> {
     return this.http.post(`${this.baseApiUrl}/campaign/create`, formData);
