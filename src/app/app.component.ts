@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
     settings: false,
     quote: false,
     campaign: false,
-    publicCase:false
+    publicCase:false,
     generate: false,
   };
   isSidenavOpened = true;
