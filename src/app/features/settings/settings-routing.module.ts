@@ -8,6 +8,7 @@ import { SchedulerSettingsComponent } from './scheduler-settings/scheduler-setti
 import { CampaignSettingsComponent } from './campaign-settings/campaign-settings.component';
 import { ScreenSettingsComponent } from './screen/screen-settings/screen-settings.component';
 
+import { QuoteSettingsComponent } from './quote-settings/quote-settings.component';
 const routes: Routes = [
   {
     path: '',
@@ -35,6 +36,10 @@ const routes: Routes = [
   {
     path: 'screenSettings',
     component: ScreenSettingsComponent,
+  },
+  {
+    path: 'quoteSettings',
+    component: QuoteSettingsComponent,
   },
 ];
 

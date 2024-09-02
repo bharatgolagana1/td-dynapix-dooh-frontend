@@ -23,6 +23,9 @@ import { CityNameComponent } from './screen/city-name/city-name.component';
 import { ScreenCategoryComponent } from './screen/screen-category/screen-category.component';
 import { ScreenNetworkComponent } from './screen/screen-network/screen-network.component';
 import { StateComponent } from './screen/state/state.component'; 
+import { QuoteSettingsComponent } from './quote-settings/quote-settings.component';
+import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
+import { MediaIdentityComponent } from './media-identity/media-identity.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,10 @@ import { StateComponent } from './screen/state/state.component';
  CityNameComponent,
  ScreenCategoryComponent,
  ScreenNetworkComponent,
- StateComponent
+ StateComponent,
+ QuoteSettingsComponent,
+ TermsConditionsComponent,
+ MediaIdentityComponent
   ],
   imports: [CommonModule, MaterialModule, SettingsRoutingModule, FormsModule,],
   providers: [],

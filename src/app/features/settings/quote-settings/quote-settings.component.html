@@ -1,0 +1,20 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side" opened>
+      <mat-nav-list>
+        <a mat-list-item (click)="selectItem('terms&conditions')">Terms & Conditions</a>
+        <a mat-list-item (click)="selectItem('mediaIdentity')">Media Identity</a>
+
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <div *ngIf="selectedItem === 'terms&conditions'" >
+     <app-terms-conditions></app-terms-conditions>
+      </div><div *ngIf="selectedItem === 'mediaIdentity'">
+        <app-media-identity></app-media-identity>
+      </div>
+      
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

@@ -75,7 +75,7 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
     'Closed',
     'On Hold',
   ];
-  mediaIdentityOptions: string[] = ['Identity1', 'Identity2', 'Identity3'];
+  mediaIdentities: any[] = [];
   networkOptions: string[] = ['Network1', 'Network2', 'Network3'];
   selectedDates: { screenId: string; dates: Date[] }[] = [];
   showPreview = false;
@@ -121,6 +121,7 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
     this.loadCustomerNames();
     this.fetchUserData();
     this.fetchTermsAndConditions();
+    this.loadMediaIdentity();
   }
 
   ngAfterViewInit() {
@@ -135,6 +136,18 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
       },
       (error: any) => {
         console.error('Error fetching customer names:', error);
+      }
+    );
+  }
+
+  loadMediaIdentity(): void {
+    this.quoteService.getMediaIdentity().subscribe(
+      (data: { mediaIdentities: any[] }) => {
+        this.mediaIdentities = data.mediaIdentities;
+        this.cdr.detectChanges();
+      },
+      (error: any) => {
+        console.error('Error fetching media identities:', error);
       }
     );
   }
@@ -305,7 +318,7 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
     const quoteData = {
       customerName: this.quoteForm.get('customerName')?.value,
       city: this.quoteForm.get('city')?.value || '',
-      mediaIdentity: this.quoteForm.get('mediaIdentity')?.value || '',
+      mediaIdentity: this.quoteForm.get('mediaIdentity')?.value,
       network: this.quoteForm.get('network')?.value || '',
       filters: this.quoteForm.get('filters')?.value,
       dateRange: this.quoteForm.get('dateRange')?.value,

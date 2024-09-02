@@ -32,5 +32,10 @@ export class SettingsComponent {
       image: 'assets/icons/screen.svg',
       route: '/settings/screenSettings',
     },
+    {
+      title: 'Quote',
+      image: 'assets/icons/quote.svg',
+      route: '/settings/quoteSettings',
+    },
   ];
 }

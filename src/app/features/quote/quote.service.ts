@@ -26,6 +26,11 @@ export class QuoteService {
   getCustomerNames(): Observable<any> {
     return this.http.get(`${this.baseApiUrl}/settings/campaign/getActiveCustomerNames`);
   }
+
+  getMediaIdentity():  Observable<any> {
+    return this.http.get(`${this.baseApiUrl}/settings/quote/getActiveMediaIdentity`);
+  }
+
   getTermsAndConditions(): Observable<any> {
     return this.http.get<any>(`${this.baseApiUrl}/api/terms-and-conditions`);
   }

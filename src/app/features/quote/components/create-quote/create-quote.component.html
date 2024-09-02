@@ -48,7 +48,7 @@
                 <mat-label>Media Identity</mat-label>
                 <mat-select formControlName="mediaIdentity" required>
                   <mat-option
-                    *ngFor="let identity of mediaIdentityOptions" [value]="identity">
+                    *ngFor="let identity of mediaIdentities" [value]="identity">
                     {{ identity }}
                   </mat-option>
                 </mat-select>
