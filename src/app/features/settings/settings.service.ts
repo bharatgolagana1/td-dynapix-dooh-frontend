@@ -11,6 +11,7 @@ export class SettingsService {
   private apiUrl = environment.baseApiUrl;
 
   constructor(private http: HttpClient, private keycloakOperationService: KeycloakOperationService) {}
+  private ApiUrl = `${environment.baseApiUrl}/api/terms-and-conditions`;
 
   private appendOrganizationId(params: any = {}) {
     const organizationId = this.keycloakOperationService.getOrganizationId();
@@ -252,5 +253,48 @@ export class SettingsService {
     return this.http.put(`${this.apiUrl}/settings/state/updateStates/${stateName}`, body);
   }
 
+  
+   
+   getTermsAndConditions(): Observable<any> {
+    return this.http.get(`${this.ApiUrl}`);
+  }
+
+  createTermsAndConditions(content: string, status: boolean=true): Observable<any> {
+    const body = { content, status };
+    return this.http.post(`${this.ApiUrl}`, body);
+  }
+
+  updateTermsAndConditions(id: string, content: string, status: boolean): Observable<any> {
+    const body = { content, status };
+    return this.http.put(`${this.ApiUrl}/${id}`, body);
+  }
+
+  deleteTermsAndConditions(id: string): Observable<any> {
+    return this.http.delete(`${this.ApiUrl}/${id}`);
+  }
+
+  createMediaIdentity(mediaName: string, status: boolean): Observable<any> {
+    const params = this.appendOrganizationId({ mediaName, status });
+    return this.http.post(`${this.apiUrl}/settings//quote/createMediaIdentity`, params);
+  }
+  
+  getMediaIdentities(): Observable<any> {
+    const params = this.appendOrganizationId();
+    return this.http.get(`${this.apiUrl}/settings/quote/getMediaIdentity`, { params });
+  }
+
+  getActiveMediaIdentity(): Observable<any> {
+    const params = this.appendOrganizationId();
+    return this.http.get(`${this.apiUrl}/settings/quote/getActiveMediaIdentity`, { params });
+  }
+  
+  
+  updateMediaIdentityStatus(mediaName: string, status: boolean): Observable<any> {
+    return this.http.put(`${this.apiUrl}/settings/quote/mediaIdentity/${mediaName}`, { status });
+  }
+  
+  deleteMediaIdentity(mediaName: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/settings/quote/deleteMediaIdentity`,{body: {mediaName}});
+  }
   
 }
