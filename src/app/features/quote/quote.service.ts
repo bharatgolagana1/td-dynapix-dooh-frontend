@@ -31,6 +31,14 @@ export class QuoteService {
     return this.http.get(`${this.baseApiUrl}/settings/quote/getActiveMediaIdentity`);
   }
 
+  getCityNames(): Observable<any> {
+    return this.http.get(`${this.baseApiUrl}/settings/screen/getActiveCityNames`);
+  }
+
+  getScreenNetworks(): Observable<any> {
+    return this.http.get(`${this.baseApiUrl}/settings/screen/getActiveScreenNetworks`);
+  }
+
   getTermsAndConditions(): Observable<any> {
     return this.http.get<any>(`${this.baseApiUrl}/api/terms-and-conditions`);
   }

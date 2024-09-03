@@ -66,7 +66,7 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
   previewData: any[] = [];
   gstRate: number = 0.18;
   private filterSubject = new Subject<any>();
-  quoteCity: string[] = ['City1', 'City2', 'City3'];
+  cityNames: any[] = [];
   creativeRequirement: string = '1920 X 1080';
   statusOptionsList: string[] = [
     'Generated',
@@ -76,7 +76,7 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
     'On Hold',
   ];
   mediaIdentities: any[] = [];
-  networkOptions: string[] = ['Network1', 'Network2', 'Network3'];
+  screenNetworks:any[] = [];
   selectedDates: { screenId: string; dates: Date[] }[] = [];
   showPreview = false;
 
@@ -122,6 +122,8 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
     this.fetchUserData();
     this.fetchTermsAndConditions();
     this.loadMediaIdentity();
+    this.loadCityNames();
+    this.loadScreenNetworks();
   }
 
   ngAfterViewInit() {
@@ -151,6 +153,32 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
+  loadCityNames(): void {
+    this.quoteService.getCityNames().subscribe(
+      (data: { cityNames: any[] }) => {
+        this.cityNames = data.cityNames;
+        this.cdr.detectChanges();
+      },
+      (error: any) => {
+        console.error('Error fetching city names:', error);
+      }
+    );
+  }
+
+
+  loadScreenNetworks(): void {
+    this.quoteService.getScreenNetworks().subscribe(
+      (data: { screenNetworks: any[] }) => {
+        this.screenNetworks = data.screenNetworks;
+        this.cdr.detectChanges();
+      },
+      (error: any) => {
+        console.error('Error fetching screen networks:', error);
+      }
+    );
+  }
+
   fetchTermsAndConditions(): void {
     this.quoteService.getTermsAndConditions().subscribe(
       (response) => {

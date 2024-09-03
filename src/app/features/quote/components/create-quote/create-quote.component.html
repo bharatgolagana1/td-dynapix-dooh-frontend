@@ -34,7 +34,7 @@
                 <mat-label>City</mat-label>
                 <mat-select formControlName="city" required>
                   <mat-option
-                    *ngFor="let city of quoteCity" [value]="city">
+                    *ngFor="let city of cityNames" [value]="city">
                     {{ city }}
                   </mat-option>
                 </mat-select>
@@ -62,7 +62,7 @@
                 <mat-label>Network</mat-label>
                      <mat-select formControlName="network" required>
                   <mat-option
-                    *ngFor="let network of networkOptions" [value]="network">
+                    *ngFor="let network of screenNetworks" [value]="network">
                     {{ network }}
                   </mat-option>
                 </mat-select>
