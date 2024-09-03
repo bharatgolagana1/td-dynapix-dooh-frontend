@@ -16,7 +16,18 @@
     <div>
       <mat-form-field appearance="outline" class="screen-name--container">
         <mat-label>Screen Name</mat-label>
-        <input matInput type="text" formControlName="screenName" />
+        <input 
+          type="text"
+          matInput
+          formControlName="screenName"
+          [matAutocomplete]="auto"
+          (input)="onScreenNameInput($event)" 
+        />
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onScreenNameSelected($event)">
+          <mat-option *ngFor="let screen of filteredScreenNames" [value]="screen.screenName">
+            {{ screen.screenName }}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
       <button
         mat-raised-button
@@ -31,8 +42,13 @@
     <mat-card *ngFor="let screenName of screenNames" class="card-container">
       <div class="card-content">
         <div class="image-section">
-          <img src="assets/images/dynapix-screen.png" class="screen-image" />
+            <img
+              [src]="screenName.imageUrls[0]"
+              class="screen-image"
+              (click)="openImageDialog(screenName)"
+            />
         </div>
+  
         <div class="details-section">
           <div class="item-name">{{ screenName.screenName }}</div>
         </div>
@@ -42,7 +58,7 @@
         </div>
         <div class="location-section">
           <mat-icon>location_on</mat-icon>
-          {{ screenName.location }}
+          {{ screenName. address}}
         </div>
         <button mat-button (click)="removeScreenName(screenName)">
           <mat-icon>cancel</mat-icon>

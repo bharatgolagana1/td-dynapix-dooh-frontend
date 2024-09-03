@@ -14,13 +14,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PublicCasesListComponent } from './components/public-cases-list/public-cases-list.component';
 import { DeleteDialogPublicCaseComponent } from './components/delete-dialog-public-case/delete-dialog-public-case.component';
+import { ImageDialogPublicCaseComponent } from './components/image-dialog-public-case/image-dialog-public-case.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
   declarations: [
     PublicCaseComponent,
     SuccessfulSubmissionComponent,
     PublicCasesListComponent,
-    DeleteDialogPublicCaseComponent
+    DeleteDialogPublicCaseComponent,
+    ImageDialogPublicCaseComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +36,8 @@ import { DeleteDialogPublicCaseComponent } from './components/delete-dialog-publ
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatOptionModule
+    MatOptionModule,
+    SlickCarouselModule,
   ]
 })
 export class PublicCasesModule { }

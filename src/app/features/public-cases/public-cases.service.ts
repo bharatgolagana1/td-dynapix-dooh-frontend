@@ -43,4 +43,10 @@ export class PublicCasesService {
   deletePublicCase(id: string): Observable<any> {
     return this.http.delete<any>(`${this.baseApiUrl}/publicCase/cases/${id}`);
   }
+
+  getScreenNameDetails(screenName: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseApiUrl}/publicCase/screenName`, {
+      params: { screenName },
+    });
+  }
 }

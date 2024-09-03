@@ -35,6 +35,11 @@ export class CampaignService {
     );
   }
 
+  getScreenByIdAndDate(id: string, date: string): Observable<any> {
+    const url = `${this.baseApiUrl}/campaign/${id}/${date}`;
+    return this.http.get<any>(url);
+  }
+
   getCustomerNames(): Observable<any> {
     const params = this.appendOrganizationId();
     return this.http.get(

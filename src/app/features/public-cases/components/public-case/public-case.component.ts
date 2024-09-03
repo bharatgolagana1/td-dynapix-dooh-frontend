@@ -5,12 +5,15 @@ import { PublicCasesService } from '../../public-cases.service';
 import { KeycloakOperationService } from 'src/app/core/services/keycloak.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationService } from 'src/app/core/services/notification.service';
+import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { ImageDialogPublicCaseComponent } from '../image-dialog-public-case/image-dialog-public-case.component';
 
 interface ScreenName {
   screenName: string;
   serialNumber: string;
-  location: string;
-  screenId: string;
+  address: string;
+  imageUrls: string[];
 }
 
 @Component({
@@ -23,9 +26,11 @@ export class PublicCaseComponent implements OnInit {
   isUploadVisible = false;
   uploadedFiles: File[] = [];
   screenNames: ScreenName[] = [];
+  filteredScreenNames: ScreenName[] = [];
   caseTypes: string[] = [];
   caseStatus: string[] = [];
-  userData: any
+  userData: any;
+  selectedScreenName: ScreenName | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -33,9 +38,10 @@ export class PublicCaseComponent implements OnInit {
     private publicCasesService: PublicCasesService,
     private keycloakOperationService: KeycloakOperationService,
     private notificationService: NotificationService,
+    private dialog: MatDialog
   ) {
     this.publicCaseForm = this.fb.group({
-      screenName: [''], 
+      screenName: [''],
       caseSubject: ['', Validators.required],
       caseType: ['', Validators.required],
       caseStatus: ['', Validators.required],
@@ -91,6 +97,65 @@ export class PublicCaseComponent implements OnInit {
     });
   }
 
+  onScreenNameInput(event: any): void {
+    const inputValue = event.target.value;
+
+    if (inputValue) {
+      this.publicCasesService.getScreenNameDetails(inputValue)
+        .subscribe({
+          next: (screens) => this.filteredScreenNames = screens,
+          error: (error) => console.error('Error searching screen names', error)
+        });
+    } else {
+      this.filteredScreenNames = [];
+    }
+  }
+
+  onScreenNameSelected(event: any): void {
+    const selectedScreenName = event.option.value;
+  
+    this.selectedScreenName = this.filteredScreenNames.find(screen => screen.screenName === selectedScreenName) || null;
+    
+    if (this.selectedScreenName) {
+      this.publicCasesService.getScreenNameDetails(this.selectedScreenName.screenName)
+        .subscribe({
+          next: (screenDetails) => {
+            const screenDetail = screenDetails[0];
+            this.selectedScreenName = {
+              screenName: screenDetail.screenName,
+              serialNumber: screenDetail.serialNumber || 'NA',
+              address: screenDetail.address || 'Unknown Address', 
+              imageUrls: screenDetail.imageUrls || []              
+            };
+          },
+          error: (error) => console.error('Error fetching screen details', error)
+        });
+    }
+  }
+  
+  
+  addScreenName(): void {
+    if (this.selectedScreenName && !this.screenNames.some(name => name.screenName === this.selectedScreenName!.screenName)) {
+      const newScreenName: ScreenName = {
+        screenName: this.selectedScreenName.screenName,
+        serialNumber: this.selectedScreenName.serialNumber,
+        address: this.selectedScreenName.address,          
+        imageUrls: this.selectedScreenName.imageUrls      
+      };
+      this.screenNames.push(newScreenName);
+      this.selectedScreenName = null;
+      this.publicCaseForm.get('newscreenName')?.reset();
+    } else {
+      console.warn('Screen Name is either empty or already exists');
+    }
+  }
+  
+  
+
+  removeScreenName(screenName: ScreenName): void {
+    this.screenNames = this.screenNames.filter(name => name !== screenName);
+  }
+
   onCheckboxChange(event: any): void {
     this.isUploadVisible = event.checked;
   }
@@ -112,6 +177,16 @@ export class PublicCaseComponent implements OnInit {
     }
   }
 
+  openImageDialog(card: any): void {
+    const dialogRef = this.dialog.open(ImageDialogPublicCaseComponent, {
+      data: { images: card.imageUrls },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+    });
+  }
+
   handleFiles(files: FileList): void {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -121,28 +196,6 @@ export class PublicCaseComponent implements OnInit {
 
   removeFile(index: number): void {
     this.uploadedFiles.splice(index, 1);
-  }
-
-  addScreenName(): void {
-    const screenName = this.publicCaseForm.get('screenName')?.value;
-    
-    if (screenName && !this.screenNames.some(name => name.screenName === screenName)) {
-      const newScreenName: ScreenName = {
-        screenName,
-        serialNumber: 'NA', 
-        location: 'NA', 
-        screenId: 'NA' 
-      };
-      
-      this.screenNames.push(newScreenName);
-      this.publicCaseForm.get('screenName')?.reset(); 
-    } else {
-      console.warn('Screen Name is either empty or already exists');
-    }
-  }
-
-  removeScreenName(screenName: ScreenName): void {
-    this.screenNames = this.screenNames.filter(name => name !== screenName);
   }
 
   onSubmit(): void {
