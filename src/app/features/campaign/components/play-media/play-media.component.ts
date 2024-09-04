@@ -15,10 +15,9 @@ export class PlayMediaComponent implements OnInit {
   myControl = new FormControl();
   dateControl = new FormControl(); 
   filteredOptions!: Observable<any[]>;
-  imageUrls: string[] = [];
+  media: any[] = [];
   currentImageUrl: string | null = null;
-  cycleTime!: number;
-  slotSize!: number;
+  currentSlotSize!: number;
   currentIndex = 0;
   intervalId: any;
   noMediaFoundMessage: string | null = null;
@@ -26,7 +25,7 @@ export class PlayMediaComponent implements OnInit {
 
   @ViewChild('media') mediaElement!: ElementRef<HTMLVideoElement>;
 
-  constructor(private campaignService: CampaignService ,private datePipe: DatePipe) {}
+  constructor(private campaignService: CampaignService, private datePipe: DatePipe) {}
 
   ngOnInit() {
     const currentDate = new Date();
@@ -42,29 +41,30 @@ export class PlayMediaComponent implements OnInit {
   generateScreenName() {
     const screenName = this.myControl.value;
     const selectedDate = this.dateControl.value;
-
+  
     if (screenName && selectedDate) {
-      const isValidDate = moment(selectedDate, moment.ISO_8601, true).isValid(); 
-
+      const isValidDate = moment(selectedDate, moment.ISO_8601, true).isValid();
+  
       if (!isValidDate) {
         this.noMediaFoundMessage = 'Invalid date selected. Please choose a valid date.';
         return;
       }
-
+  
       const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
-
+  
       this.campaignService.getScreenDetailsByName(screenName).subscribe((screen: any) => {
-        if (screen && screen._id) {
-          this.campaignService.getScreenByIdAndDate(screen._id, formattedDate).subscribe((data: any) => {
-            if (data && data.imageUrls && data.imageUrls.length) {
-              this.imageUrls = data.imageUrls;
-              this.slotSize = data.slotSize;
-              this.cycleTime = data.cycleTime;
+        if (screen && screen._id && screen.organizationId) {
+       
+          this.campaignService.getPlaylistByScreenIdAndDate(screen._id, formattedDate, screen.organizationId).subscribe((data: any) => {
+            console.log('api' , data)
+            if (data && data.media && data.media.length) {
+              this.media = data.media; 
               this.currentIndex = 0;
               this.noMediaFoundMessage = null;
-              this.playImages();
+              this.playImages(); 
+      
             } else {
-              this.noMediaFoundMessage = 'No PlayList found for this screen on the selected date.Please contact support';
+              this.noMediaFoundMessage = 'No PlayList found for this screen on the selected date';
               this.resetMedia();
             }
           }, _error => {
@@ -89,28 +89,29 @@ export class PlayMediaComponent implements OnInit {
       clearInterval(this.intervalId);
     }
 
-    if (this.imageUrls && this.imageUrls.length) {
-      this.updateCurrentImage();
+    if (this.media && this.media.length) {
+      this.updateCurrentMedia();
       this.intervalId = setInterval(() => {
         this.currentIndex++;
-        if (this.currentIndex >= this.imageUrls.length) {
+        if (this.currentIndex >= this.media.length) {
           this.currentIndex = 0;
         }
-        this.updateCurrentImage();
-      }, this.slotSize * 1000);
+        this.updateCurrentMedia();
+      }, this.currentSlotSize * 1000);
     }
   }
 
-  updateCurrentImage() {
-    this.currentImageUrl = this.imageUrls[this.currentIndex];
+  updateCurrentMedia() {
+    const currentMedia = this.media[this.currentIndex];
+    this.currentImageUrl = currentMedia.mediaURL;
+    this.currentSlotSize = currentMedia.slotSize;
   }
 
   reset() {
     this.myControl.reset();
-    this.imageUrls = [];
+    this.media = [];
     this.currentImageUrl = null;
-    this.slotSize = 0;
-    this.cycleTime = 0;
+    this.currentSlotSize = 0;
     this.noMediaFoundMessage = null;
     if (this.intervalId) {
       clearInterval(this.intervalId);
