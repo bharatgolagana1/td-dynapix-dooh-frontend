@@ -17,7 +17,13 @@ export class UpdateScreenComponent implements OnInit {
   imageFiles: File[] = [];
   fileUrls: string[] = [];
   removedImageUrls: string[] = []; 
-
+  cityNames: any[] = [];
+  screenCategories: any[] = [];
+  screenNetworks: any[] = [];
+  schedulers: any[] = [];
+  slotSize: string = '';
+  cycleTime: string = '';
+  states: any[] = [];
   constructor(
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -26,14 +32,31 @@ export class UpdateScreenComponent implements OnInit {
     private notificationService: NotificationService
   ) {
     this.screenForm = this.formBuilder.group({
-      screenName: ['', Validators.required],
+      screenName: new FormControl({ value: '', disabled: true }),
+      screenType:['', Validators.required],
+      screenSize:['', Validators.required],
       address: ['', Validators.required],
       width: ['', Validators.required],
       height: ['', Validators.required],
       SFT: [{ value: '', disabled: true }, Validators.required],
       NextAvailableDate: ['', Validators.required],
       locationCoordinates: ['', [Validators.required, this.coordinateValidator()]],
-      screenStatus: ['Active', Validators.required]
+      screenStatus: ['Active', Validators.required],
+      cityName:  ['', Validators.required],
+      screenCategory: ['', Validators.required],
+      screenNetwork: ['', Validators.required],
+      cardRate: new FormControl(null, [Validators.required]),
+      minimumPrice: new FormControl(null, [Validators.required]),
+      footfallPerMonth: new FormControl(null, [Validators.required]),
+      footfallPerDay: new FormControl(null, [Validators.required]),
+      locality: new FormControl('', [Validators.required]),     
+      schedulerId: new FormControl({ value: '', disabled: true }),
+      slotSize: new FormControl({ value: '', disabled: true }),
+      cycleTime: new FormControl({ value: '', disabled: true }),
+      widthInPixels: ['', Validators.required],
+      heightInPixels: ['', Validators.required],
+      state: ['', Validators.required],
+      pincode: new FormControl('', [Validators.required]),
     });
 
     this.screenForm.get('width')?.valueChanges.subscribe(() => {
@@ -50,6 +73,64 @@ export class UpdateScreenComponent implements OnInit {
       this.screenId = params['id'];
       this.fetchScreenDetails(this.screenId);
     });
+    this.loadCityNames();
+    this.loadScreenCategories();
+    this.loadScreenNetwork();
+    this.loadSchedulers();
+    this.loadState();
+  }
+
+
+  loadState(): void {
+    this.screenService.getActiveStates().subscribe(
+      (data: { states: any[] }) => {
+        this.states = data.states;
+      },
+      (error) => {
+        console.error('Error fetching customer names:', error);
+      }
+    );
+  }
+
+
+  loadSchedulers() {
+    this.screenService.getSchedulers().subscribe((data) => {
+      // @ts-ignore
+      this.schedulers = data?.schedulers;
+    });
+  }
+    
+  loadCityNames(): void {
+    this.screenService.getActiveCityNames().subscribe(
+      (data: { cityNames: any[] }) => {
+        this.cityNames = data.cityNames;
+      },
+      (error) => {
+        console.error('Error fetching customer names:', error);
+      }
+    );
+  }
+
+  loadScreenNetwork(): void {
+    this.screenService.getActiveScreenNetworks().subscribe(
+      (data: { screenNetworks: any[] }) => {
+        this.screenNetworks = data.screenNetworks;
+      },
+      (error) => {
+        console.error('Error fetching customer names:', error);
+      }
+    );
+  }
+
+  loadScreenCategories(): void {
+    this.screenService.getActiveScreenCategories().subscribe(
+      (data: { screenCategories: any[] }) => {
+        this.screenCategories = data.screenCategories;
+      },
+      (error) => {
+        console.error('Error fetching customer names:', error);
+      }
+    );
   }
 
   fetchScreenDetails(screenId: string): void {
@@ -58,12 +139,29 @@ export class UpdateScreenComponent implements OnInit {
         const screen = data.screen;
         this.screenForm.patchValue({
           screenName: screen.screenName,
+          screenType:screen.screenType,
           address: screen.address,
           width: screen.size.split('x')[0],
           height: screen.size.split('x')[1],
           NextAvailableDate: screen.NextAvailableDate,
           locationCoordinates: screen.locationCoordinates,
-          screenStatus: screen.screenStatus
+          screenStatus: screen.screenStatus,
+          cityName:screen.cityName,
+          screenCategory:screen.screenCategory,
+          screenNetwork:screen.screenNetwork,
+          schedulerId:screen.schedulerId,
+          cardRate:screen.cardRate,
+          minimumPrice:screen.minimumPrice,
+          footfallPerMonth:screen.footfallPerMonth,
+          footfallPerDay:screen.footfallPerDay,
+          locality:screen.locality,
+          slotSize:screen.slotSize,
+          cycleTime:screen.cycleTime,
+          widthInPixels:screen.widthInPixels,
+          heightInPixels:screen.heightInPixels,
+          state:screen.state,
+          pincode:screen.pincode,
+          screenSize:screen.screenSize
         });
         this.updateSFT();
         this.loadImages(screen.imageUrls);
@@ -114,13 +212,30 @@ export class UpdateScreenComponent implements OnInit {
     if (this.screenForm.valid) {
       const formData = new FormData();
       formData.append('screenName', this.screenForm.value.screenName);
-      formData.append('address', this.screenForm.value.address);
+      formData.append('screenType', this.screenForm.value.screenType);
+      formData.append('screenSize', this.screenForm.value.screenSize);
+      formData.append('cityName', this.screenForm.value.cityName);
+      formData.append('screenCategory', this.screenForm.value.screenCategory);
+      formData.append('screenNetwork', this.screenForm.value.screenNetwork);
+      formData.append('cardRate', this.screenForm.value.cardRate);
+      formData.append('minimumPrice', this.screenForm.value.minimumPrice);
+      formData.append('footfallPerMonth', this.screenForm.value.footfallPerMonth);
+      formData.append('footfallPerDay', this.screenForm.value.footfallPerDay);
+      formData.append('locality', this.screenForm.value.locality);
+      formData.append('screenStatus', this.screenForm.value.screenStatus);
       formData.append('width', this.screenForm.value.width);
       formData.append('height', this.screenForm.value.height);
       formData.append('SFT', this.screenForm.get('SFT')?.value);
+      formData.append('schedulerId', this.screenForm.value.schedulerId);
+      formData.append('slotSize', this.screenForm.value.slotSize);
+      formData.append('cycleTime', this.screenForm.value.cycleTime);
       formData.append('NextAvailableDate', this.screenForm.value.NextAvailableDate);
+      formData.append('widthInPixels', this.screenForm.value.widthInPixels);
+      formData.append('heightInPixels', this.screenForm.value.heightInPixels);
+      formData.append('state', this.screenForm.value.state);
       formData.append('locationCoordinates', this.screenForm.value.locationCoordinates);
-      formData.append('screenStatus', this.screenForm.value.screenStatus);
+      formData.append('pincode', this.screenForm.value.pincode);
+      formData.append('address', this.screenForm.value.address);
 
       if (this.imageFiles && this.imageFiles.length > 0) {
         for (let i = 0; i < this.imageFiles.length; i++) {
@@ -136,7 +251,7 @@ export class UpdateScreenComponent implements OnInit {
         response => {
           console.log('Screen updated successfully:', response);
           this.notificationService.showNotification('Screen updated successfully', 'success');
-          this.router.navigate(['/schedulers/createScheduler']);
+          this.router.navigate(['/screen']);
         },
         error => {
           console.error('Error updating screen:', error);
@@ -195,5 +310,23 @@ export class UpdateScreenComponent implements OnInit {
 
   createObjectURL(file: File): string {
     return URL.createObjectURL(file);
+  }
+
+
+  onSchedulerChange(event: any): void {
+    const schedulerId = event.value;
+    console.log('scheduler Id', schedulerId, event.value);
+    const selectedScheduler = this.schedulers.find(
+      (scheduler) => scheduler._id === schedulerId
+    );
+
+    if (selectedScheduler) {
+      this.slotSize = selectedScheduler.slotSize;
+      this.cycleTime = selectedScheduler.cycleTime;
+      this.screenForm.patchValue({
+        slotSize: selectedScheduler.slotSize,
+        cycleTime: selectedScheduler.cycleTime,
+      });
+    }
   }
 }

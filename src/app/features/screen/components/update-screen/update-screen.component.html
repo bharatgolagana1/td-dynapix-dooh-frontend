@@ -34,6 +34,147 @@
         </mat-hint>
       </mat-form-field>
 
+      <mat-form-field
+            appearance="outline"
+            [style.fontSize.px]="12"
+            class="matform-full-width"
+          >
+            <mat-label>Screen Type</mat-label>
+            <mat-select formControlName="screenType" required>
+              <mat-option value="Tvs">Tvs</mat-option>
+              <mat-option value="Billboard">Billboard</mat-option>
+              <mat-option value="VideoWall">Video Wall</mat-option>
+            </mat-select>
+            <mat-hint
+              style="color: red"
+              *ngIf="screenForm.get('screenType')?.touched && screenForm.get('screenType')?.errors?.['required']"
+            >
+              Screen type is required
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            [style.fontSize.px]="12"
+            class="matform-full-width"
+          >
+            <mat-label>Screen Size</mat-label>
+            <mat-select formControlName="screenSize" required>
+              <mat-option value="Small">Small</mat-option>
+              <mat-option value="Medium">Medium</mat-option>
+              <mat-option value="Large">Large</mat-option>
+            </mat-select>
+            <mat-hint
+              style="color: red"
+              *ngIf="screenForm.get('screenSize')?.touched && screenForm.get('screenSize')?.errors?.['required']"
+            >
+              Screen size is required
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>City Name</mat-label>
+            <mat-select formControlName="cityName" required>
+              <mat-option *ngFor="let city of cityNames" [value]="city">
+                {{ city }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Screen Category</mat-label>
+            <mat-select formControlName="screenCategory" required>
+              <mat-option
+                *ngFor="let category of screenCategories"
+                [value]="category"
+              >
+                {{ category }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Screen Network</mat-label>
+            <mat-select formControlName="screenNetwork" required>
+              <mat-option
+                *ngFor="let network of screenNetworks"
+                [value]="network"
+              >
+                {{ network }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Card Rate</mat-label>
+            <input matInput formControlName="cardRate" type="number" required />
+            <mat-hint
+              style="color: red"
+              *ngIf="screenForm.get('cardRate')?.touched && screenForm.get('cardRate')?.errors?.['required']"
+            >
+              Card Rate is required
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Minimum Price</mat-label>
+            <input
+              matInput
+              formControlName="minimumPrice"
+              type="number"
+              required
+            />
+            <mat-hint
+              style="color: red"
+              *ngIf="screenForm.get('minimumPrice')?.touched && screenForm.get('minimumPrice')?.errors?.['required']"
+            >
+              Minimum Price is required
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Footfall Per Month</mat-label>
+            <input
+              matInput
+              formControlName="footfallPerMonth"
+              type="number"
+              required
+            />
+            <mat-hint
+              style="color: red"
+              *ngIf="screenForm.get('footfallPerMonth')?.touched && screenForm.get('footfallPerMonth')?.errors?.['required']"
+            >
+              Footfall Per Month is required
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Footfall Per Day</mat-label>
+            <input
+              matInput
+              formControlName="footfallPerDay"
+              type="number"
+              required
+            />
+            <mat-hint
+              style="color: red"
+              *ngIf="screenForm.get('footfallPerDay')?.touched && screenForm.get('footfallPerDay')?.errors?.['required']"
+            >
+              Footfall Per Day is required
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="matform-full-width">
+            <mat-label>Locality</mat-label>
+            <input matInput formControlName="locality" required />
+            <mat-hint
+              style="color: red"
+              *ngIf="screenForm.get('locality')?.touched && screenForm.get('locality')?.errors?.['required']"
+            >
+              Locality is required
+            </mat-hint>
+          </mat-form-field>
+
       <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
         <mat-label>Screen Status</mat-label>
         <mat-select required formControlName="screenStatus">
@@ -68,6 +209,50 @@
         <input matInput formControlName="SFT" required readonly />
       </mat-form-field>
 
+      <mat-form-field
+            appearance="outline"
+            [style.fontSize.px]="12"
+            class="matform-full-width"
+          >
+            <mat-label>Scheduler</mat-label>
+            <mat-select
+              required
+              formControlName="schedulerId"
+              (selectionChange)="onSchedulerChange($event)"
+            >
+              <mat-option
+                *ngFor="let scheduler of schedulers"
+                [value]="scheduler._id"
+              >
+                {{ scheduler.schedulerName }}
+              </mat-option>
+            </mat-select>
+            <mat-hint
+              style="color: red"
+              *ngIf="screenForm.get('schedulerId')?.touched && screenForm.get('schedulerId')?.errors?.['required']"
+            >
+              Scheduler is required
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            [style.fontSize.px]="12"
+            class="matform-full-width"
+          >
+            <mat-label>Slot Size</mat-label>
+            <input matInput formControlName="slotSize" />
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            [style.fontSize.px]="12"
+            class="matform-full-width"
+          >
+            <mat-label>Cycle</mat-label>
+            <input matInput formControlName="cycleTime" />
+          </mat-form-field>
+
       <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
         <mat-label>Next Available Date</mat-label>
         <input matInput formControlName="NextAvailableDate" [matDatepicker]="picker" required/>
@@ -77,6 +262,55 @@
           Next Available Date is required
         </mat-hint>
       </mat-form-field>
+
+      <mat-form-field
+  appearance="outline"
+  [style.fontSize.px]="12"
+  class="matform-full-width"
+>
+  <mat-label>Width in Pixels</mat-label>
+  <input matInput formControlName="widthInPixels" type="number" required />
+  <mat-hint
+    style="color: red"
+    *ngIf="screenForm.get('widthInPixels')?.touched && screenForm.get('widthInPixels')?.errors?.['required']"
+  >
+    Width in Pixels is required
+  </mat-hint>
+</mat-form-field>
+
+<mat-form-field
+  appearance="outline"
+  [style.fontSize.px]="12"
+  class="matform-full-width"
+>
+  <mat-label>Height in Pixels</mat-label>
+  <input matInput formControlName="heightInPixels" type="number" required />
+  <mat-hint
+    style="color: red"
+    *ngIf="screenForm.get('heightInPixels')?.touched && screenForm.get('heightInPixels')?.errors?.['required']"
+  >
+    Height in Pixels is required
+  </mat-hint>
+</mat-form-field>
+
+<mat-form-field
+  appearance="outline"
+  [style.fontSize.px]="12"
+  class="matform-full-width"
+>
+  <mat-label>State</mat-label>
+  <mat-select formControlName="state" required>
+    <mat-option *ngFor="let state of states" [value]="state">
+      {{ state }}
+    </mat-option>
+  </mat-select>
+  <mat-hint
+    style="color: red"
+    *ngIf="screenForm.get('state')?.touched && screenForm.get('state')?.errors?.['required']"
+  >
+    State is required
+  </mat-hint>
+</mat-form-field>
 
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Location Coordinates</mat-label>
@@ -89,6 +323,21 @@
           latitude,longitude
         </mat-hint>
       </mat-form-field>
+
+      <mat-form-field
+      appearance="outline"
+      [style.fontSize.px]="12"
+      class="matform-full-width"
+    >
+      <mat-label>Pincode</mat-label>
+      <input matInput formControlName="pincode" required />
+      <mat-hint
+        style="color: red"
+        *ngIf="screenForm.get('pincode')?.touched && screenForm.get('pincode')?.errors?.['required']"
+      >
+        Pincode is required
+      </mat-hint>
+    </mat-form-field>
 
       <mat-form-field appearance="outline" [style.fontSize.px]="14" class="matform-full-width">
         <mat-label>Address</mat-label>
