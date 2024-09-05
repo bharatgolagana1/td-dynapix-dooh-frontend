@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { KeycloakOperationService } from 'src/app/core/services/keycloak.service';
@@ -35,10 +35,18 @@ export class CampaignService {
     );
   }
 
-  getScreenByIdAndDate(id: string, date: string): Observable<any> {
-    const url = `${this.baseApiUrl}/campaign/${id}/${date}`;
-    return this.http.get<any>(url);
+
+  getPlaylistByScreenIdAndDate(screenId: string, date: string, organizationId: any): Observable<any> {
+    const params = new HttpParams()
+      .set('screenId', screenId)
+      .set('date', date)
+      .set('organizationId', organizationId);
+
+    const url = `${this.baseApiUrl}/playlist`;
+
+    return this.http.get<any>(url, { params });
   }
+
 
   getCustomerNames(): Observable<any> {
     const params = this.appendOrganizationId();
@@ -82,6 +90,7 @@ export class CampaignService {
     return this.http.get<any[]>(`${this.baseApiUrl}/settings/campaign/status`);
   }
 
+ 
   getSlotSizeOptions(): Observable<any[]> {
     return this.http.get<any[]>(
       `${this.baseApiUrl}/settings/campaign/slotSize`

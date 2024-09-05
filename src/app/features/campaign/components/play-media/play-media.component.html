@@ -56,11 +56,14 @@
   </div>
 
   <div class="image-display" *ngIf="!noMediaFoundMessage">
-    <img *ngIf="currentImageUrl" [src]="currentImageUrl" alt="Current Media" class="video-player"/>
+   
+    <img *ngIf="!isVideo && currentMediaUrl" [src]="currentMediaUrl" alt="Current Media" class="video-player"/>
+
+    <video *ngIf="isVideo && currentMediaUrl" #media [src]="currentMediaUrl"   autoplay controls class="video-player"></video>
+
     <div class="image-info">
-      <p class="text--video">Current PlayList : {{ getCurrentImageUrl() }}</p>
-      <p class="text--video">Slot Size : {{ slotSize }} seconds</p>
-      <p class="text--video">Cycle Time : {{ cycleTime }} minutes</p>
+      <p class="text--video">Current PlayList: {{ getCurrentImageUrl() }}</p>
+      <p class="text--video">Slot Size: {{ currentSlotSize }} seconds</p>
     </div>
   </div>
 </div>
