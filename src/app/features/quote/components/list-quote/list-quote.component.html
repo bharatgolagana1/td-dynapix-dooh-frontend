@@ -55,8 +55,8 @@
             </div>
           </div>
           <div>
-            <button mat-icon-button >
-              <img src="assets/images/edit.svg" alt="delete" />
+            <button mat-icon-button (click)="onEditQuote(quote._id)">
+              <img src="assets/images/edit.svg" alt="edit" />
             </button>
             <button mat-icon-button (click)="deleteQuote(quote._id)">
               <img src="assets/images/delete.svg" alt="delete" />
@@ -87,9 +87,9 @@
             <tbody>
               <tr *ngFor="let previewItem of quote.preview; let j = index">
                 <td>{{ j + 1 }}</td>
-                <td>{{ previewItem.city }}</td>
-                <td>{{ previewItem.mediaIdentity }}</td>
-                <td>{{ previewItem.network }}</td>
+                <td>{{ quote.city }}</td>
+                <td>{{ quote.mediaIdentity }}</td>
+                <td>{{ quote.network }}</td>
                 <td>{{ previewItem.screenNames.join(', ') }}</td>
                 <td>{{ previewItem.typeOfMedia }}</td>
                 <td>{{ previewItem.screenDimensions }}</td>
