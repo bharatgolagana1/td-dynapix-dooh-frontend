@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class DashboardService {
-  private baseApiUrl = 'http://localhost:3000';
+  private baseApiUrl = environment.baseApiUrl;
 
   constructor(private http: HttpClient) { }
 
