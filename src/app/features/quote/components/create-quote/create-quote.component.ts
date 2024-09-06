@@ -120,7 +120,6 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
     this.loadOptions();
     this.loadCustomerNames();
     this.fetchUserData();
-    this.fetchTermsAndConditions();
     this.loadMediaIdentity();
     this.loadCityNames();
     this.loadScreenNetworks();
@@ -272,6 +271,7 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
   showPreviewCard() {
     this.showPreview = true;
     this.generatePreviewData();
+    this.fetchTermsAndConditions();
   }
 
   hidePreviewCard() {
@@ -319,6 +319,7 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
           slotDuration: screen.screen.slotSize,
           screenIdentity: screen.screen.screenName,
           loopTime: screen.screen.cycleTime,
+          screenId: screen.screen._id,
           noOfImpressions,
           avgFootFall: screen.screen.footfallPerMonth,
           noOfScreens: 1,
@@ -336,79 +337,82 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
     this.loaderService.showLoader();
 
     if (this.quoteForm.invalid) {
-      console.warn('Form is invalid. Please correct the errors.');
-      this.quoteForm.markAllAsTouched();
+        console.warn('Form is invalid. Please correct the errors.');
+        this.quoteForm.markAllAsTouched();
 
-      this.loaderService.hideLoader();
-      return;
+        this.loaderService.hideLoader();
+        return;
     }
 
     const quoteData = {
-      customerName: this.quoteForm.get('customerName')?.value,
-      city: this.quoteForm.get('city')?.value || '',
-      mediaIdentity: this.quoteForm.get('mediaIdentity')?.value,
-      network: this.quoteForm.get('network')?.value || '',
-      filters: this.quoteForm.get('filters')?.value,
-      dateRange: this.quoteForm.get('dateRange')?.value,
-      startDate: this.quoteForm.get('dateRange')?.value.startDate,
-      expiryDate: this.quoteForm.get('dateRange')?.value.endDate,
-      creativeRequirement: this.quoteForm.get('creativeRequirement')?.value,
-      slotDuration:
-        this.previewData.length > 0
-          ? this.previewData.reduce(
-              (sum, screen) => sum + parseFloat(screen.slotDuration),
-              0
-            ) / this.previewData.length
-          : 0,
-      quotedPrice: this.previewData.reduce(
-        (sum, screen) => sum + screen.quotedPrice,
-        0
-      ),
-      GST: this.previewData.reduce((sum, screen) => sum + screen.GST, 0),
-      grandTotal: this.previewData.reduce(
-        (sum, screen) => sum + screen.grandTotal,
-        0
-      ),
-      preview: this.previewData.map((screen) => ({
+        customerName: this.quoteForm.get('customerName')?.value,
         city: this.quoteForm.get('city')?.value || '',
-        mediaIdentity: this.quoteForm.get('mediaIdentity')?.value || '',
+        mediaIdentity: this.quoteForm.get('mediaIdentity')?.value,
         network: this.quoteForm.get('network')?.value || '',
-        screenNames: screen.screenName,
-        typeOfMedia: screen.typeOfMedia,
-        screenDimensions: screen.screenDimensions,
-        noOfScreens: screen.noOfScreens,
-        slotDuration: screen.slotDuration.toString(),
-        loopTime: screen.loopTime,
-        noOfImpressions: screen.noOfImpressions,
-        avgFootFall: screen.avgFootFall,
-        quotedPrice: screen.quotedPrice,
-        GST: screen.GST,
-        total: screen.grandTotal,
-      })),
-      organizationId: this.userData?.organizationId || '',
-      userEmail: this.userData?.email || '',
-      status: status,
+        filters: this.quoteForm.get('filters')?.value,
+        dateRange: this.quoteForm.get('dateRange')?.value,
+        startDate: this.quoteForm.get('dateRange')?.value.startDate,
+        expiryDate: this.quoteForm.get('dateRange')?.value.endDate,
+        creativeRequirement: this.quoteForm.get('creativeRequirement')?.value,
+        slotDuration:
+            this.previewData.length > 0
+                ? this.previewData.reduce(
+                    (sum, screen) => sum + parseFloat(screen.slotDuration),
+                    0
+                ) / this.previewData.length
+                : 0,
+        quotedPrice: this.previewData.reduce(
+            (sum, screen) => sum + screen.quotedPrice,
+            0
+        ),
+        GST: this.previewData.reduce((sum, screen) => sum + screen.GST, 0),
+        grandTotal: this.previewData.reduce(
+            (sum, screen) => sum + screen.grandTotal,
+            0
+        ),
+        preview: this.previewData.map((screen) => ({
+            city: this.quoteForm.get('city')?.value || '',
+            mediaIdentity: this.quoteForm.get('mediaIdentity')?.value || '',
+            network: this.quoteForm.get('network')?.value || '',
+            screenNames: screen.screenName,
+            screenId: screen.screenId,
+            typeOfMedia: screen.typeOfMedia,
+            screenDimensions: screen.screenDimensions,
+            noOfScreens: screen.noOfScreens,
+            slotDuration: screen.slotDuration.toString(),
+            loopTime: screen.loopTime,
+            noOfImpressions: screen.noOfImpressions,
+            avgFootFall: screen.avgFootFall,
+            quotedPrice: screen.quotedPrice,
+            GST: screen.GST,
+            total: screen.grandTotal,
+        })),
+        organizationId: this.userData?.organizationId || '',
+        userEmail: this.userData?.email || '',
+        status: status,
     };
 
     console.log('Quote Data before sending:', quoteData);
 
     this.quoteService.createQuote(quoteData).subscribe(
-      (response) => {
-        console.log('Quote created successfully:', response);
-        this.notificationService.showNotification(
-          'Screen created successfully',
-          'success'
-        );
-        this.loaderService.hideLoader();
-        this.router.navigate(['/quote']);
-      },
-      (error) => {
-        console.error('Error creating quote:', error);
+        (response) => {
+            console.log('Quote created successfully:', response);
+            this.notificationService.showNotification(
+                'Screen created successfully',
+                'success'
+            );
+            this.loaderService.hideLoader();
+            this.router.navigate(['/quote']);
+        },
+        (error) => {
+            console.error('Error creating quote:', error);
 
-        this.loaderService.hideLoader();
-      }
+            this.loaderService.hideLoader();
+        }
     );
-  }
+}
+
+
   isSubmitDisabled(): boolean {
     return this.quoteForm.invalid || !this.screens.some(screen => screen.selected);
   }

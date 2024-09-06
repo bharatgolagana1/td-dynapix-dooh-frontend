@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { QuoteService } from '../../quote.service';
+import { Router } from '@angular/router';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -26,7 +27,7 @@ export class ListQuoteComponent implements OnInit{
     { value: 'Submitted', label: 'Submitted' },
   ];
 
-  constructor(private quoteService: QuoteService, private loaderService: LoaderService,    private notificationService: NotificationService,
+  constructor(private quoteService: QuoteService,private cdRef: ChangeDetectorRef, private loaderService: LoaderService,private router: Router,private notificationService: NotificationService,
     public dialog: MatDialog ) {}
 
   ngOnInit(): void {
@@ -37,18 +38,21 @@ export class ListQuoteComponent implements OnInit{
   onFilterChange(): void {
     this.fetchQuotes();
   }
-
   fetchQuotes(): void {
     this.isLoading = true;
     this.noQuoteFound = false;
     this.loaderService.showLoader();
+    
     this.quoteService.getQuotes(this.filters).subscribe(
       (data) => {
         if (data.length === 0) {
           this.noQuoteFound = true;
         } else {
           this.quotes = data;
+          console.log('Fetched Quotes:', this.quotes);  // Log the quotes to inspect data structure
+  
           this.noQuoteFound = false;
+          this.cdRef.detectChanges();  
         }
         this.isLoading = false;
         this.loaderService.hideLoader();
@@ -57,13 +61,12 @@ export class ListQuoteComponent implements OnInit{
         console.error('Error fetching quotes:', error);
         this.isLoading = false;
         this.noQuoteFound = true;
-        this.loaderService.hideLoader();  
+        this.loaderService.hideLoader();
         this.notificationService.showNotification('Error fetching quotes. Please try again.', 'error');
       }
     );
   }
-
-
+  
   fetchTermsAndConditions(): void {
     this.quoteService.getTermsAndConditions().subscribe(
       (response) => {
@@ -74,7 +77,11 @@ export class ListQuoteComponent implements OnInit{
       }
     );
   }
+  
+  onEditQuote(quoteId: string) {
+        this.router.navigate([`/quote/${quoteId}/editquote`]);
 
+  }
   deleteQuote(quoteId: string): void {
     const dialogRef = this.dialog.open(DeleteQuoteComponent);
   

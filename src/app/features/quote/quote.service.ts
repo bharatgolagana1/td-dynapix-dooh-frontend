@@ -70,7 +70,55 @@ export class QuoteService {
     return this.http.post(`${this.baseApiUrl}/api/quote`, payload);
   }
 
+  getQuoteById(quoteId: string): Observable<any> {
+    return this.http.get(`${this.baseApiUrl}/api/quote/${quoteId}`);
+  }
+
+  getScreensByFilters(filters: any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseApiUrl}/screen`, { params: filters });
+  }
+
+  getActiveScreenNetworks(): Observable<any> {
+    return this.http.get(`${this.baseApiUrl}/settings/screen/getActiveScreenNetworks`);
+  }
+
+  updateQuote(quoteId: string, quoteData: any): Observable<any> {
+    return this.http.put(`${this.baseApiUrl}/api/quote/${quoteId}`, quoteData);
+  }
+  
+  getActiveCityNames(): Observable<any> {
+    return this.http.get(`${this.baseApiUrl}/settings/screen/getActiveCityNames`);
+  }
+
   deleteQuote(quoteId: string) {
     return this.http.delete(`${this.baseApiUrl}/api/quote/${quoteId}`);
+  }
+
+  getScreensList(filters: any): Observable<any> {
+    let params = new HttpParams();
+    if (filters.addressOrPincode) {
+      params = params.set('addressOrPincode', filters.addressOrPincode);
+    }
+    if (filters.screenType !== 'Both') {
+      params = params.set('screenType', filters.screenType);
+    }
+    if (filters.orientation !== 'Both') {
+      params = params.set('orientation', filters.orientation);
+    }
+    if (filters.status !== 'Both') {
+      params = params.set('status', filters.status);
+    }
+    if (filters.date !== 'All Time') {
+      params = params.set('date', filters.date);
+      if (filters.date === 'Date Range') {
+        if (filters.fromDate) {
+          params = params.set('fromDate', filters.fromDate);
+        }
+        if (filters.toDate) {
+          params = params.set('toDate', filters.toDate);
+        }
+      }
+    }
+    return this.http.get<any>(`${this.baseApiUrl}/screen`, { params });
   }
 }

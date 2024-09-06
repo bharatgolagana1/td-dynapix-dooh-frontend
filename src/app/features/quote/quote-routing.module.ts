@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateQuoteComponent } from './components/create-quote/create-quote.component';
 import { ListQuoteComponent } from './components/list-quote/list-quote.component';
+import { EditQuoteComponent } from './components/edit-quote/edit-quote.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: 'create-quote',
     component: CreateQuoteComponent
+  },
+  {
+    path: ':quoteId/editquote',
+    component: EditQuoteComponent,
   }
 ];
 
