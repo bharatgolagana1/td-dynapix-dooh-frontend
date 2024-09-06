@@ -1,1 +1,28 @@
-<p>dashboard-main works!</p>
+<mat-card class="dashboard-cards-container"
+  ><div class="dashboard-cards">
+    <mat-card class="card">
+      <div class="card-content">
+        <span class="card-number">{{ totalScreens }}</span>
+        <span class="card-label">Total screens</span>
+      </div>
+    </mat-card>
+    <mat-card class="card">
+      <div class="card-content">
+        <span class="card-number">{{ boundDevicesCount }}</span>
+        <span class="card-label">Screens Binded</span>
+      </div>
+    </mat-card>
+    <mat-card class="card">
+      <div class="card-content">
+        <span class="card-number">{{ inactiveScreens }}</span>
+        <span class="card-label">Inactive screens</span>
+      </div>
+    </mat-card>
+    <mat-card class="card">
+      <div class="card-content">
+        <span class="card-number">0</span>
+        <span class="card-label">Live Monitoring available</span>
+      </div>
+    </mat-card>
+  </div>
+</mat-card>
