@@ -1,5 +1,5 @@
-<mat-card class="dashboard-cards-container"
-  ><div class="dashboard-cards">
+<mat-card class="dashboard-main-card">
+  <div class="dashboard-cards">
     <mat-card class="card">
       <div class="card-content">
         <span class="card-number">{{ totalScreens }}</span>
@@ -24,5 +24,9 @@
         <span class="card-label">Live Monitoring available</span>
       </div>
     </mat-card>
+  </div>
+
+  <div class="map-container">
+    <div id="map" class="map"></div>
   </div>
 </mat-card>
