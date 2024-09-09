@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@import '../node_modules/leaflet/dist/leaflet.css';
-
+@import "../node_modules/leaflet/dist/leaflet.css";
 
 html,
 body {
@@ -14,7 +13,7 @@ body {
   border-right: 0px !important;
 }
 .mat-drawer-container {
-  height: -webkit-fill-available;
+  height: 100vh;
 }
 
 .mat-drawer-side {
@@ -41,6 +40,6 @@ mat-sidenav {
 .mat-toolbar.mat-primary {
   background-color: #ffffff;
   color: #757fef;
-  margin-left: 20px;
+  overflow-x: hidden;
   border-bottom-left-radius: 10px;
 }
