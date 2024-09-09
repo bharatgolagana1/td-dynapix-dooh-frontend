@@ -384,8 +384,7 @@ export class EditQuoteComponent implements OnInit, AfterViewInit {
     }
   
     const selectedScreens = this.screens.filter(screen => screen.selected);
-  
-    // Generate the updated preview data before creating the quote data
+
     this.generatePreviewData();
   
     const quoteData = {
@@ -395,8 +394,6 @@ export class EditQuoteComponent implements OnInit, AfterViewInit {
       city: this.quoteForm.get('city')?.value || this.quote.city,
       mediaIdentity: this.quoteForm.get('mediaIdentity')?.value || this.quote.mediaIdentity,
       network: this.quoteForm.get('network')?.value || this.quote.network,
-      
-      // Aggregated fields for the overall quote
       slotDuration: selectedScreens.length > 0
         ? selectedScreens.reduce(
             (sum, screen) => sum + parseFloat(screen.slotSize || 0),
@@ -414,8 +411,6 @@ export class EditQuoteComponent implements OnInit, AfterViewInit {
       ),
       creativeRequirement: this.quoteForm.get('creativeRequirement')?.value || this.quote.creativeRequirement,
       status: this.quoteForm.get('status')?.value || this.quote.status,
-  
-      // Screen-specific data for the preview
       preview: this.previewData.map(screen => ({
         city: this.quoteForm.get('city')?.value || '',
         mediaIdentity: this.quoteForm.get('mediaIdentity')?.value || '',
@@ -431,7 +426,7 @@ export class EditQuoteComponent implements OnInit, AfterViewInit {
         avgFootFall: screen.avgFootFall,
         quotedPrice: screen.quotedPrice,
         GST: screen.GST,
-        total: screen.grandTotal,  // individual screen total (grandTotal)
+        total: screen.grandTotal,  
       }))
     };
   
