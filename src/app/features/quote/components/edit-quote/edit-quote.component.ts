@@ -16,8 +16,8 @@ import { debounceTime, Subject } from 'rxjs';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Router, ActivatedRoute } from '@angular/router';
-
-
+import { MatDialog } from '@angular/material/dialog';
+import { DateRangeDialogComponent } from 'src/app/features/screen/components/date-range-dialog/date-range-dialog.component';
 
 @Component({
   selector: 'app-edit-quote',
@@ -90,6 +90,7 @@ export class EditQuoteComponent implements OnInit, AfterViewInit {
     private quoteService: QuoteService,
     private cdr: ChangeDetectorRef,
     public loaderService: LoaderService,
+    private dialog: MatDialog,
     private ngZone: NgZone,
     private router: Router,
     private notificationService: NotificationService,
@@ -218,9 +219,29 @@ export class EditQuoteComponent implements OnInit, AfterViewInit {
   }
   
   onFilterChange() {
+    if (this.filters.date === 'Date Range') {
+      this.openDateRangeDialog();
+    } else {
+      this.filterSubject.next(this.filters);
+    }
+  }
+  openDateRangeDialog(): void {
+    const dialogRef = this.dialog.open(DateRangeDialogComponent, {
+      width: '300px',
+      data: { fromDate: this.filters.fromDate, toDate: this.filters.toDate }
+    });
 
-  } 
-
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.filters.fromDate = result.fromDate;
+        this.filters.toDate = result.toDate;
+        this.filterSubject.next(this.filters);
+      } else {
+        this.filters.date = 'All Time';
+        this.filterSubject.next(this.filters);
+      }
+    });
+  }
   loadQuoteDetails(quoteId: string): void {
     this.quoteService.getQuoteById(quoteId).subscribe({
       next: (quote) => {
@@ -305,7 +326,9 @@ export class EditQuoteComponent implements OnInit, AfterViewInit {
     this.showPreview = false;
     this.previewData = [];
   }
-
+  getGrandTotal(): number {
+    return this.previewData.reduce((sum, screen) => sum + screen.grandTotal, 0);
+  }
   generatePreviewData() {
     console.log(this.screens);  
     const dateRange = this.quoteForm.get('dateRange')?.value;
@@ -362,6 +385,9 @@ export class EditQuoteComponent implements OnInit, AfterViewInit {
   
     const selectedScreens = this.screens.filter(screen => screen.selected);
   
+    // Generate the updated preview data before creating the quote data
+    this.generatePreviewData();
+  
     const quoteData = {
       customerName: this.quoteForm.get('customerName')?.value || this.quote.customerName,
       startDate: this.quoteForm.get('dateRange.startDate')?.value || this.quote.startDate,
@@ -369,16 +395,46 @@ export class EditQuoteComponent implements OnInit, AfterViewInit {
       city: this.quoteForm.get('city')?.value || this.quote.city,
       mediaIdentity: this.quoteForm.get('mediaIdentity')?.value || this.quote.mediaIdentity,
       network: this.quoteForm.get('network')?.value || this.quote.network,
-      screenNames: selectedScreens.map(screen => Array.isArray(screen.screenName) ? screen.screenName : [screen.screenName || 'N/A']),
-      slotDuration: selectedScreens.map(screen => screen.slotSize || 'N/A'),
-      quotedPrice: this.quoteForm.get('quotedPrice')?.value || this.quote.quotedPrice,
-      GST: this.quoteForm.get('GST')?.value || this.quote.GST,
-      grandTotal: this.quoteForm.get('grandTotal')?.value || this.quote.grandTotal,
+      
+      // Aggregated fields for the overall quote
+      slotDuration: selectedScreens.length > 0
+        ? selectedScreens.reduce(
+            (sum, screen) => sum + parseFloat(screen.slotSize || 0),
+            0
+          ) / selectedScreens.length
+        : 0,
+      quotedPrice: this.previewData.reduce(
+        (sum, screen) => sum + screen.quotedPrice,
+        0
+      ),
+      GST: this.previewData.reduce((sum, screen) => sum + screen.GST, 0),
+      grandTotal: this.previewData.reduce(
+        (sum, screen) => sum + screen.grandTotal,
+        0
+      ),
       creativeRequirement: this.quoteForm.get('creativeRequirement')?.value || this.quote.creativeRequirement,
       status: this.quoteForm.get('status')?.value || this.quote.status,
-      preview: this.previewData.length ? this.previewData : this.quote.preview,
+  
+      // Screen-specific data for the preview
+      preview: this.previewData.map(screen => ({
+        city: this.quoteForm.get('city')?.value || '',
+        mediaIdentity: this.quoteForm.get('mediaIdentity')?.value || '',
+        network: this.quoteForm.get('network')?.value || '',
+        screenNames: screen.screenNames,
+        screenId: screen.screenId,
+        typeOfMedia: screen.typeOfMedia,
+        screenDimensions: screen.screenDimensions,
+        noOfScreens: screen.noOfScreens,
+        slotDuration: screen.slotDuration.toString(),
+        loopTime: screen.loopTime,
+        noOfImpressions: screen.noOfImpressions,
+        avgFootFall: screen.avgFootFall,
+        quotedPrice: screen.quotedPrice,
+        GST: screen.GST,
+        total: screen.grandTotal,  // individual screen total (grandTotal)
+      }))
     };
-    
+  
     console.log('Updated Quote Data:', quoteData);
   
     this.quoteService.updateQuote(this.quoteId, quoteData).subscribe(
@@ -392,6 +448,7 @@ export class EditQuoteComponent implements OnInit, AfterViewInit {
       }
     );
   }
+  
   
   }
   

@@ -288,7 +288,10 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
       this.hidePreviewCard();
     }
   }
-
+  
+  getGrandTotal(): number {
+    return this.previewData.reduce((sum, screen) => sum + screen.grandTotal, 0);
+  }
   generatePreviewData() {
     const dateRange = this.quoteForm.get('dateRange')?.value;
 
@@ -410,7 +413,7 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
             this.loaderService.hideLoader();
         }
     );
-}
+  }
 
 
   isSubmitDisabled(): boolean {

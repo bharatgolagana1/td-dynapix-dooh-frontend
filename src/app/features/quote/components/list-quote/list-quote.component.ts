@@ -66,7 +66,9 @@ export class ListQuoteComponent implements OnInit{
       }
     );
   }
-  
+  getGrandTotal(preview: any[]): number {
+    return preview.reduce((total, item) => total + item.total, 0);
+  }
   fetchTermsAndConditions(): void {
     this.quoteService.getTermsAndConditions().subscribe(
       (response) => {
