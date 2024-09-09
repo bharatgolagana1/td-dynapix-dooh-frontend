@@ -13,12 +13,8 @@ export class DashboardService {
 
   constructor(private http: HttpClient) { }
 
-  getTotalAndInactiveScreens(): Observable<{ totalScreens: number, inactiveScreens: number }> {
-    return this.http.get<{ totalScreens: number, inactiveScreens: number }>(`${this.baseApiUrl}/screen/screens/counts`);
-  }
-
-  getBoundDevicesCount(): Observable<{ message: string, count: number }> {
-    return this.http.get<{ message: string, count: number }>(`${this.baseApiUrl}/api/register/count-bound-devices`);
+   getDashboardStats(): Observable<any> {
+    return this.http.get<any>(`${this.baseApiUrl}/api/register/dashboard-stats`);
   }
 
 }

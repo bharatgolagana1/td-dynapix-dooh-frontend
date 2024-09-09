@@ -40,22 +40,14 @@ export class DashboardMainComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.dashboardService.getTotalAndInactiveScreens().subscribe(
-      (data: { totalScreens: number, inactiveScreens: number }) => {
-        this.totalScreens = data.totalScreens;
-        this.inactiveScreens = data.inactiveScreens;
+    this.dashboardService.getDashboardStats().subscribe(
+      (response: { message: string, data: { totalScreens: number, inactiveScreens: number, boundDevices: number } }) => {
+        this.totalScreens = response.data.totalScreens;
+        this.inactiveScreens = response.data.inactiveScreens;
+        this.boundDevicesCount = response.data.boundDevices;
       },
       (error: any) => {
-        console.error('Error fetching screen data:', error);
-      }
-    );
-
-    this.dashboardService.getBoundDevicesCount().subscribe(
-      (response: { message: string, count: number }) => {
-        this.boundDevicesCount = response.count;
-      },
-      (error: any) => {
-        console.error('Error fetching bound devices count:', error);
+        console.error('Error fetching dashboard statistics:', error);
       }
     );
 
@@ -113,7 +105,7 @@ export class DashboardMainComponent implements OnInit {
         <h3 style="text-align:start;">${screenName}</h3>
         <p style="text-align:start;">${address}</p>
         <p style="text-align:start;">${locationCoordinates}</p>
-   
+  
         <div class="slider-controls">
           <button class="prev" onclick="window.changeSlide(-1)">❮</button>
           <button class="next" onclick="window.changeSlide(1)">❯</button>
