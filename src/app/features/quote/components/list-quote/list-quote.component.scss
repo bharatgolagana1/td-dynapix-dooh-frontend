@@ -56,91 +56,66 @@
   margin-bottom: 2rem;
 }
 table {
-    width: 100%; 
-    border-collapse: collapse;
-    margin: 20px 0;
-    table-layout: fixed; 
-    overflow-wrap: break-word; 
-  }
-  thead {
-    background-color: #f4f4f4; 
-  }
-  thead th {
-    padding: 12px;
-    text-align: left;
-    font-weight: bold;
-    color: #757fef;
-    border: 1px solid #ddd;
-  }
-  tbody tr {
-    background-color: #fff; 
-  }
-  tbody tr:nth-child(even) {
-    background-color: #f9f9f9; 
-  }
-  tbody td {
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-    word-wrap: break-word; 
-    border: 1px solid #ddd;
-  }
-  tbody tr:hover {
-    background-color: #eaeaea;
-  }
-  
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  table-layout: fixed;
+  overflow-wrap: break-word;
+}
 
-  @media (max-width: 768px) {
-    .create-quote-card--container {
-      padding: 0; 
-    }
-  
-    table {
-      width: 100%;
-    }
-  
-    thead {
-      display: none; 
-    }
-  
-    tbody, tr, td {
-      display: block;
-      width: 100%;
-    }
-  
-    tr {
-      margin-bottom: 10px;
-      border: 1px solid #ddd;
-      background-color: inherit;
-    }
-  
-    td {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px;
-      border: none;
-      text-align: left;
-      white-space: normal;
-      background-color: inherit; 
-    }
-  
-    td::before {
-      content: attr(data-label);
-      font-weight: bold;
-      margin-right: 10px;
-    }
-  
-    tbody tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-  
-    tbody tr:nth-child(odd) {
-      background-color: #fff;
-    }
-  
-    tbody tr:hover {
-      background-color: #eaeaea;
-    }
-  }
+thead {
+  background-color: #E6F4EA;
+}
+
+thead th {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #000;
+  font-weight: bold;
+  color: #000000;
+}
+
+tbody tr {
+  background-color: #fff;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody td {
+  padding: 8px;
+  border-bottom: 1px solid #000;
+  word-wrap: break-word;
+  border: 1px solid #000;
+}
+
+tbody tr:hover {
+  background-color: #eaeaea;
+}
+
+tbody td, tfoot td {
+  border: 1px solid #000;
+  padding: 8px;
+}
+
+tfoot tr {
+  background-color: #E6F4EA;
+}
+
+tfoot td {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+tfoot td:last-child {
+  text-align: right;
+}
+
+tfoot tr td[colspan="14"] {
+  text-align: right;
+}
+
 .create-quote-card--name{
     font-size: 15px;
     font-weight: 550;

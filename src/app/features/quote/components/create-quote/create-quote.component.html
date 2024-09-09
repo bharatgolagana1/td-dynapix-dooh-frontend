@@ -217,48 +217,56 @@
             <div class="create-quote-card--name">{{ quoteForm.value.customerName }}</div>
             <div class="create-quote-preview-sub--content"><p class="create-quote-card--name">Date:</p> {{ quoteForm.value.dateRange.startDate | date:'mediumDate' }} - {{ quoteForm.value.dateRange.endDate | date:'mediumDate' }}</div>
            </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>S.No</th>
-                  <th>City</th>
-                  <th>Media Identity</th>
-                  <th>Network</th>
-                  <th>Screen Identity</th>
-                  <th>Type of Media</th>
-                  <th>Screen Dimensions</th>
-                  <th>No. of Screens</th>
-                  <th>Slot Duration</th>
-                  <th>Loop Time</th>
-                  <th>No. of Impressions</th>
-                  <th>Avg Foot Falls</th>
-                  <th>Quoted Price</th>
-                  <th>GST(18%)</th>
-                  <th>Grand Total</th>
-                  <th>Creative Requirement</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let screen of previewData; let i = index">
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ quoteForm.value.city }}</td>
-                  <td>{{ quoteForm.value.mediaIdentity }}</td>
-                  <td>{{ quoteForm.value.network }}</td>
-                  <td>{{ screen.screenIdentity}}</td>
-                  <td>{{ screen.typeOfMedia }}</td>
-                  <td>{{ screen.screenDimensions }}</td>
-                  <td>{{ screen.noOfScreens }}</td>
-                  <td>{{ screen.slotDuration }}</td>
-                  <td>{{ screen.loopTime }}</td>
-                  <td>{{ screen.noOfImpressions }}</td>
-                  <td>{{ screen.avgFootFall }}</td>
-                  <td>{{ screen.quotedPrice }}</td> 
-                  <td>{{ screen.GST }}</td> 
-                  <td>{{ screen.grandTotal }}</td>
-                  <td>{{ screen.creativeRequirement }}</td>
-                </tr>
-              </tbody>
-            </table>
+           <table>
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>City</th>
+                <th>Media Identity</th>
+                <th>Network</th>
+                <th>Screen Identity</th>
+                <th>Type of Media</th>
+                <th>Screen Dimensions</th>
+                <th>No. of Screens</th>
+                <th>Slot Duration</th>
+                <th>Loop Time</th>
+                <th>No. of Impressions</th>
+                <th>Avg Foot Falls</th>
+                <th>Quoted Price</th>
+                <th>GST(18%)</th>
+                <th>Grand Total</th>
+                <th>Creative Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let screen of previewData; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ quoteForm.value.city }}</td>
+                <td>{{ quoteForm.value.mediaIdentity }}</td>
+                <td>{{ quoteForm.value.network }}</td>
+                <td>{{ screen.screenIdentity }}</td>
+                <td>{{ screen.typeOfMedia }}</td>
+                <td>{{ screen.screenDimensions }}</td>
+                <td>{{ screen.noOfScreens }}</td>
+                <td>{{ screen.slotDuration }}</td>
+                <td>{{ screen.loopTime }}</td>
+                <td>{{ screen.noOfImpressions }}</td>
+                <td>{{ screen.avgFootFall }}</td>
+                <td>{{ screen.quotedPrice }}</td>
+                <td>{{ screen.GST }}</td>
+                <td>{{ screen.grandTotal }}</td>
+                <td>{{ screen.creativeRequirement }}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="14" style="text-align: right; font-weight: bold;">Grand Total</td>
+                <td style="font-weight: bold;">{{ getGrandTotal() | number: '1.0-0' }}</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+          
             <div>
               <div class="create-quote-sub--title">Terms and Conditions</div>
               <ul>

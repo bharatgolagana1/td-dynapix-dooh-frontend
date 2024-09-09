@@ -63,48 +63,56 @@
             </button>
           </div>
         </div>
-          <table>
-            <thead>
-              <tr>
-                <th>S.No</th>
-                <th>City</th>
-                <th>Media Identity</th>
-                <th>Network</th>
-                <th>Screen Identity</th>
-                <th>Type of Media</th>
-                <th>Screen Dimensions</th>
-                <th>No. of Screens</th>
-                <th>Slot Duration</th>
-                <th>Loop Time</th>
-                <th>No. of Impressions</th>
-                <th>Avg Foot Falls</th>
-                <th>Quoted Price</th>
-                <th>GST(18%)</th>
-                <th>Grand Total</th>
-                <th>Creative Requirement</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let previewItem of quote.preview; let j = index">
-                <td>{{ j + 1 }}</td>
-                <td>{{ quote.city }}</td>
-                <td>{{ quote.mediaIdentity }}</td>
-                <td>{{ quote.network }}</td>
-                <td>{{ previewItem.screenNames.join(', ') }}</td>
-                <td>{{ previewItem.typeOfMedia }}</td>
-                <td>{{ previewItem.screenDimensions }}</td>
-                <td>{{ previewItem.noOfScreens }}</td>
-                <td>{{ previewItem.slotDuration }}</td>
-                <td>{{ previewItem.loopTime }}</td>
-                <td>{{ previewItem.noOfImpressions }}</td>
-                <td>{{ previewItem.avgFootFall }}</td>
-                <td>{{ previewItem.quotedPrice }}</td>
-                <td>{{ previewItem.GST }}</td>
-                <td>{{ quote.grandTotal }}</td>
-                <td>{{ quote.creativeRequirement }}</td>
-              </tr>
-            </tbody>
-          </table>
+        <table>
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>City</th>
+              <th>Media Identity</th>
+              <th>Network</th>
+              <th>Screen Identity</th>
+              <th>Type of Media</th>
+              <th>Screen Dimensions</th>
+              <th>No. of Screens</th>
+              <th>Slot Duration</th>
+              <th>Loop Time</th>
+              <th>No. of Impressions</th>
+              <th>Avg Foot Falls</th>
+              <th>Quoted Price</th>
+              <th>GST(18%)</th>
+              <th>Grand Total</th>
+              <th>Creative Requirement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let previewItem of quote.preview; let j = index">
+              <td>{{ j + 1 }}</td>
+              <td>{{ quote.city }}</td>
+              <td>{{ quote.mediaIdentity }}</td>
+              <td>{{ quote.network }}</td>
+              <td>{{ previewItem.screenNames.join(', ') }}</td>
+              <td>{{ previewItem.typeOfMedia }}</td>
+              <td>{{ previewItem.screenDimensions }}</td>
+              <td>{{ previewItem.noOfScreens }}</td>
+              <td>{{ previewItem.slotDuration }}</td>
+              <td>{{ previewItem.loopTime }}</td>
+              <td>{{ previewItem.noOfImpressions }}</td>
+              <td>{{ previewItem.avgFootFall }}</td>
+              <td>{{ previewItem.quotedPrice }}</td>
+              <td>{{ previewItem.GST }}</td>
+              <td>{{ previewItem.total  }}</td>
+              <td>{{ quote.creativeRequirement }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="14" style="text-align: right; font-weight: bold;">Grand Total</td>
+              <td  style="font-weight: bold;">{{ getGrandTotal(quote.preview)| number: '1.0-0' }}</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+        
 
           <div>
             <div class="create-quote-sub--title">Terms and Conditions</div>

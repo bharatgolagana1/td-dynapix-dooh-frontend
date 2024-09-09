@@ -258,6 +258,13 @@
                   <td>{{ screen.creativeRequirement }}</td>
                 </tr>
               </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="14" style="text-align: right; font-weight: bold;">Grand Total</td>
+                  <td style="font-weight: bold;">{{ getGrandTotal() | number: '1.0-0' }}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
             </table>
             <div>
               <div class="edit-quote-sub--title">Terms and Conditions</div>
