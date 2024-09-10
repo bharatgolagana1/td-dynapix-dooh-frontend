@@ -296,5 +296,46 @@ export class SettingsService {
   deleteMediaIdentity(mediaName: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/settings/quote/deleteMediaIdentity`,{body: {mediaName}});
   }
+
+  createCaseType(status: boolean, caseType: string): Observable<any> {
+    const params = this.appendOrganizationId({ status, caseType });
+    return this.http.post(`${this.apiUrl}/settings/caseTypes/createCaseType`, params);
+  }
+
+  deleteCaseType(caseType: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/settings/caseTypes/deleteCaseType`, { body: { caseType } });
+  }
+
+  getCaseTypes(): Observable<any> {
+    const params = this.appendOrganizationId();
+    return this.http.get(`${this.apiUrl}/settings/caseTypes/getCaseTypes`, { params });
+  }
+
+
+  updateCaseTypeStatus(caseType: string, status: boolean): Observable<any> {
+    const body = { status };
+    return this.http.put(`${this.apiUrl}/settings/caseTypes/${caseType}`, body);
+  }
+
+
+  createCaseStatus(status: boolean, caseStatus: string): Observable<any> {
+    const params = this.appendOrganizationId({ status, caseStatus });
+    return this.http.post(`${this.apiUrl}/settings/caseStatus/createCaseStatus`, params);
+  }
+
+  deleteCaseStatus(caseStatus: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/settings/caseStatus/delete`, { body: { caseStatus } });
+  }
+
+  getCaseStatuses(): Observable<any> {
+    const params = this.appendOrganizationId();
+    return this.http.get(`${this.apiUrl}/settings/caseStatus/getCaseStatus`, { params });
+  }
+
+  updateCaseStatusStatus(caseStatus: string, status: boolean): Observable<any> {
+    const body = { status };
+    return this.http.put(`${this.apiUrl}/settings/caseStatus/update/${caseStatus}`, body);
+  }
+
   
 }

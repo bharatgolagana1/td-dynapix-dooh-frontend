@@ -26,6 +26,10 @@ import { StateComponent } from './screen/state/state.component';
 import { QuoteSettingsComponent } from './quote-settings/quote-settings.component';
 import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
 import { MediaIdentityComponent } from './media-identity/media-identity.component';
+import { PublicCaseSettingsComponent } from './publicCase/public-case-settings/public-case-settings.component';
+import { CaseTypesComponent } from './publicCase/case-types/case-types.component';
+import { CaseStatusComponent } from './publicCase/case-status/case-status.component';
+
 
 @NgModule({
   declarations: [
@@ -51,7 +55,12 @@ import { MediaIdentityComponent } from './media-identity/media-identity.componen
  StateComponent,
  QuoteSettingsComponent,
  TermsConditionsComponent,
- MediaIdentityComponent
+ MediaIdentityComponent,
+ PublicCaseSettingsComponent,
+ CaseTypesComponent,
+ CaseStatusComponent,
+ 
+
   ],
   imports: [CommonModule, MaterialModule, SettingsRoutingModule, FormsModule,],
   providers: [],

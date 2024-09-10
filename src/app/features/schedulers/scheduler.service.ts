@@ -92,6 +92,25 @@ export class SchedulerService {
     }
     return this.http.get<any>(`${this.baseApiUrl}/screen`, { params });
   }
+
+
+  getScreenDetailsByName(screenName: string): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.baseApiUrl}/campaign/screen/details?screenName=${screenName}`
+    );
+  }
+
+
+  getPlaylistByScreenIdAndDate(screenId: string, date: string, organizationId: any): Observable<any> {
+    const params = new HttpParams()
+      .set('screenId', screenId)
+      .set('date', date)
+      .set('organizationId', organizationId);
+
+    const url = `${this.baseApiUrl}/playlist`;
+
+    return this.http.get<any>(url, { params });
+  }
 }
 
 

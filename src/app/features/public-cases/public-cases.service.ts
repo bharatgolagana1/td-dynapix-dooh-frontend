@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class PublicCasesService {
-    private baseApiUrl = environment.baseApiUrl;
+    private baseApiUrl =  environment.baseApiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -32,12 +32,12 @@ export class PublicCasesService {
     return this.http.get<any>(`${this.baseApiUrl}/publicCase/cases`, { params });
   }
 
-  getCaseTypes(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.baseApiUrl}/publicCase/casetypes`);
+  getCaseTypes(): Observable<any> {
+    return this.http.get(`${this.baseApiUrl}/settings/caseTypes/getActiveCaseTypes`);
   }
 
-  getCaseStatus(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.baseApiUrl}/publicCase/casestatus`);
+  getCaseStatus(): Observable<any> {
+    return this.http.get(`${this.baseApiUrl}/settings/caseStatus/getActiveCaseStatus`);
   }
 
   deletePublicCase(id: string): Observable<any> {

@@ -27,8 +27,8 @@ export class PublicCaseComponent implements OnInit {
   uploadedFiles: File[] = [];
   screenNames: ScreenName[] = [];
   filteredScreenNames: ScreenName[] = [];
-  caseTypes: string[] = [];
-  caseStatus: string[] = [];
+  caseTypes: any[] = [];
+  caseStatus: any[] = [];
   userData: any;
   selectedScreenName: ScreenName | null = null;
 
@@ -59,17 +59,29 @@ export class PublicCaseComponent implements OnInit {
   }
 
   loadCaseTypes(): void {
-    this.publicCasesService.getCaseTypes().subscribe({
-      next: (types) => this.caseTypes = types,
-      error: (error) => console.error('Error loading case types', error)
-    });
+    this.publicCasesService.getCaseTypes().subscribe(
+      (data: { caseTypes: any[] }) => {
+        this.caseTypes = data.caseTypes;
+        console.log(data)
+      
+      },
+      (error) => {
+        console.error('Error fetching customer names:', error);
+      }
+    );
   }
 
   loadCaseStatus(): void {
-    this.publicCasesService.getCaseStatus().subscribe({
-      next: (status) => this.caseStatus = status,
-      error: (error) => console.error('Error loading case status', error)
-    });
+    this.publicCasesService.getCaseStatus().subscribe(
+      (data: { caseStatus: any[] }) => {
+        this.caseStatus = data.caseStatus;
+        console.log(data)
+      
+      },
+      (error) => {
+        console.error('Error fetching customer names:', error);
+      }
+    );
   }
 
   fetchUserData(): Promise<void> {
