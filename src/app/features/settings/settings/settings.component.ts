@@ -37,5 +37,10 @@ export class SettingsComponent {
       image: 'assets/icons/quote.svg',
       route: '/settings/quoteSettings',
     },
+    {
+      title: 'Public Case',
+      image: 'assets/icons/publicCase.svg',
+      route: '/settings/publicCaseSettings',
+    },
   ];
 }

@@ -1,0 +1,33 @@
+.caseType--container {
+background-color: white;
+padding: 2rem;
+padding-bottom: 5rem;
+}
+.caseType--title {
+color: #757fef;
+font-family: Manrope;
+font-size: 1.5rem;
+font-weight: 600;
+}
+.mat-header-cell {
+background-color: #F7F7F7 !important;
+font-family: Arial, sans-serif;
+font-size: 12px;
+font-weight: 600;
+color: #757fef;
+}
+.mat-cell {
+font-family: Arial, sans-serif;
+font-size: 12px;
+font-weight: 600;
+color: #808080;
+}
+.caseType--text {
+display: flex;
+gap: 1rem;
+padding: 3rem 0rem 0.5rem;
+}
+.caseType--button {
+flex: 1 0 0;
+padding-top: 1rem;
+}

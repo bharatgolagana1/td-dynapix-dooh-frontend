@@ -1,0 +1,22 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side" opened>
+      <mat-nav-list>
+        <a mat-list-item (click)="selectItem('caseType')">Case Types</a>
+        <a mat-list-item (click)="selectItem('caseStatus')">Case Status</a>
+
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <div *ngIf="selectedItem === 'caseType'">
+        <app-case-types></app-case-types>
+      </div>
+      <div *ngIf="selectedItem === 'caseStatus'">
+        <app-case-status></app-case-status>
+      </div>
+
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  
+
