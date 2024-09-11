@@ -43,3 +43,8 @@ mat-sidenav {
   overflow-x: hidden;
   border-bottom-left-radius: 10px;
 }
+$border-color: rgb(247, 247, 247);
+
+.mat-elevation-z0 {
+  border: 2px solid $border-color !important;
+}
