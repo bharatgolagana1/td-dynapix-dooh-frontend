@@ -3,17 +3,18 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { ScreenService } from '../../screen.service';
 import { FormControl } from '@angular/forms';
-import { debounceTime, map, switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { debounceTime, map, switchMap, startWith } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+
 @Component({
   selector: 'app-bind-device',
   templateUrl: './bind-device.component.html',
   styleUrls: ['./bind-device.component.scss']
 })
-export class BindDeviceComponent {
+export class BindDeviceComponent implements OnInit {
   searchControl = new FormControl('');
   devices: any[] = [];
-  filteredDevices: any[] = [];
+  filteredDevices!: Observable<any[]>;
   selectedDevice: any;
 
   constructor(
@@ -22,24 +23,17 @@ export class BindDeviceComponent {
     private screenService: ScreenService,
     private loaderService: LoaderService
   ) {}
-  
+
   ngOnInit(): void {
     this.loaderService.showLoader();
+    
     this.screenService.listUnboundDevices().subscribe(devices => {
       this.devices = devices;
-      this.filteredDevices = devices;
-      this.loaderService.hideLoader();
-    });
-
-    this.searchControl.valueChanges.pipe(
-      debounceTime(300),
-      map(value => value ? value : ''), // Handle null values
-      map(value => {
-        this.loaderService.showLoader();
-        return this.filterDevices(value);
-      })
-    ).subscribe(filtered => {
-      this.filteredDevices = filtered;
+      this.filteredDevices = this.searchControl.valueChanges.pipe(
+        startWith(''),
+        debounceTime(300),
+        map((value:any) => this.filterDevices(value))
+      );
       this.loaderService.hideLoader();
     });
   }
@@ -49,8 +43,8 @@ export class BindDeviceComponent {
     return this.devices.filter(device => device.Guuid.toLowerCase().includes(filterValue));
   }
 
-  onDeviceSelect(device: any): void {
-    this.selectedDevice = device;
+  onDeviceSelect(guuid: string): void {
+    this.selectedDevice = this.devices.find(device => device.Guuid === guuid);
   }
 
   onBind(): void {
@@ -58,7 +52,7 @@ export class BindDeviceComponent {
       this.loaderService.showLoader();
       this.screenService.bindDevice(this.selectedDevice.Guuid, this.data.screen._id).subscribe(response => {
         this.loaderService.hideLoader();
-        this.dialogRef.close(true); // Pass true to indicate success
+        this.dialogRef.close(true); 
       }, error => {
         this.loaderService.hideLoader();
       });
@@ -68,7 +62,7 @@ export class BindDeviceComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
-  
+
   isLoading(): Observable<boolean> {
     return this.loaderService.loaderState;
   }
