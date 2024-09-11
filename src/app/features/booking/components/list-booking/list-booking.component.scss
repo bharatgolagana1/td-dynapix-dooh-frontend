@@ -13,7 +13,7 @@
     table-layout: fixed;
   }
   
-  th {
+  .mat-mdc-header-cell{
     background-color: #F7F7F7;
     font-family: Arial;
     font-size: 12px;
@@ -21,10 +21,10 @@
     line-height: 16px;
     text-align: left;
     color: #757fef;
-    background-color: #F7F7F7;
+    background-color: #F7F7F7 !important;
   }
 
-  td{
+  mat-cell{
     font-family: Arial;
   font-size: 12px;
   font-weight: 600;
