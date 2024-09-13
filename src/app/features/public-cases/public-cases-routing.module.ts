@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { PublicCaseComponent } from './components/public-case/public-case.component';
 import { SuccessfulSubmissionComponent } from './components/successful-submission/successful-submission.component';
 import { PublicCasesListComponent } from './components/public-cases-list/public-cases-list.component';
+import { EditPublicCaseComponent } from './components/edit-public-case/edit-public-case.component';
+
 
 const routes: Routes = [
 
@@ -19,7 +21,12 @@ const routes: Routes = [
       {
         path: 'successful-submission',
         component: SuccessfulSubmissionComponent,
-      }
+      },
+      {
+        path: 'edit-publicCase/:id',
+        component: EditPublicCaseComponent,
+      },
+
 ];
 
 @NgModule({

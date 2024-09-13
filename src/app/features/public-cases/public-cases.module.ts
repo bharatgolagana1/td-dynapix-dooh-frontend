@@ -16,6 +16,7 @@ import { PublicCasesListComponent } from './components/public-cases-list/public-
 import { DeleteDialogPublicCaseComponent } from './components/delete-dialog-public-case/delete-dialog-public-case.component';
 import { ImageDialogPublicCaseComponent } from './components/image-dialog-public-case/image-dialog-public-case.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { EditPublicCaseComponent } from './components/edit-public-case/edit-public-case.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     SuccessfulSubmissionComponent,
     PublicCasesListComponent,
     DeleteDialogPublicCaseComponent,
-    ImageDialogPublicCaseComponent
+    ImageDialogPublicCaseComponent,
+    EditPublicCaseComponent,
   ],
   imports: [
     CommonModule,

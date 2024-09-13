@@ -1,0 +1,64 @@
+<mat-card class="edit-publicCase--container">
+  <h1 class="edit-publicCase--title">Update Public Case</h1>
+
+  <form [formGroup]="editForm" class="edit-publicCase--form">
+    <mat-form-field appearance="outline">
+      <mat-label>Customer Name</mat-label>
+      <input matInput formControlName="customerName"  />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Case Type</mat-label>
+      <input matInput formControlName="caseType"  />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Phone Number</mat-label>
+      <input matInput formControlName="phoneNumber"/>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Case Status</mat-label>
+      <mat-select formControlName="caseStatus">
+        <mat-option *ngFor="let status of caseStatus" [value]="status">{{ status }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="edit-publicCase--textarea">
+      <mat-label>Comment</mat-label>
+      <textarea matInput formControlName="comment"></textarea>
+    </mat-form-field>
+
+  </form>
+
+  <mat-dialog-actions class="edit-publicCase--button">
+    <button mat-raised-button color="primary" (click)="onSave()"><mat-icon>add</mat-icon>Add comment</button>
+    <button mat-raised-button  (click)="onCancel()">Cancel</button>
+  </mat-dialog-actions>
+
+  <div class="case-detail-container">
+    <h2 class="edit-publicCase--comments">All Comments</h2>
+    <mat-card class="timeline">
+      <div class="timeline-header">
+        <span class="timeline-month-year">Comments Timeline</span>
+      </div>
+
+      <div class="timeline-event" *ngFor="let comment of comments">
+        <div class="event-header">
+          <span class="event-time">{{ comment.date | date: 'medium' }}</span>
+        </div>
+
+        <div class="event-owner">
+          <img mat-card-avatar src="assets/images/admin.jpg" alt="Profile picture of case owner" />
+          <div class="owner-details">
+            <div class="owner-name">{{ comment.commentedBy }}</div>
+            <div class="owner-role">{{ comment.role }}</div>
+          </div>
+          <div class="event-message">
+            {{ comment.comment }}
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</mat-card>

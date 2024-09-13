@@ -32,6 +32,10 @@ export class PublicCasesService {
     return this.http.get<any>(`${this.baseApiUrl}/publicCase/cases`, { params });
   }
 
+  getPublicCaseById(id: string): Observable<any> {
+    return this.http.get<any>(`${this.baseApiUrl}/publicCase/cases/${id}`);
+  }
+
   getCaseTypes(): Observable<any> {
     return this.http.get(`${this.baseApiUrl}/settings/caseTypes/getActiveCaseTypes`);
   }
@@ -48,5 +52,9 @@ export class PublicCasesService {
     return this.http.get<any[]>(`${this.baseApiUrl}/publicCase/screenName`, {
       params: { screenName },
     });
+  }
+
+  updatePublicCase(id: string, publicCase: any): Observable<any> {
+    return this.http.put<any>(`${this.baseApiUrl}/publicCase/cases/${id}`, publicCase);
   }
 }
