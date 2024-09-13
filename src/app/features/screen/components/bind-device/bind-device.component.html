@@ -1,26 +1,25 @@
+
 <div class="bind-device-container">
-<h1 mat-dialog-title>Bind Device</h1>
-<div mat-dialog-content class="bind-device--content">
-  <mat-form-field appearance="outline">
-    <mat-label>Search Device by GUUID</mat-label>
-    <input matInput [formControl]="searchControl">
-    <button mat-icon-button matSuffix aria-label="Search" class="small-icon">
-      <mat-icon>search</mat-icon>
-    </button>
-  </mat-form-field>
-  <div *ngIf="isLoading() | async" class="spinner-container">
-    <mat-spinner diameter="50"></mat-spinner>
-    <div>list loading....</div>
+  <h1 mat-dialog-title>Bind Device</h1>
+  <div mat-dialog-content class="bind-device--content">
+    <mat-form-field appearance="outline" class="form-field--width">
+      <mat-label>Search Device by GUUID</mat-label>
+      <input type="text"
+             placeholder="Pick one"
+             aria-label="GUUID"
+             matInput
+             [formControl]="searchControl"
+             [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onDeviceSelect($event.option.value)">
+        <mat-option *ngFor="let device of filteredDevices | async" [value]="device.Guuid">
+          {{ device.Guuid }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button color="primary" (click)="onBind()" [disabled]="!selectedDevice">Bind Device</button>
   </div>
-  <mat-list>
-    <mat-list-item *ngFor="let device of filteredDevices" (click)="onDeviceSelect(device)" [class.bind-device-selected]="device === selectedDevice">
-      GUUID:
-      {{ device.Guuid }}
-    </mat-list-item>
-  </mat-list>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button color="primary" (click)="onBind()" [disabled]="!selectedDevice">Bind Device</button>
-</div>
 </div>
