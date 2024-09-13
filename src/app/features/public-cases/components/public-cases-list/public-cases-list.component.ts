@@ -6,6 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { PublicCasesService } from '../../public-cases.service';
 import { DeleteDialogPublicCaseComponent } from '../delete-dialog-public-case/delete-dialog-public-case.component';
 import { NotificationService } from 'src/app/core/services/notification.service';
+import { Router } from '@angular/router';
+import { EditPublicCaseComponent } from '../edit-public-case/edit-public-case.component';
 
 @Component({
   selector: 'app-public-cases-list',
@@ -13,7 +15,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
   styleUrls: ['./public-cases-list.component.scss']
 })
 export class PublicCasesListComponent implements OnInit {
-  displayedColumns: string[] = ['screenNames', 'customerName', 'caseStatus', 'caseType', 'phoneNumber', 'actions'];
+  displayedColumns: string[] = ['screenNames', 'customerName', 'caseStatus', 'caseType', 'phoneNumber', 'edit', 'delete'];
   dataSource = new MatTableDataSource<any>([]);
   totalCases = 0;
   pageIndex = 0;
@@ -30,7 +32,8 @@ export class PublicCasesListComponent implements OnInit {
   constructor(
     private publicCasesService: PublicCasesService,
     private notificationService: NotificationService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router 
   ) {}
 
   ngOnInit(): void {
@@ -70,7 +73,9 @@ export class PublicCasesListComponent implements OnInit {
     this.pageIndex = 0; 
     this.loadPublicCases();
   }
-
+  editCase(publicCase: any): void {
+    this.router.navigate(['/edit-publicCase', publicCase._id]);
+  }
 
   deleteCase(id: string): void {
     const dialogRef = this.dialog.open(DeleteDialogPublicCaseComponent, {
@@ -93,4 +98,5 @@ export class PublicCasesListComponent implements OnInit {
       }
     });
   }
+  
 }
