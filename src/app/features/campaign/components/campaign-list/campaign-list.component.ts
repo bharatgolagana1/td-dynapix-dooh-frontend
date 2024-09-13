@@ -11,10 +11,10 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 export class CampaignListComponent implements OnInit {
   campaigns: any[] = [];
   displayedColumns: string[] = [
-    'campaignName',
     'customerName',
     'startDate',
     'endDate',
+    'noOfScreens',
     'actions',
   ];
 
