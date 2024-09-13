@@ -8,35 +8,45 @@ import { KeycloakOperationService } from 'src/app/core/services/keycloak.service
   providedIn: 'root',
 })
 export class QuoteService {
-  // private baseApiUrl = environment.baseApiUrl;
+  private baseApiUrl = environment.baseApiUrl;
 
-  private baseApiUrl = `http://localhost:3000`;
+  // private baseApiUrl = `http://localhost:3000`;
   constructor(
     private http: HttpClient,
     private keycloakOperationService: KeycloakOperationService
   ) {}
 
   getScreenTypeOptions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/settings/campaign/screenType`);
+    return this.http.get<any[]>(
+      `${this.baseApiUrl}/settings/campaign/screenType`
+    );
   }
 
   getStatusOptions(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseApiUrl}/settings/campaign/status`);
   }
   getCustomerNames(): Observable<any> {
-    return this.http.get(`${this.baseApiUrl}/settings/campaign/getActiveCustomerNames`);
+    return this.http.get(
+      `${this.baseApiUrl}/settings/campaign/getActiveCustomerNames`
+    );
   }
 
-  getMediaIdentity():  Observable<any> {
-    return this.http.get(`${this.baseApiUrl}/settings/quote/getActiveMediaIdentity`);
+  getMediaIdentity(): Observable<any> {
+    return this.http.get(
+      `${this.baseApiUrl}/settings/quote/getActiveMediaIdentity`
+    );
   }
 
   getCityNames(): Observable<any> {
-    return this.http.get(`${this.baseApiUrl}/settings/screen/getActiveCityNames`);
+    return this.http.get(
+      `${this.baseApiUrl}/settings/screen/getActiveCityNames`
+    );
   }
 
   getScreenNetworks(): Observable<any> {
-    return this.http.get(`${this.baseApiUrl}/settings/screen/getActiveScreenNetworks`);
+    return this.http.get(
+      `${this.baseApiUrl}/settings/screen/getActiveScreenNetworks`
+    );
   }
 
   getTermsAndConditions(): Observable<any> {
@@ -50,7 +60,7 @@ export class QuoteService {
   }
   getQuotes(filters: any): Observable<any[]> {
     let params = new HttpParams();
-    
+
     if (filters.customerName) {
       params = params.set('customerName', filters.customerName);
     }
@@ -75,19 +85,25 @@ export class QuoteService {
   }
 
   getScreensByFilters(filters: any): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/screen`, { params: filters });
+    return this.http.get<any[]>(`${this.baseApiUrl}/screen`, {
+      params: filters,
+    });
   }
 
   getActiveScreenNetworks(): Observable<any> {
-    return this.http.get(`${this.baseApiUrl}/settings/screen/getActiveScreenNetworks`);
+    return this.http.get(
+      `${this.baseApiUrl}/settings/screen/getActiveScreenNetworks`
+    );
   }
 
   updateQuote(quoteId: string, quoteData: any): Observable<any> {
     return this.http.put(`${this.baseApiUrl}/api/quote/${quoteId}`, quoteData);
   }
-  
+
   getActiveCityNames(): Observable<any> {
-    return this.http.get(`${this.baseApiUrl}/settings/screen/getActiveCityNames`);
+    return this.http.get(
+      `${this.baseApiUrl}/settings/screen/getActiveCityNames`
+    );
   }
 
   deleteQuote(quoteId: string) {
