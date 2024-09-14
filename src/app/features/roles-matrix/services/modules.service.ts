@@ -9,15 +9,17 @@ import { Module } from '../models/role.model';
   providedIn: 'root',
 })
 export class ModulesService {
-  private baseUrl = `${environment.baseApiUrl}/api/modules`;
+  private baseUrl = `http://localhost:3000/api/modules`;
 
   constructor(private http: HttpClient) {}
 
   getModules(): Observable<Module[]> {
     return this.http.get<Module[]>(this.baseUrl);
   }
-
-  createModule(data: { name: string; value: string }): Observable<Module> {
+  getModuleById(id: string): Observable<Module> {
+    return this.http.get<Module>(`${this.baseUrl}/${id}`);
+  }
+  createModule(data: any): Observable<Module> {
     return this.http.post<Module>(`${this.baseUrl}`, data);
   }
 }
