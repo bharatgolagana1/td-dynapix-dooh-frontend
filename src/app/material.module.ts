@@ -66,6 +66,13 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     MatDividerModule,
     MatChipsModule,
     CarouselModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonModule,
+    
   ],
   exports: [
     MatButtonModule,
@@ -100,6 +107,12 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     MatDividerModule,
     MatChipsModule,
     CarouselModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonModule,
   ],
 })
 export class MaterialModule {}

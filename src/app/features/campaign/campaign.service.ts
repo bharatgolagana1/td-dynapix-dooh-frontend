@@ -9,6 +9,7 @@ import { KeycloakOperationService } from 'src/app/core/services/keycloak.service
 })
 export class CampaignService {
   private baseApiUrl = environment.baseApiUrl;
+  // private baseApiUrl = 'http://localhost:3000';
 
   constructor(
     private http: HttpClient,
@@ -35,8 +36,11 @@ export class CampaignService {
     );
   }
 
-
-  getPlaylistByScreenIdAndDate(screenId: string, date: string, organizationId: any): Observable<any> {
+  getPlaylistByScreenIdAndDate(
+    screenId: string,
+    date: string,
+    organizationId: any
+  ): Observable<any> {
     const params = new HttpParams()
       .set('screenId', screenId)
       .set('date', date)
@@ -46,7 +50,6 @@ export class CampaignService {
 
     return this.http.get<any>(url, { params });
   }
-
 
   getCustomerNames(): Observable<any> {
     const params = this.appendOrganizationId();
@@ -90,7 +93,6 @@ export class CampaignService {
     return this.http.get<any[]>(`${this.baseApiUrl}/settings/campaign/status`);
   }
 
- 
   getSlotSizeOptions(): Observable<any[]> {
     return this.http.get<any[]>(
       `${this.baseApiUrl}/settings/campaign/slotSize`
@@ -110,6 +112,13 @@ export class CampaignService {
 
   uploadMedia(formData: FormData): Observable<any> {
     return this.http.post(`${this.baseApiUrl}/uploadMedia`, formData);
+  }
+
+  campaignUploadMedia(campaignId: string, formData: FormData): Observable<any> {
+    return this.http.post(
+      `${this.baseApiUrl}/campaign/${campaignId}/media/upload`,
+      formData
+    );
   }
 
   screensList(filters: any): Observable<any> {

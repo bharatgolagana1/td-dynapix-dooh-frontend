@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Select Date Range</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="outline">
+    <mat-label>Select Date Range</mat-label>
+    <mat-date-range-input
+      [rangePicker]="picker"
+      [min]="campaignStartDate"
+      [max]="campaignEndDate"
+    >
+      <input
+        matStartDate
+        [(ngModel)]="customStartDate"
+        placeholder="Start date"
+      />
+      <input matEndDate [(ngModel)]="customEndDate" placeholder="End date" />
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!customStartDate || !customEndDate"
+    (click)="onCreate()"
+  >
+    Create
+  </button>
+</mat-dialog-actions>
