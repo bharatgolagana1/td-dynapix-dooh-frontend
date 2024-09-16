@@ -4,9 +4,13 @@
       <div class="campaign-upload-media--title">Add Media</div>
     </div>
     <mat-divider></mat-divider>
+    <div *ngIf="isUploading" class="loader-container">
+      <mat-spinner></mat-spinner>
+      <div>Uploading media, please wait...</div>
+    </div>
     <div
       class="campaign-upload-media-checkbox--selection"
-      *ngIf="getSelectedCount() > 0"
+      *ngIf="getSelectedCount() > 0 && !isUploading"
     >
       <div>{{ getSelectedCount() }} Selected</div>
 

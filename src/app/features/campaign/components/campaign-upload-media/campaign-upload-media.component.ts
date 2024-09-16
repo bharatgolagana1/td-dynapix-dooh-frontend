@@ -34,6 +34,7 @@ interface CampaignPlaylistMedia {
   styleUrls: ['./campaign-upload-media.component.scss'],
 })
 export class CampaignUploadMediaComponent {
+  isUploading = false;
   campaignId: string;
   selectedFiles: File[] = [];
   screenIds: string[] = [];
@@ -174,7 +175,7 @@ export class CampaignUploadMediaComponent {
     formData.append('endDate', this.campaignEndDate);
 
     const mediaMappings: any = [];
-
+    this.isUploading = true;
     this.campaignPlaylistMediaData.forEach((screen) => {
       screen.mediaForDateRanges.forEach((range) => {
         const { startDate, endDate, mediaFile } = range;
@@ -205,10 +206,12 @@ export class CampaignUploadMediaComponent {
       .subscribe(
         (response) => {
           console.log('Media uploaded successfully', response);
-          this.router.navigate(['/campaigns']);
+          this.router.navigate(['/campaign']);
+          this.isUploading = false;
         },
         (error) => {
           console.error('Error uploading media', error);
+          this.isUploading = false;
         }
       );
   }
