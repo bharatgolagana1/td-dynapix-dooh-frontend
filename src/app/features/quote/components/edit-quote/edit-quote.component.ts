@@ -18,6 +18,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DateRangeDialogComponent } from 'src/app/features/screen/components/date-range-dialog/date-range-dialog.component';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-edit-quote',
@@ -377,14 +378,14 @@ export class EditQuoteComponent implements OnInit, AfterViewInit {
   
     console.log('Preview Data:', this.previewData); 
   }
-  updateQuote(): void {
+  updateQuote(status: string): void {
     if (this.quoteForm.invalid) {
       this.notificationService.showNotification('Please fill all required fields.');
       return;
     }
   
     const selectedScreens = this.screens.filter(screen => screen.selected);
-
+  
     this.generatePreviewData();
   
     const quoteData = {
@@ -410,7 +411,7 @@ export class EditQuoteComponent implements OnInit, AfterViewInit {
         0
       ),
       creativeRequirement: this.quoteForm.get('creativeRequirement')?.value || this.quote.creativeRequirement,
-      status: this.quoteForm.get('status')?.value || this.quote.status,
+      status: status, // Set status based on the button clicked
       preview: this.previewData.map(screen => ({
         city: this.quoteForm.get('city')?.value || '',
         mediaIdentity: this.quoteForm.get('mediaIdentity')?.value || '',
@@ -442,6 +443,85 @@ export class EditQuoteComponent implements OnInit, AfterViewInit {
         this.notificationService.showNotification('Failed to update quote.');
       }
     );
+  }
+  isSubmitDisabled(): boolean {
+    return this.quoteForm.invalid || !this.screens.some(screen => screen.selected);
+  }
+  generatePDF() {
+    const doc = new jsPDF();
+  
+    doc.setFontSize(16);
+    
+    doc.setFontSize(12);
+    const startDate = new Date(this.quoteForm.value.dateRange.startDate);
+    const endDate = new Date(this.quoteForm.value.dateRange.endDate);
+
+    const startDateString = `${startDate.getUTCDate()} ${startDate.toLocaleString('default', { month: 'long' })} ${startDate.getUTCFullYear()}`;
+    const endDateString = `${endDate.getUTCDate()} ${endDate.toLocaleString('default', { month: 'long' })} ${endDate.getUTCFullYear()}`;
+
+   
+    doc.text(`Customer Name: ${this.quoteForm.value.customerName}`, 10, 20);
+    doc.text(`Date: ${startDateString} - ${endDateString}`, 10, 30);
+    
+    const tableRows: Array<Array<string | number>> = [];
+  
+    const tableColumn = [
+      "S.No", 
+      "City", 
+      "Media Identity", 
+      "Network", 
+      "Screen Identity", 
+      "Type of Media", 
+      "Screen Dimensions", 
+      "No. of Screens", 
+      "Slot Duration", 
+      "Loop Time", 
+      "No. of Impressions", 
+      "Avg Foot Falls", 
+      "Quoted Price", 
+      "GST(18%)", 
+      "Grand Total", 
+      "Creative Requirement"
+    ];
+  
+    this.previewData.forEach((screen, index) => {
+      const screenData: Array<string | number> = [
+        (index + 1).toString(),
+        this.quoteForm.value.city,
+        this.quoteForm.value.mediaIdentity,
+        this.quoteForm.value.network,
+        screen.screenIdentity,
+        screen.typeOfMedia,
+        screen.screenDimensions,
+        screen.noOfScreens,
+        screen.slotDuration,
+        screen.loopTime,
+        screen.noOfImpressions,
+        screen.avgFootFall,
+        screen.quotedPrice,
+        screen.GST,
+        screen.grandTotal,
+        screen.creativeRequirement
+      ];
+      tableRows.push(screenData);
+    });
+  
+    (doc as any).autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 40,
+      theme: 'grid',
+      margin: { right: 10, left: 10 }
+    });
+  
+    let finalY = (doc as any).lastAutoTable.finalY + 10; 
+    doc.text('Terms and Conditions', 10, finalY);
+    doc.setFontSize(7);
+    this.termsAndConditions.forEach((term, index) => {
+      doc.text(`${index + 1}. ${term.content}`, 10, finalY + (index + 1) * 10);
+    });
+  
+    doc.save('quote.pdf');
   }
   
   

@@ -279,9 +279,9 @@
         </mat-card>
     </div>
     <div class="edit-quote-footer--content">
-      <button mat-raised-button (click)="updateQuote()" color="primary" >
-        Update Quote
-      </button>
+      <button mat-stroked-button color="primary" (click)="updateQuote('Draft')">Save as Draft</button>
+      <button mat-stroked-button color="accent" (click)="generatePDF(); updateQuote('Generated')">Generate</button>
+      <button mat-stroked-button color="warn" (click)="updateQuote('Submitted')" [disabled]="isSubmitDisabled()">Submit</button>
     </div>  
     </form>
     </div>
