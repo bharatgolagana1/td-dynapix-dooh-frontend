@@ -22,10 +22,7 @@
         </div>
       </button>
 
-      <mat-form-field
-        appearance="outline"
-        style="width: 250px; border-color: white; margin-top: 1rem"
-      >
+      <mat-form-field class="select-date-range" appearance="outline">
         <mat-label class="campaign-upload-text">Select Date Range</mat-label>
         <mat-select
           class="campaign-upload-text"
@@ -64,7 +61,7 @@
           Upload
         </button>
       </div>
-      <button mat-button style="color: #ffffff" (click)="clearSelection()">
+      <button class="close-button" mat-button (click)="clearSelection()">
         <mat-icon>close</mat-icon>
       </button>
     </div>
