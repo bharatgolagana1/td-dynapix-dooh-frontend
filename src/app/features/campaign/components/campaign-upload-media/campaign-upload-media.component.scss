@@ -66,6 +66,27 @@
   align-items: center;
   background-color: #4f83cc;
   padding: 0.5rem 1rem;
-  // color: #ffffff;
   justify-content: space-between;
+}
+.campaign-upload-text{
+  color: #ffffff;
+}
+.campaign-upload-media-upload--button-container{
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.upload-media-button{
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-right: 3rem;
+}
+.create-date-range{
+  display: flex;
+  align-items: center;
+}
+.vl {
+  border-left: 2px solid #ffffff;
+  height: 5rem;
 }
