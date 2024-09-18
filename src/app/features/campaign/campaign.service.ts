@@ -8,8 +8,7 @@ import { KeycloakOperationService } from 'src/app/core/services/keycloak.service
   providedIn: 'root',
 })
 export class CampaignService {
-  private baseApiUrl = environment.baseApiUrl;
-  // private baseApiUrl = 'http://localhost:3000';
+      private baseApiUrl = environment.baseApiUrl;
 
   constructor(
     private http: HttpClient,
@@ -75,9 +74,14 @@ export class CampaignService {
     );
   }
 
-  getCampaigns(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/campaign`);
+  getCampaigns(page: number = 1, limit: number = 10): Observable<any> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+  
+    return this.http.get<any>(`${this.baseApiUrl}/campaign`, { params });
   }
+  
 
   getDateOptions(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseApiUrl}/settings/campaign/date`);

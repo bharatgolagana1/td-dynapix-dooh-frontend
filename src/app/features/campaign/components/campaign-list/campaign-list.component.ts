@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { CampaignService } from '../../campaign.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-campaign-list',
   templateUrl: './campaign-list.component.html',
@@ -17,12 +19,18 @@ export class CampaignListComponent implements OnInit {
     'noOfScreens',
     'actions',
   ];
+  pageIndex: number = 0;
+  pageSize: number = 10;
+  totalItems: number = 0;
+
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
 
   constructor(
     private campaignService: CampaignService,
     private loaderService: LoaderService,
-    private router: Router,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -31,10 +39,10 @@ export class CampaignListComponent implements OnInit {
 
   loadCampaigns() {
     this.loaderService.showLoader();
-    this.campaignService.getCampaigns().subscribe(
-      (data) => {
-        //@ts-ignore
-        this.campaigns = data.campaigns;
+    this.campaignService.getCampaigns(this.pageIndex + 1, this.pageSize).subscribe(
+      (response) => {
+        this.campaigns = response.campaigns;
+        this.totalItems = response.totalItems;
         this.loaderService.hideLoader();
       },
       (error) => {
@@ -42,6 +50,12 @@ export class CampaignListComponent implements OnInit {
         this.loaderService.hideLoader();
       }
     );
+  }
+
+  onPageChange(event: any) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadCampaigns();
   }
 
   onUploadMedia(campaignId: string) {
