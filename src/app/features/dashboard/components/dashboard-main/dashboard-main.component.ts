@@ -1,19 +1,24 @@
-import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, OnInit, AfterViewInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { SchedulerService } from 'src/app/features/schedulers/scheduler.service';
 import { isPlatformBrowser } from '@angular/common';
 import * as L from 'leaflet';
+import * as moment from 'moment';
 
 interface Screen {
   locationCoordinates: string;
   screenName: string;
   address: string;
   imageUrls: string[];
+  _id: string;
+  organizationId: string;
+  slotSize: number;
 }
 
 declare global {
   interface Window {
     changeSlide: (n: number) => void;
+    showLive: (screenId: string, organizationId: string) => void;
   }
 }
 
@@ -22,18 +27,19 @@ declare global {
   templateUrl: './dashboard-main.component.html',
   styleUrls: ['./dashboard-main.component.scss']
 })
-export class DashboardMainComponent implements OnInit {
+export class DashboardMainComponent implements OnInit, AfterViewInit {
   totalScreens: number = 0;
   inactiveScreens: number = 0;
   boundDevicesCount: number = 0;
   private leaflet: any;
   private customIcon: any;
+  private map: any;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private dashboardService: DashboardService,
     private schedulerService: SchedulerService
-  ) { }
+  ) {}
 
   get isBrowser(): boolean {
     return isPlatformBrowser(this.platformId);
@@ -70,46 +76,40 @@ export class DashboardMainComponent implements OnInit {
       return;
     }
 
-    const map = this.leaflet.map('map').setView([17.7201, 83.304], 12);
+    this.map = this.leaflet.map('map').setView([17.7201, 83.304], 12);
     this.leaflet
       .tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       })
-      .addTo(map);
+      .addTo(this.map);
 
-    this.loadMarkers(map);
+    this.loadMarkers(this.map);
   }
 
   private generatePopupHTML(
     screenName: string,
     address: string,
     locationCoordinates: string,
-    images: string[]
+    screenId: string,
+    organizationId: string
   ): string {
-    const slides = images
-      .map(
-        (img, idx) => `
-      <img class="slide" src="${img}" style="display:${
-          idx === 0 ? 'inline-flex' : 'none'
-        }; width:100%; height:12rem;justify-content:center; text-align: center;" alt="${screenName}">
-    `
-      )
-      .join('');
-
     return `
       <div class="popup-content" style="text-align:center;justify-content: center;">
-          <div styles="justify-content: center;">
-          ${slides}
+       <div id="media-container-${screenId}"></div>
+        <div id="message-container-${screenId}" style="display: none; color: red; margin-bottom: 10px;"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h3 style="text-align:start; display: inline-block; margin: 0;">${screenName}</h3>
+            <button
+          style="display: inline-block; margin-left: 10px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 5px;"
+          onmouseover="this.style.backgroundColor='#0056b3';"
+          onmouseout="this.style.backgroundColor='#007bff';"
+          onclick="window.showLive('${screenId}', '${organizationId}')">
+          Show Live
+        </button>
         </div>
-        <h3 style="text-align:start;">${screenName}</h3>
         <p style="text-align:start;">${address}</p>
         <p style="text-align:start;">${locationCoordinates}</p>
-  
-        <div class="slider-controls">
-          <button class="prev" onclick="window.changeSlide(-1)">❮</button>
-          <button class="next" onclick="window.changeSlide(1)">❯</button>
-        </div>
       </div>`;
   }
 
@@ -137,7 +137,8 @@ export class DashboardMainComponent implements OnInit {
           screen.screenName,
           screen.address,
           screen.locationCoordinates,
-          screen.imageUrls
+          screen._id,
+          screen.organizationId
         );
         marker.bindPopup(popupContent, {
           autoPan: true,
@@ -174,5 +175,88 @@ export class DashboardMainComponent implements OnInit {
         slides[0].style.display = 'block';
       }
     }, 0);
+  }
+
+  ngAfterViewInit() {
+    if (this.isBrowser) {
+      window.showLive = (screenId: string, organizationId: string) => {
+        const currentDate = moment().format('YYYY-MM-DD');
+  
+        this.schedulerService
+          .getPlaylistByScreenIdAndDate(screenId, currentDate, organizationId)
+          .subscribe(
+            (data) => {
+              if (data && data.length && data[0].media && data[0].media.length) {
+                const mediaContainerId = `media-container-${screenId}`;
+                const messageContainerId = `message-container-${screenId}`;
+                const slotSize = data[0].slotSize;
+                const messageContainer = document.getElementById(messageContainerId);
+                if (messageContainer) {
+                  messageContainer.style.display = 'none';
+                }
+  
+                this.playMediaInLoop(data[0].media, mediaContainerId, slotSize);
+              } else {
+                this.showErrorMessage(screenId, 'No PlayList found for this screen. Please contact support.');
+              }
+            },
+            (error) => {
+              this.showErrorMessage(screenId, 'No PlayList found for this screen. Please contact support.');
+              console.error('Error retrieving playlist:', error);
+            }
+          );
+      };
+    }
+  }
+
+  private showErrorMessage(screenId: string, message: string) {
+    const messageContainerId = `message-container-${screenId}`;
+    const messageContainer = document.getElementById(messageContainerId);
+    
+    if (messageContainer) {
+      messageContainer.style.display = 'block'; 
+      messageContainer.innerText = message; 
+    } else {
+      console.error(`Message container with ID ${messageContainerId} not found.`);
+    }
+  }
+  
+  private playMediaInLoop(media: any[], mediaContainerId: string, slotSize: number) {
+    const mediaContainer = document.getElementById(mediaContainerId);
+
+    if (mediaContainer) {
+      let currentMediaIndex = 0;
+
+      const showNextMedia = () => {
+        mediaContainer.innerHTML = '';
+
+        const mediaItem = media[currentMediaIndex];
+        const mediaElement = document.createElement(
+          this.isVideoFile(mediaItem.mediaURL) ? 'video' : 'img'
+        );
+
+        if (this.isVideoFile(mediaItem.mediaURL)) {
+          mediaElement.setAttribute('controls', 'true');
+          mediaElement.setAttribute('autoplay', 'true');
+        }
+
+        mediaElement.setAttribute('src', mediaItem.mediaURL);
+        mediaElement.setAttribute('style', 'width: 100%; height: auto; margin-bottom: 10px;');
+        mediaContainer.appendChild(mediaElement);
+
+        currentMediaIndex = (currentMediaIndex + 1) % media.length;
+        setTimeout(showNextMedia, slotSize * 1000);
+      };
+
+      showNextMedia();
+    } else {
+      console.error(`Media container with ID ${mediaContainerId} not found.`);
+    }
+  }
+
+  private isVideoFile(url: string): boolean {
+    const videoExtensions = ['mp4', 'webm', 'ogg'];
+    const extension = url.split('.').pop();
+    return videoExtensions.includes(extension || '');
   }
 }
