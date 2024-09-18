@@ -12,22 +12,20 @@
       class="campaign-upload-media-checkbox--selection"
       *ngIf="getSelectedCount() > 0 && !isUploading"
     >
-      <div>{{ getSelectedCount() }} Selected</div>
+      <div class="campaign-upload-text">{{ getSelectedCount() }} Selected</div>
 
-      <button
-        mat-button
-        style="background-color: #e9ecef"
-        (click)="openDateRangePicker()"
-      >
-        Create Date Range
+      <div class="vl"></div>
+
+      <button mat-button (click)="openDateRangePicker()">
+        <div class="create-date-range">
+          <div class="campaign-upload-text">Create Date Range</div>
+        </div>
       </button>
 
-      <mat-form-field
-        appearance="outline"
-        style="width: 200px; border-color: white"
-      >
-        <mat-label>Select Date Range</mat-label>
+      <mat-form-field class="select-date-range" appearance="outline">
+        <mat-label class="campaign-upload-text">Select Date Range</mat-label>
         <mat-select
+          class="campaign-upload-text"
           [(value)]="selectedDateRange"
           (selectionChange)="checkDefaultDateRange()"
         >
@@ -45,18 +43,25 @@
           type="file"
           (change)="onFileSelected($event, fileInput)"
           #fileInput
+          style="display: none"
         />
+        <span mat-icon-button (click)="fileInput.click()">
+          <div class="upload-media-button">
+            <div class="campaign-upload-text">Upload Media</div>
+            <mat-icon class="campaign-upload-text">upload</mat-icon>
+          </div>
+        </span>
+
         <button
           mat-raised-button
           color="primary"
-          style="background-color: #e9ecef"
           [disabled]="!canUpload()"
           (click)="onUpload()"
         >
           Upload
         </button>
       </div>
-      <button mat-button style="color: #ffffff" (click)="clearSelection()">
+      <button class="close-button" mat-button (click)="clearSelection()">
         <mat-icon>close</mat-icon>
       </button>
     </div>
