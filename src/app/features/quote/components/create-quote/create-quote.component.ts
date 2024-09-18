@@ -4,6 +4,8 @@ import {
   ChangeDetectorRef,
   NgZone,
   AfterViewInit,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -20,7 +22,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { Router } from '@angular/router';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
-
+import html2canvas from 'html2canvas';
 export interface Screen {
   id: any;
   _id: string;
@@ -79,6 +81,7 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
   screenNetworks:any[] = [];
   selectedDates: { screenId: string; dates: Date[] }[] = [];
   showPreview = false;
+  isScreenLoaderActive= false;
 
   constructor(
     private fb: FormBuilder,
@@ -109,6 +112,24 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
       creativeRequirement: new FormControl(this.creativeRequirement, [
         Validators.required,
       ]),
+    });
+  }
+  
+  downloadPDF() {
+    const element = document.getElementById('quote-content'); 
+
+    html2canvas(element!).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 208; 
+      const pageHeight = pdf.internal.pageSize.height;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      let position = 10;
+
+     
+      pdf.addImage(imgData, 'PNG', 10, position, imgWidth - 20, imgHeight);
+      
+      pdf.save('quote-content.pdf'); 
     });
   }
 
@@ -238,28 +259,26 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
   }
 
   loadScreens() {
-    this.loaderService.showLoader();
-    this.quoteService
-      .screensList(this.quoteForm.get('filters')?.value)
-      .subscribe(
-        (data: { screens: ScreenAvailability[] }) => {
-          this.ngZone.run(() => {
-            this.screens = (data.screens || []).map((screen) => ({
-              ...screen,
-              selected: false,
-            }));
-            this.cdr.detectChanges();
-            this.loaderService.hideLoader();
-          });
-        },
-        (error) => {
-          console.error('Error fetching screens:', error);
-          this.ngZone.run(() => {
-            this.cdr.detectChanges();
-            this.loaderService.hideLoader();
-          });
-        }
-      );
+    this.isScreenLoaderActive = true; 
+    this.quoteService.screensList(this.quoteForm.get('filters')?.value).subscribe(
+      (data: { screens: ScreenAvailability[] }) => {
+        this.ngZone.run(() => {
+          this.screens = (data.screens || []).map((screen) => ({
+            ...screen,
+            selected: false,
+          }));
+          this.isScreenLoaderActive = false; 
+          this.cdr.detectChanges();
+        });
+      },
+      (error) => {
+        console.error('Error fetching screens:', error);
+        this.ngZone.run(() => {
+          this.isScreenLoaderActive = false;
+          this.cdr.detectChanges();
+        });
+      }
+    );
   }
 
   isFullyAvailable(
@@ -419,81 +438,6 @@ export class CreateQuoteComponent implements OnInit, AfterViewInit {
   isSubmitDisabled(): boolean {
     return this.quoteForm.invalid || !this.screens.some(screen => screen.selected);
   }
-  generatePDF() {
-    const doc = new jsPDF();
-  
-    doc.setFontSize(16);
-    
-    doc.setFontSize(12);
-    const startDate = new Date(this.quoteForm.value.dateRange.startDate);
-    const endDate = new Date(this.quoteForm.value.dateRange.endDate);
 
-    const startDateString = `${startDate.getUTCDate()} ${startDate.toLocaleString('default', { month: 'long' })} ${startDate.getUTCFullYear()}`;
-    const endDateString = `${endDate.getUTCDate()} ${endDate.toLocaleString('default', { month: 'long' })} ${endDate.getUTCFullYear()}`;
-
-   
-    doc.text(`Customer Name: ${this.quoteForm.value.customerName}`, 10, 20);
-    doc.text(`Date: ${startDateString} - ${endDateString}`, 10, 30);
-    
-    const tableRows: Array<Array<string | number>> = [];
-  
-    const tableColumn = [
-      "S.No", 
-      "City", 
-      "Media Identity", 
-      "Network", 
-      "Screen Identity", 
-      "Type of Media", 
-      "Screen Dimensions", 
-      "No. of Screens", 
-      "Slot Duration", 
-      "Loop Time", 
-      "No. of Impressions", 
-      "Avg Foot Falls", 
-      "Quoted Price", 
-      "GST(18%)", 
-      "Grand Total", 
-      "Creative Requirement"
-    ];
-  
-    this.previewData.forEach((screen, index) => {
-      const screenData: Array<string | number> = [
-        (index + 1).toString(),
-        this.quoteForm.value.city,
-        this.quoteForm.value.mediaIdentity,
-        this.quoteForm.value.network,
-        screen.screenIdentity,
-        screen.typeOfMedia,
-        screen.screenDimensions,
-        screen.noOfScreens,
-        screen.slotDuration,
-        screen.loopTime,
-        screen.noOfImpressions,
-        screen.avgFootFall,
-        screen.quotedPrice,
-        screen.GST,
-        screen.grandTotal,
-        screen.creativeRequirement
-      ];
-      tableRows.push(screenData);
-    });
-  
-    (doc as any).autoTable({
-      head: [tableColumn],
-      body: tableRows,
-      startY: 40,
-      theme: 'grid',
-      margin: { right: 10, left: 10 }
-    });
-  
-    let finalY = (doc as any).lastAutoTable.finalY + 10; 
-    doc.text('Terms and Conditions', 10, finalY);
-    doc.setFontSize(7);
-    this.termsAndConditions.forEach((term, index) => {
-      doc.text(`${index + 1}. ${term.content}`, 10, finalY + (index + 1) * 10);
-    });
-  
-    doc.save('quote.pdf');
-  }
   
 }
