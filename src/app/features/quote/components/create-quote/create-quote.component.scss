@@ -195,7 +195,10 @@
 }
 
 .spinner-container {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .create-quote-preview-header--content{
