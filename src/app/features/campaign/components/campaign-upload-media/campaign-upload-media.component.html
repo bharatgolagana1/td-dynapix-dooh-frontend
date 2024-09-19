@@ -4,66 +4,75 @@
       <div class="campaign-upload-media--title">Add Media</div>
     </div>
     <mat-divider></mat-divider>
-    <div *ngIf="isUploading" class="loader-container">
-      <mat-spinner></mat-spinner>
-      <div>Uploading media, please wait...</div>
+    <div *ngIf="isUploading" class="spinner-overlay">
+      <div class="spinner-container">
+        <mat-spinner></mat-spinner>
+        <p>Uploading media, please wait...</p>
+      </div>
     </div>
-    <div
-      class="campaign-upload-media-checkbox--selection"
-      *ngIf="getSelectedCount() > 0 && !isUploading"
-    >
-      <div class="campaign-upload-text">{{ getSelectedCount() }} Selected</div>
-
-      <div class="vl"></div>
-
-      <button mat-button (click)="openDateRangePicker()">
-        <div class="create-date-range">
-          <div class="campaign-upload-text">Create Date Range</div>
-        </div>
-      </button>
-
-      <mat-form-field class="select-date-range" appearance="outline">
-        <mat-label class="campaign-upload-text">Select Date Range</mat-label>
-        <mat-select
-          class="campaign-upload-text"
-          [(value)]="selectedDateRange"
-          (selectionChange)="checkDefaultDateRange()"
-        >
-          <mat-option *ngFor="let range of availableDateRanges" [value]="range">
-            {{ range }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
+    <div>
       <div
-        class="campaign-upload-media-upload--button-container"
-        *ngIf="getSelectedCount() > 0"
+        class="campaign-upload-media-checkbox--selection"
+        *ngIf="getSelectedCount() > 0 && !isUploading"
       >
-        <input
-          type="file"
-          (change)="onFileSelected($event, fileInput)"
-          #fileInput
-          style="display: none"
-        />
-        <span mat-icon-button (click)="fileInput.click()">
-          <div class="upload-media-button">
-            <div class="campaign-upload-text">Upload Media</div>
-            <mat-icon class="campaign-upload-text">upload</mat-icon>
-          </div>
-        </span>
+        <div class="campaign-upload-text">
+          {{ getSelectedCount() }} Selected
+        </div>
 
-        <button
-          mat-raised-button
-          color="primary"
-          [disabled]="!canUpload()"
-          (click)="onUpload()"
+        <div class="vl"></div>
+
+        <button mat-button (click)="openDateRangePicker()">
+          <div class="create-date-range">
+            <div class="campaign-upload-text">Create Date Range</div>
+          </div>
+        </button>
+
+        <mat-form-field class="select-date-range" appearance="outline">
+          <mat-label class="campaign-upload-text">Select Date Range</mat-label>
+          <mat-select
+            class="campaign-upload-text"
+            [(value)]="selectedDateRange"
+            (selectionChange)="checkDefaultDateRange()"
+          >
+            <mat-option
+              *ngFor="let range of availableDateRanges"
+              [value]="range"
+            >
+              {{ range }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div
+          class="campaign-upload-media-upload--button-container"
+          *ngIf="getSelectedCount() > 0"
         >
-          Upload
+          <input
+            type="file"
+            (change)="onFileSelected($event, fileInput)"
+            #fileInput
+            style="display: none"
+          />
+          <span mat-icon-button (click)="fileInput.click()">
+            <div class="upload-media-button">
+              <div class="campaign-upload-text">Upload Media</div>
+              <mat-icon class="campaign-upload-text">upload</mat-icon>
+            </div>
+          </span>
+
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="!canUpload()"
+            (click)="onUpload()"
+          >
+            Upload
+          </button>
+        </div>
+        <button class="close-button" mat-button (click)="clearSelection()">
+          <mat-icon>close</mat-icon>
         </button>
       </div>
-      <button class="close-button" mat-button (click)="clearSelection()">
-        <mat-icon>close</mat-icon>
-      </button>
     </div>
 
     <div class="campaign-upload-media-card--container">
