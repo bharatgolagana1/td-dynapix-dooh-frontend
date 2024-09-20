@@ -21,6 +21,7 @@ interface SubNavState {
   campaign: boolean;
   publicCase:boolean
   generate: boolean;
+  payment: boolean;
 }
 
 @Component({
@@ -44,6 +45,7 @@ export class AppComponent implements OnInit {
     campaign: false,
     publicCase:false,
     generate: false,
+    payment:false,
   };
   isSidenavOpened = true;
   isSmallScreen = false;
