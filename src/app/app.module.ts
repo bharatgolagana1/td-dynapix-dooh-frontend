@@ -32,6 +32,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { OrgIdInterceptor } from './core/interceptors/org.interceptor';
 import { PublicCasesModule } from './features/public-cases/public-cases.module';
 import { AiGeneratorModule } from './features/ai-generator/ai-generator.module';
+import { PaymentModule } from './features/payment/payment.module';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -84,6 +85,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     CampaignModule,
     PublicCasesModule,
     AiGeneratorModule,
+    PaymentModule 
   ],
   providers: [
     {

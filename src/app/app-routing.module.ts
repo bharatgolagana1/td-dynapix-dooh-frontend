@@ -112,6 +112,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: AppRoutePaths.payment,
+    loadChildren: () =>
+      import('./features/payment/payment.module').then(
+        (m) => m.PaymentModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'page-not-found',
     component: ServerNotfoundComponent,
   },
