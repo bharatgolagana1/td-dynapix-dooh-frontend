@@ -4,7 +4,8 @@ import { CampaignService } from '../../campaign.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Router } from '@angular/router';
-
+import { MatDialog } from '@angular/material/dialog';
+import { ApproveConfirmationDailogComponent } from '../approve-confirmation-dailog/approve-confirmation-dailog.component';
 @Component({
   selector: 'app-campaign-list',
   templateUrl: './campaign-list.component.html',
@@ -30,7 +31,8 @@ export class CampaignListComponent implements OnInit {
     private campaignService: CampaignService,
     private loaderService: LoaderService,
     private notificationService: NotificationService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -77,6 +79,28 @@ export class CampaignListComponent implements OnInit {
           'error'
         );
       },
+    });
+  }
+
+  onApproveMedia(campaignId: string) {
+    const dialogRef = this.dialog.open(ApproveConfirmationDailogComponent, {
+      width: '300px',
+      data: { campaignId: campaignId }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.campaignService.approveCampaignMedia(campaignId).subscribe({
+          next: (response) => {
+            this.notificationService.showNotification('Media approved successfully', 'success');
+            this.loadCampaigns();
+          },
+          error: (error) => {
+            console.error('Error approving media:', error);
+            this.notificationService.showNotification('Error approving media', 'error');
+          },
+        });
+      }
     });
   }
 }

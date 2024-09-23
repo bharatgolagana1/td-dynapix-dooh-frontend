@@ -35,6 +35,7 @@
 
         <ng-container matColumnDef="actions">
           <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+
           <mat-cell *matCellDef="let campaign">
             <ng-container *ngIf="!campaign.isMediaUploaded; else uploaded">
               <button
@@ -46,10 +47,23 @@
               </button>
             </ng-container>
             <ng-template #uploaded>
-              <span style="color: green">Media is uploaded</span>
+              <span class="campaign-list-media-uploaded-text">Media is uploaded</span>
+              <ng-container *ngIf="!campaign.isLiveApproved; else approved">
+                <button
+                  mat-button color="accent" class="campaign-list-approve-media--font"
+                  (click)="onApproveMedia(campaign._id)">
+                  Approve Media
+                </button>
+              </ng-container>
+          
+              <ng-template #approved>
+                <span class="campaign-list-approved-text">Approved</span>
+              </ng-template>
             </ng-template>
           </mat-cell>
         </ng-container>
+
+        
 
         <mat-header-row
           *matHeaderRowDef="displayedColumns"

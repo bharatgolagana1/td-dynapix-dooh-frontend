@@ -125,6 +125,10 @@ export class CampaignService {
     );
   }
 
+  approveCampaignMedia(campaignId: string) {
+    return this.http.post<any>(`${this.baseApiUrl}/campaign/campaign/live-approval`, { campaignId });
+  }
+  
   screensList(filters: any): Observable<any> {
     return this.http.post(
       `${this.baseApiUrl}/screen/api/available-screens`,
