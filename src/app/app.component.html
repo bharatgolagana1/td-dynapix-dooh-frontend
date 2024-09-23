@@ -9,7 +9,7 @@
     </div>
 
     <mat-nav-list>
-      <a mat-list-item (click)="toggleSubNav('dashboard')" class="parent-link">
+      <a mat-list-item (click)="toggleSubNav('dashboard')" *ngIf="hasPermission('view_dashboard')" class="parent-link">
         <span class="dashboard--title"
           ><app-svg-icon
             iconName="dashboard"
@@ -20,7 +20,7 @@
         >
       </a>
 
-      <a mat-list-item (click)="toggleSubNav('users')" class="parent-link">
+      <a mat-list-item (click)="toggleSubNav('users')" *ngIf="hasPermission('View_Users')" class="parent-link">
         <span class="dashboard--title">
           <img
             class="users-logo--image"
@@ -35,6 +35,7 @@
         mat-list-item
         (click)="toggleSubNav('organization')"
         class="parent-link"
+        *ngIf="hasPermission('View_Organization')"
       >
         <span class="dashboard--title">
           <img
@@ -56,7 +57,7 @@
         >
       </mat-nav-list>
 
-      <a mat-list-item (click)="toggleSubNav('booking')" class="parent-link">
+      <a mat-list-item (click)="toggleSubNav('booking')" *ngIf="hasPermission('View_Booking')" class="parent-link">
         <span class="dashboard--title"
           ><img
             class="users-logo--image"
@@ -75,7 +76,7 @@
         <!-- Add more sublinks as needed -->
       </mat-nav-list>
 
-      <a mat-list-item (click)="toggleSubNav('campaign')" class="parent-link">
+      <a mat-list-item (click)="toggleSubNav('campaign')" *ngIf="hasPermission('View_Campaign')" class="parent-link">
         <span class="dashboard--title"
           ><img
             class="users-logo--image"
@@ -93,7 +94,7 @@
       <a mat-list-item routerLink="/campaign/play-media">Play Media</a>
         <!-- Add more sublinks as needed -->
       </mat-nav-list>
-      <a mat-list-item (click)="toggleSubNav('quote')" class="parent-link">
+      <a mat-list-item (click)="toggleSubNav('quote')" *ngIf="hasPermission('View_Quote')" class="parent-link">
         <span class="dashboard--title"
           ><img
             class="users-logo--image"
@@ -109,7 +110,7 @@
       <mat-nav-list *ngIf="isSubNavOpen('quote')">
         <a mat-list-item routerLink="/quote/create-quote">Create Quote</a>
       </mat-nav-list>
-      <a mat-list-item (click)="toggleSubNav('schedulers')" class="parent-link">
+      <a mat-list-item (click)="toggleSubNav('schedulers')" *ngIf="hasPermission('View_Schedulers')" class="parent-link">
         <span class="dashboard--title"
           ><img
             class="users-logo--image"
@@ -132,7 +133,7 @@
         >
       </mat-nav-list>
 
-      <a mat-list-item (click)="toggleSubNav('screen')" class="parent-link">
+      <a mat-list-item (click)="toggleSubNav('screen')" *ngIf="hasPermission('View_Screens')" class="parent-link">
         <span class="dashboard--title"
           ><img
             class="users-logo--image"
@@ -148,7 +149,7 @@
       <mat-nav-list *ngIf="isSubNavOpen('screen')">
         <a mat-list-item routerLink="/screen/createScreens">Create screens</a>
       </mat-nav-list>
-      <a mat-list-item (click)="toggleSubNav('media')" class="parent-link">
+      <a mat-list-item (click)="toggleSubNav('media')" *ngIf="hasPermission('View_Media')" class="parent-link">
         <span class="dashboard--title"
           ><img
             class="users-logo--image"
@@ -165,7 +166,7 @@
         <a mat-list-item routerLink="defaultMedia">Default Upload Media</a>
         <!-- Add more sublinks as needed -->
       </mat-nav-list>
-      <a mat-list-item (click)="toggleSubNav('roles')" class="parent-link">
+      <a mat-list-item (click)="toggleSubNav('roles')" *ngIf="hasPermission('View_Roles')" class="parent-link">
         <span class="dashboard--title">
           <img
             class="users-logo--image"
@@ -179,8 +180,11 @@
           <mat-icon *ngIf="!isSubNavOpen('roles')">expand_more</mat-icon>
         </div>
       </a>
+      <mat-nav-list *ngIf="isSubNavOpen('roles')">
+        <a mat-list-item routerLink="/booking/create-booking">Roles</a>
+      </mat-nav-list>
 
-      <a mat-list-item (click)="toggleSubNav('generate')" class="parent-link">
+      <a mat-list-item (click)="toggleSubNav('generate')" *ngIf="hasPermission('View_Generate')" class="parent-link">
         <span class="dashboard--title"
           ><img
             class="users-logo--image"
@@ -192,11 +196,9 @@
       <mat-nav-list *ngIf="isSubNavOpen('generate')">
         <a mat-list-item routerLink="/generate/image">Image Templates</a>
       </mat-nav-list>
-      <mat-nav-list *ngIf="isSubNavOpen('roles')">
-        <a mat-list-item routerLink="/booking/create-booking">Roles</a>
-      </mat-nav-list>
 
-      <a mat-list-item (click)="toggleSubNav('settings')" class="parent-link">
+
+      <a mat-list-item (click)="toggleSubNav('settings')" *ngIf="hasPermission('View_Settings')" class="parent-link">
         <span class="dashboard--title">
           <img
             class="users-logo--image"
@@ -207,7 +209,7 @@
         >
       </a>
 
-      <a mat-list-item (click)="toggleSubNav('publicCase')" class="parent-link">
+      <a mat-list-item (click)="toggleSubNav('publicCase')" *ngIf="hasPermission('View_PublicCase')" class="parent-link">
         <span class="dashboard--title">
           <img
             class="users-logo--image"

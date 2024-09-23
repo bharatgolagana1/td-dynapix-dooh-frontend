@@ -1,0 +1,18 @@
+<div class="mat-dialog-module--title">Add New Module</div>
+<div mat-dialog-content>
+  <form [formGroup]="moduleForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Module Name</mat-label>
+      <input matInput formControlName="name" placeholder="Enter module name">
+      <mat-error *ngIf="moduleForm.get('name')?.hasError('required')">
+        Module name is required
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" color="primary">Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="moduleForm.invalid" (click)="onSubmit()">
+    Add Module
+  </button>
+</div>

@@ -14,10 +14,11 @@ export interface Module {
 export interface Task {
   _id: string;
   name: string;
+   task_value: string;
   moduleId: string;
-  checked?: boolean;          // Optional, defaults to false
-  financeChecked?: boolean;   // Optional, defaults to false
-  trainingChecked?: boolean;  // Optional, defaults to false
+  checked?: boolean;        
+  financeChecked?: boolean;  
+  trainingChecked?: boolean; 
 }
 
 export interface Capability {

@@ -8,19 +8,33 @@ import { Permission } from '../models/role.model';
   providedIn: 'root',
 })
 export class PermissionsService {
-  private baseUrl = `http://localhost:3000/api/permissions`;
+  private baseUrl = environment.baseApiUrl;
+  private permissions: any[] = [];
 
   constructor(private http: HttpClient) {}
 
   getPermissionsByRole(roleId: string): Observable<Permission[]> {
-    return this.http.get<Permission[]>(`${this.baseUrl}/role/${roleId}`);
+    return this.http.get<Permission[]>(`${this.baseUrl}/api/permissions/role/${roleId}`);
   }
 
   updatePermissions(data: any): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}`, data);
+    return this.http.put<void>(`${this.baseUrl}/api/permissions`, data);
   }
 
   getAllPermissions(): Observable<Permission[]> {
-    return this.http.get<Permission[]>(`${this.baseUrl}`);
+    return this.http.get<Permission[]>(`${this.baseUrl}/api/permissions`);
+  }
+
+  setPermissions(permissions: any[]): void {
+    this.permissions = permissions;
+  }
+
+  hasPermission(taskValue: string): boolean {
+    const permission = this.permissions.find(p => p.taskValue === taskValue);
+    return permission ? permission.enable : false;
+  }
+
+  hasAnyPermission(taskValues: string[]): boolean {
+    return taskValues.some(taskValue => this.hasPermission(taskValue));
   }
 }

@@ -6,6 +6,7 @@ import { KeycloakOperationService } from './core/services/keycloak.service';
 import { KeycloakProfile } from 'keycloak-js';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from './core/services/user.service';
+import { PermissionsService } from './features/roles-matrix/services/permissions.service';
 
 interface SubNavState {
   dashboard: boolean;
@@ -56,7 +57,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private readonly keycloak: KeycloakService,
     private KeycloakOperationService: KeycloakOperationService,
-    private userService: UserService
+    private userService: UserService,
+    private permissionsService: PermissionsService
   ) {
     this.router.events.subscribe((event) => {
       if (router.url.includes('public-screens')) {
@@ -143,4 +145,8 @@ export class AppComponent implements OnInit {
   isSubNavOpen(navName: keyof SubNavState): boolean {
     return this.subNavState[navName];
   }
+
+    hasPermission(taskValue: string): boolean {
+      return this.permissionsService.hasPermission(taskValue);
+    }
 }

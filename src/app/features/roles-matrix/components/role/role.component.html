@@ -1,0 +1,22 @@
+
+<div class="mat-dialog-role--title">Create New Role</div>
+<mat-dialog-content class="mat-dialog--formfield">
+  <form [formGroup]="roleForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Role Name</mat-label>
+      <input matInput formControlName="name" placeholder="Enter role name">
+      <mat-error *ngIf="roleForm.get('name')?.hasError('required')">
+        Role name is required
+      </mat-error>
+      <mat-error *ngIf="roleForm.get('name')?.hasError('minlength')">
+        Role name must be at least 3 characters long
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()" color="primary">Cancel</button>
+  <button mat-raised-button color="primary" (click)="createRole()" [disabled]="roleForm.invalid">Create</button>
+</mat-dialog-actions>
+
