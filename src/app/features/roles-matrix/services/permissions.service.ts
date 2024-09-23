@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { environment } from 'src/environments/environment';
 import { Permission } from '../models/role.model';
 
@@ -9,17 +8,33 @@ import { Permission } from '../models/role.model';
   providedIn: 'root',
 })
 export class PermissionsService {
-  private baseUrl = `${environment.baseApiUrl}/api/permissions`;
+  private baseUrl = environment.baseApiUrl;
+  private permissions: any[] = [];
 
   constructor(private http: HttpClient) {}
 
-  getPermissions(): Observable<Permission[]> {
-    return this.http.get<Permission[]>(this.baseUrl);
+  getPermissionsByRole(roleId: string): Observable<Permission[]> {
+    return this.http.get<Permission[]>(`${this.baseUrl}/api/permissions/role/${roleId}`);
   }
 
-  updatePermissions(permissions: Permission[]): Observable<any> {
-    return this.http.post(`${this.baseUrl}/permissions`, permissions);
+  updatePermissions(data: any): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/api/permissions`, data);
   }
 
-  // Add more methods for additional module-related API operations if needed
+  getAllPermissions(): Observable<Permission[]> {
+    return this.http.get<Permission[]>(`${this.baseUrl}/api/permissions`);
+  }
+
+  setPermissions(permissions: any[]): void {
+    this.permissions = permissions;
+  }
+
+  hasPermission(taskValue: string): boolean {
+    const permission = this.permissions.find(p => p.taskValue === taskValue);
+    return permission ? permission.enable : false;
+  }
+
+  hasAnyPermission(taskValues: string[]): boolean {
+    return taskValues.some(taskValue => this.hasPermission(taskValue));
+  }
 }

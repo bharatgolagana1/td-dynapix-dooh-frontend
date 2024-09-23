@@ -8,12 +8,16 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class RolesService {
+  private baseUrl = `http://localhost:3000/api/roles`;
   constructor(private http: HttpClient) {}
 
   getRoles(): Observable<Role[]> {
-    return this.http.get<Role[]>(`${environment.baseApiUrl}/api/roles`);
+    return this.http.get<Role[]>(`${this.baseUrl}`);
   }
-  createRoles(data: { name: string; value: string }): Observable<Role> {
-    return this.http.post<Role>(`${environment.baseApiUrl}`, data);
+  getRoleById(id: string): Observable<Role> {
+    return this.http.get<Role>(`${this.baseUrl}/${id}`);
+  }
+  createRoles(data: any): Observable<Role> {
+    return this.http.post<Role>(`${this.baseUrl}`, data);
   }
 }

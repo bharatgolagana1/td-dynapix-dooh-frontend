@@ -1,0 +1,45 @@
+<div class="mat-dialog-task--title">Create New Task</div>
+<mat-dialog-content>
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-select
+        placeholder="Select Module"
+        formControlName="moduleId"
+        (selectionChange)="onSelectModule($event.value)"
+      >
+        <mat-option *ngFor="let module of modules" [value]="module._id">
+          {{ module.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="taskForm.get('moduleId')?.hasError('required') && taskForm.get('moduleId')?.touched">
+        Module is required
+      </mat-error>
+    </mat-form-field>
+
+ 
+    <mat-form-field appearance="outline">
+      <input matInput placeholder="Task Name" formControlName="name" />
+      <mat-error *ngIf="taskForm.get('name')?.hasError('required') && taskForm.get('name')?.touched">
+        Task name is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <input matInput placeholder="Task Value" formControlName="task_value" />
+      <mat-error *ngIf="taskForm.get('task_value')?.hasError('required') && taskForm.get('task_value')?.touched">
+        Task value is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <textarea matInput placeholder="Description" formControlName="description"></textarea>
+    </mat-form-field>
+
+    <mat-dialog-actions align="end">
+      <button mat-button color="primary" (click)="onClose()">Cancel</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid">
+        Create Task
+      </button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

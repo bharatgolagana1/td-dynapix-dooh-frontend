@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Module, Permission, Role, Task } from '../../models/role.model';
+import { Capability } from '../../models/capability.model';
 import { RolesService } from '../../services/roles.service';
 import { ModulesService } from '../../services/modules.service';
 import { TasksService } from '../../services/tasks.service';
 import { PermissionsService } from '../../services/permissions.service';
+import { Permission } from '../../models/role.model';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { MatDialog } from '@angular/material/dialog';
+import { RoleComponent } from '../role/role.component';
+import { ModuleComponent } from '../module/module.component';
+import { TasksComponent } from '../tasks/tasks.component';
 
 @Component({
   selector: 'app-roles-matrix',
@@ -11,148 +17,219 @@ import { PermissionsService } from '../../services/permissions.service';
   styleUrls: ['./roles-matrix.component.scss'],
 })
 export class RolesMatrixComponent implements OnInit {
-  modules: Module[] = [];
-  roles: Role[] = [];
-  tasks: Task[] = [];
-  permissions: Permission[] = [];
-  displayedColumns!: string[];
-  showLoader = false;
+  capabilities: Capability[] = [];
+  displayedColumns: string[] = ['module', 'tasks'];
+  dynamicRoles: any[] = [];
+  updatedPermissions: any[] = [];
 
   constructor(
-    private rolesService: RolesService,
     private modulesService: ModulesService,
     private tasksService: TasksService,
-    private permissionsService: PermissionsService
+    private roleService: RolesService,
+    private permissionsService: PermissionsService,
+    private notificationService: NotificationService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.fetchData();
-
-    console.log(this.modules); // Assuming 'modules' is the data used in your table
-    console.log(this.tasks);
+    this.fetchRoles();
   }
 
-  fetchData(): void {
-    this.showLoader = true; // Set loader to visible while fetching data
-    this.rolesService.getRoles().subscribe({
+  fetchRoles(): void {
+    this.roleService.getRoles().subscribe({
       next: (roles) => {
-        this.roles.push(...roles);
-        this.updateColumns();
+        const uniqueRoles = roles.filter(
+          (role, index, self) =>
+            index === self.findIndex((r) => r.name === role.name)
+        );
+
+        this.dynamicRoles = uniqueRoles;
+        this.displayedColumns = ['module', 'tasks', ...uniqueRoles.map((role) => role.name)];
+        this.fetchCapabilities();
       },
-      complete: () => this.checkDataLoaded(),
+      error: (err) => {
+        console.error('Error fetching roles:', err);
+      },
     });
+  }
+
+  fetchCapabilities(): void {
+    this.capabilities = [];
+  
     this.modulesService.getModules().subscribe({
       next: (modules) => {
-        console.log(modules, 'modules in APP_ID');
-        this.modules.push(...modules);
-      },
-      complete: () => this.checkDataLoaded(),
-    });
-    this.tasksService.getTasks().subscribe({
-      next: (tasks) => {
-        console.log(tasks, 'tasks');
-        this.tasks.push(...tasks);
-      },
-      complete: () => this.checkDataLoaded(),
-    });
-    this.permissionsService.getPermissions().subscribe({
-      next: (permissions) => {
-        console.log(permissions, 'permissions');
-        this.permissions.push(...permissions);
-      },
-      complete: () => this.checkDataLoaded(),
-    });
-  }
-
-  updateColumns(): void {
-    this.displayedColumns = [
-      'moduleName',
-      'tasks',
-      ...this.roles.map((r) => `role-${r.id}`),
-    ];
-  }
-
-  checkDataLoaded(): void {
-    if (this.roles.length && this.modules.length && this.tasks.length) {
-      this.showLoader = false;
-    }
-  }
-
-  handleNewRole(): void {
-    const name = prompt('Please enter new role name:');
-    if (name !== null) {
-      const newRole = { id: String(this.roles.length), name };
-
-      this.rolesService
-        .createRoles({ name, value: name.toLowerCase() })
-        .subscribe({
-          next: (response) => {
-            this.roles.push(newRole);
-            // Handle success message
-          },
-          error: () => {
-            // Handle error message
-          },
+        modules.forEach((module) => {
+          this.tasksService.getTasksByModuleId(module._id).subscribe({
+            next: (tasks) => {
+              const tasksForModule = tasks.map((task) => {
+                let taskObj: any = {
+                  task_value: task.task_value,  
+                  _id: task._id,
+                };
+      
+                this.dynamicRoles.forEach((role) => {
+                  taskObj[role.name + 'Checked'] = false;
+                });
+                return taskObj;
+              });
+  
+              const existingModuleIndex = this.capabilities.findIndex(
+                (cap) => cap.name === module.name
+              );
+              if (existingModuleIndex === -1) {
+                this.capabilities.push({
+                  name: module.name,
+                  tasks: tasksForModule,
+                });
+              }
+  
+              this.fetchPermissions();
+            },
+            error: (err) => {
+              console.error('Error fetching tasks for module:', module.name, err);
+            },
+          });
         });
+      },
+      error: (err) => {
+        console.error('Error fetching modules:', err);
+      },
+    });
+  }
+  
+
+  fetchPermissions(): void {
+    this.permissionsService.getAllPermissions().subscribe({
+      next: (permissions) => {
+   
+        permissions.forEach((permission) => {
+          this.capabilities.forEach((module) => {
+            const task = module.tasks.find((task) => task._id === permission.taskId);
+            if (task) {
+              const role = this.dynamicRoles.find((role) => role._id === permission.roleId);
+              if (role) {
+                task[role.name + 'Checked'] = permission.enable;
+              }
+            }
+          });
+        });
+
+  
+        this.capabilities = [...this.capabilities];
+      },
+      error: (err) => {
+        console.error('Error fetching permissions:', err);
+      },
+    });
+  }
+
+  openCreateRoleDialog(): void {
+    const dialogRef = this.dialog.open(RoleComponent, {
+      width: '400px', 
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.fetchRoles(); 
+      }
+    });
+  }
+
+  onCheckboxChange(task: any, roleName: string, event: any): void {
+    const isChecked = event.checked;
+    task[roleName + 'Checked'] = isChecked;
+
+    const roleId = this.getRoleId(roleName);
+    const taskId = this.getTaskId(task.name);
+
+    if (roleId && taskId) {
+      const existingPermission = this.updatedPermissions.find(
+        (perm) => perm.roleId === roleId && perm.taskId === taskId
+      );
+
+      if (existingPermission) {
+        existingPermission.enable = isChecked; 
+      } else {
+        this.updatedPermissions.push({
+          roleId,
+          taskId,
+          enable: isChecked,
+        }); 
+      }
     }
   }
 
-  handleNewModule(name: string): void {
-    this.modulesService
-      .createModule({ name, value: name.toLowerCase() })
-      .subscribe({
-        next: (response) => {
-          this.modules.push(response);
-          // Handle success message
-        },
-        error: () => {
-          // Handle error message
-        },
+  savePermissions(): void {
+    const allPermissions: any[] = [];
+
+    this.capabilities.forEach((module) => {
+      module.tasks.forEach((task) => {
+        this.dynamicRoles.forEach((role) => {
+          const roleId = this.getRoleId(role.name);
+          const taskId = task._id;
+          const enable = task[role.name + 'Checked'];
+
+          if (roleId && taskId !== undefined) {
+            allPermissions.push({
+              roleId,
+              taskId,
+              enable,
+            });
+          }
+        });
       });
+    });
+
+
+    this.permissionsService.updatePermissions({ newPermissions: allPermissions }).subscribe({
+      next: () => {
+        this.notificationService.showNotification('Role Matrix updated successfully', 'success');
+        this.updatedPermissions = []; 
+        this.fetchPermissions(); 
+      },
+      error: (err) => {
+        console.error('Error updating permissions:', err);
+      },
+    });
   }
 
-  handleNewTask(moduleId: string, taskName: string, taskValue: string): void {
-    this.tasksService
-      .createTasks({ moduleId, name: taskName, value: taskValue })
-      .subscribe({
-        next: (response) => {
-          this.tasks.push(response);
-        },
-        error: () => {
-          // Handle error message
-        },
-      });
+  getRoleId(roleName: string): string | undefined {
+    const role = this.dynamicRoles.find((role) => role.name === roleName);
+    return role ? role._id : undefined;
   }
 
-  getPermissionState(taskId: string, roleId: string): boolean {
-    const permission = this.permissions.find(
-      (p) => p.taskId === taskId && p.roleId === roleId
-    );
-    return permission ? permission.enable : false;
-  }
-
-  togglePermission(
-    taskId: string,
-    roleId: string,
-    isChecked: boolean = false
-  ): void {
-    const permissionIndex = this.permissions.findIndex(
-      (p) => p.taskId === taskId && p.roleId === roleId
-    );
-    if (permissionIndex >= 0) {
-      this.permissions[permissionIndex].enable = isChecked;
-    } else {
-      this.permissions.push({
-        id: `${roleId}_${taskId}`, // Generate an ID for the new permission
-        roleId: roleId,
-        taskId: taskId,
-        enable: isChecked,
-      });
+  getTaskId(taskValue: string): string | undefined {
+    for (const capability of this.capabilities) {
+      const task = capability.tasks.find((task) => task.task_value === taskValue); 
+      if (task) {
+        return task._id;
+      }
     }
+    return undefined;
   }
 
-  countTasksByModule(moduleId: string | undefined): number {
-    if (!moduleId) return 0;
-    return this.tasks.filter((task) => task.moduleId === moduleId).length;
+  openAddModuleDialog(): void {
+    const dialogRef = this.dialog.open(ModuleComponent, {
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.fetchCapabilities(); 
+      }
+    });
   }
+
+  openAddTaskDialog(): void {
+    const dialogRef = this.dialog.open(TasksComponent, {
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.fetchCapabilities();
+      }
+    });
+  }
+  
 }
