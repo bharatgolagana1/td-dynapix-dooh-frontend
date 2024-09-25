@@ -11,7 +11,9 @@ export class PermissionsService {
   private baseUrl = environment.baseApiUrl;
   private permissions: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.loadPermissionsFromStorage();
+  }
 
   getPermissionsByRole(roleId: string): Observable<Permission[]> {
     return this.http.get<Permission[]>(`${this.baseUrl}/api/permissions/role/${roleId}`);
@@ -27,6 +29,7 @@ export class PermissionsService {
 
   setPermissions(permissions: any[]): void {
     this.permissions = permissions;
+    localStorage.setItem('permissions', JSON.stringify(permissions));
   }
 
   hasPermission(taskValue: string): boolean {
@@ -36,5 +39,12 @@ export class PermissionsService {
 
   hasAnyPermission(taskValues: string[]): boolean {
     return taskValues.some(taskValue => this.hasPermission(taskValue));
+  }
+
+  private loadPermissionsFromStorage(): void {
+    const savedPermissions = localStorage.getItem('permissions');
+    if (savedPermissions) {
+      this.permissions = JSON.parse(savedPermissions);
+    }
   }
 }

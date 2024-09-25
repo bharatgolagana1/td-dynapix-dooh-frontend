@@ -220,7 +220,7 @@
         >
       </a>
 
-      <a mat-list-item (click)="toggleSubNav('payment')" class="parent-link">
+      <a mat-list-item (click)="toggleSubNav('payment')"  *ngIf="hasPermission('View_Payment')" class="parent-link">
         <span class="dashboard--title">
           <img
             class="users-logo--image"
