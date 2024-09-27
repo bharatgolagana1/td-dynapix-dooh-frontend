@@ -7,7 +7,7 @@ import { PermissionsService } from 'src/app/features/roles-matrix/services/permi
 
 @Injectable({ providedIn: 'root' })
 export class KeycloakOperationService {
-  private baseUrl = environment.baseApiUrl;
+  private baseUrl = environment.baseApiUrl
   private organizationId: string | null = null; 
 
   constructor(private readonly keycloak: KeycloakService, private http: HttpClient,private permissionsService: PermissionsService) {}
