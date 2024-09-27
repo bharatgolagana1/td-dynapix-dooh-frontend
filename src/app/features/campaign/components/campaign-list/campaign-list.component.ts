@@ -4,6 +4,8 @@ import { CampaignService } from '../../campaign.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-campaign-list',
@@ -23,14 +25,14 @@ export class CampaignListComponent implements OnInit {
   pageSize: number = 10;
   totalItems: number = 0;
 
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private campaignService: CampaignService,
     private loaderService: LoaderService,
     private notificationService: NotificationService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -39,9 +41,12 @@ export class CampaignListComponent implements OnInit {
 
   loadCampaigns() {
     this.loaderService.showLoader();
-    this.campaignService.getCampaigns(this.pageIndex + 1, this.pageSize).subscribe(
+    this.campaignService.getCampaigns(this.pageIndex, this.pageSize).subscribe(
       (response) => {
-        this.campaigns = response.campaigns;
+        this.campaigns = response.campaigns.map((campaign: any) => ({
+          ...campaign,
+          isLiveApproved: campaign.isLiveApproved, // Ensure this field is coming from the backend
+        }));
         this.totalItems = response.totalItems;
         this.loaderService.hideLoader();
       },
@@ -51,6 +56,7 @@ export class CampaignListComponent implements OnInit {
       }
     );
   }
+  
 
   onPageChange(event: any) {
     this.pageIndex = event.pageIndex;
@@ -58,6 +64,40 @@ export class CampaignListComponent implements OnInit {
     this.loadCampaigns();
   }
 
+  onApproveMedia(campaignId: string) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent);
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.campaignService.updateLiveApproval(campaignId).subscribe({
+          next: (response: any) => {
+            if (response.message === 'Campaign approved and playlist updated') {
+              const campaign = this.campaigns.find(c => c._id === campaignId);
+              if (campaign) {
+                campaign.isLiveApproved = true; 
+                this.notificationService.showNotification(
+                  'Media approved successfully',
+                  'success'
+                );
+              }
+            } else {
+              this.notificationService.showNotification(
+                'Failed to approve media',
+                'error'
+              );
+            }
+          },
+          error: (error: any) => {
+            console.error('Error approving media:', error);
+            this.notificationService.showNotification(
+              'Error approving media',
+              'error'
+            );
+          },
+        });
+      }
+    });
+  }
+  
   onUploadMedia(campaignId: string) {
     this.campaignService.getCampaignById(campaignId).subscribe({
       next: (response) => {

@@ -8,17 +8,18 @@ import { KeycloakOperationService } from 'src/app/core/services/keycloak.service
   providedIn: 'root',
 })
 export class CampaignService {
-      private baseApiUrl = environment.baseApiUrl;
+  private baseApiUrl = environment.baseApiUrl;
+
 
   constructor(
     private http: HttpClient,
     private keycloakOperationService: KeycloakOperationService
   ) {}
 
-  private appendOrganizationId(params: any = {}) {
+  private appendOrganizationId(params: HttpParams): HttpParams {
     const organizationId = this.keycloakOperationService.getOrganizationId();
     if (organizationId) {
-      params['organizationId'] = organizationId;
+      params = params.set('organizationId', organizationId);
     }
     return params;
   }
@@ -51,15 +52,14 @@ export class CampaignService {
   }
 
   getCustomerNames(): Observable<any> {
-    const params = this.appendOrganizationId();
-    return this.http.get(
-      `${this.baseApiUrl}/settings/campaign/getActiveCustomerNames`,
-      { params }
-    );
+    let params = new HttpParams();
+    params = this.appendOrganizationId(params);
+    return this.http.get(`${this.baseApiUrl}/settings/campaign/getActiveCustomerNames`, { params });
   }
 
   getExtraSlotSize(): Observable<any[]> {
-    const params = this.appendOrganizationId();
+    let params = new HttpParams();
+    params = this.appendOrganizationId(params);
     return this.http.get<any[]>(
       `${this.baseApiUrl}/settings/campaign/getActiveExtraSlotSize`,
       { params }
@@ -67,21 +67,32 @@ export class CampaignService {
   }
 
   getCategoryOptions(): Observable<any[]> {
-    const params = this.appendOrganizationId();
+    let params = new HttpParams();
+    params = this.appendOrganizationId(params);
     return this.http.get<any[]>(
       `${this.baseApiUrl}/settings/campaign/getActiveCategoryOptions`,
       { params }
     );
   }
 
-  getCampaigns(page: number = 1, limit: number = 10): Observable<any> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('limit', limit.toString());
-  
+  getCampaigns(
+    pageIndex: number = 0,
+    pageSize: number = 10,
+    search: string = '',
+    sortBy: string = 'createdDate',
+    sortOrder: string = 'desc'
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('pageIndex', pageIndex.toString())
+      .set('pageSize', pageSize.toString())
+      .set('search', search)
+      .set('sortBy', sortBy)
+      .set('sortOrder', sortOrder);
+
+    params = this.appendOrganizationId(params);
+
     return this.http.get<any>(`${this.baseApiUrl}/campaign`, { params });
   }
-  
 
   getDateOptions(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseApiUrl}/settings/campaign/date`);
@@ -98,18 +109,19 @@ export class CampaignService {
   }
 
   getSlotSizeOptions(): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.baseApiUrl}/settings/campaign/slotSize`
-    );
+    return this.http.get<any[]>(`${this.baseApiUrl}/settings/campaign/slotSize`);
   }
+
   getCampaignById(campaignId: string): Observable<any> {
     return this.http.get(`${this.baseApiUrl}/campaign/${campaignId}`);
   }
+
   getScreensByIds(screenIds: string[]): Observable<any> {
     return this.http.post(`${this.baseApiUrl}/screen/get-by-ids`, {
       screenIds,
     });
   }
+
   createCampaign(formData: FormData): Observable<any> {
     return this.http.post(`${this.baseApiUrl}/campaign/create`, formData);
   }
@@ -131,4 +143,10 @@ export class CampaignService {
       filters
     );
   }
+
+  updateLiveApproval(campaignId: string): Observable<any> {
+    const body = { campaignId };
+    return this.http.post(`${this.baseApiUrl}/campaign/campaign/live-approval`, body);
+  }
+  
 }

@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CampaignRoutingModule } from './campaign-routing.module';
 import { PlayMediaComponent } from './components/play-media/play-media.component';
 import { DateRangePickerDialogComponent } from './date-range-picker-dialog/date-range-picker-dialog.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { DateRangePickerDialogComponent } from './date-range-picker-dialog/date-
     CampaignUploadMediaComponent,
     CampaignListComponent,
     PlayMediaComponent,
-    DateRangePickerDialogComponent
+    DateRangePickerDialogComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     CommonModule,

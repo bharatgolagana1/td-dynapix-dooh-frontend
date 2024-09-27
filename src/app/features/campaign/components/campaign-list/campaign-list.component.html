@@ -1,10 +1,9 @@
 <div class="campaign-list-container">
   <mat-card>
     <div class="campaign--title">Campaign List</div>
-    
+
     <div class="campaign--table">
       <table mat-table [dataSource]="campaigns" class="mat-elevation-z0">
-    
         <ng-container matColumnDef="customerName">
           <mat-header-cell *matHeaderCellDef>Customer Name</mat-header-cell>
           <mat-cell *matCellDef="let campaign">
@@ -36,7 +35,7 @@
         <ng-container matColumnDef="actions">
           <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
           <mat-cell *matCellDef="let campaign">
-            <ng-container *ngIf="!campaign.isMediaUploaded; else uploaded">
+            <ng-container *ngIf="!campaign.isMediaUploaded; else mediaUploaded">
               <button
                 mat-raised-button
                 color="primary"
@@ -45,8 +44,25 @@
                 Upload Media
               </button>
             </ng-container>
-            <ng-template #uploaded>
+
+            <ng-template #mediaUploaded>
               <span style="color: green">Media is uploaded</span>
+
+              <ng-container *ngIf="!campaign.isLiveApproved; else approved">
+                <button
+                  mat-raised-button
+                  color="accent"
+                  (click)="onApproveMedia(campaign._id)"
+                >
+                  Approve Media
+                </button>
+              </ng-container>
+
+              <ng-template #approved>
+                <span style="color: green; margin-left: 2rem"
+                  >Media is approved</span
+                >
+              </ng-template>
             </ng-template>
           </mat-cell>
         </ng-container>
