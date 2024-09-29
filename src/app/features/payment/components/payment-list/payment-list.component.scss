@@ -10,4 +10,31 @@
 .payment-list-container {
     margin: 2rem;
     overflow: hidden;
+}
+.mat-header-cell {
+    background-color: #F7F7F7 !important;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    text-align: left;
+    color: #757fef;
     }
+.mat-cell {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    text-align: left;
+    color: #808080;
+    }
+.payment--table{
+     padding: 2rem;
+    }
+.payment-list-table-loader--container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100px;
+}

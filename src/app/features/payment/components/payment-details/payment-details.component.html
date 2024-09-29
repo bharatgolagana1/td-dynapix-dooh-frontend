@@ -1,1 +1,139 @@
-<p>payment-details works!</p>
+<div class="payment-details-main--container">
+  <mat-card class="payment-details--card">
+    <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+      <div class="payment-details-sub--container">
+        <div class="payment-details--title">Payment Details</div>
+      <div class="payment-details--content">
+        <!-- Customer Details -->
+        <mat-form-field appearance="outline">
+          <mat-label>Customer Name</mat-label>
+          <input matInput formControlName="customerName" [attr.disabled]="true" />
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+          <mat-label>Date Range</mat-label>
+          <mat-date-range-input formGroupName="dateRange">
+            <input matStartDate formControlName="startDate" placeholder="Start Date" />
+            <input matEndDate formControlName="endDate" placeholder="End Date" />
+          </mat-date-range-input>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>No of Screens</mat-label>
+          <input matInput formControlName="noOfScreens" [attr.disabled]="true" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Total Amount</mat-label>
+          <input matInput formControlName="totalAmount" [attr.disabled]="true" />
+        </mat-form-field>
+
+       
+      </div>
+    </div>
+      <mat-divider></mat-divider>
+      <!-- Transaction Section -->
+      <div class="payment-details-sub--container" *ngIf="!isPaymentComplete">
+        <div *ngIf="loaderService.loaderState | async" class="payment-details-spinner--overlay">
+          <div class="payment-details-spinner--container">
+            <mat-spinner></mat-spinner>
+            <p>Updating Payment</p>
+          </div>
+        </div>
+        <div class="payment-details-sub--title">Update Transactions</div>
+        <div class="payment-details--content">
+      
+          <mat-form-field appearance="outline">
+            <mat-label>Transaction ID</mat-label>
+            <input matInput formControlName="transactionId" required />
+          </mat-form-field>
+      
+
+          <mat-form-field appearance="outline">
+            <mat-label>Transaction Channel</mat-label>
+            <mat-select formControlName="transactionChannel" required>
+              <mat-option value="upi">UPI</mat-option>
+              <mat-option value="cash">Cash</mat-option>
+              <mat-option value="creditCard">Credit Card</mat-option>
+              <mat-option value="debitCard">Debit Card</mat-option> 
+            </mat-select>
+          </mat-form-field>
+          
+          
+          <mat-form-field appearance="outline">
+            <mat-label>Paid Amount</mat-label>
+            <input matInput formControlName="paidAmount" required (input)="calculateDueAmount()" />
+          </mat-form-field>
+      
+          <mat-form-field appearance="outline">
+            <mat-label>Due Amount</mat-label>
+            <input matInput formControlName="dueAmount" [attr.disabled]="true" />
+          </mat-form-field>
+      
+        </div>
+        <div class="payment-details-footer--content">
+          <button mat-raised-button color="primary" type="submit" [disabled]="paymentForm.invalid">
+            Update Transaction
+          </button>
+        </div>
+      </div>
+      
+      <div class="payment-details-sub--container">
+        <div class="payment-details-sub--title">Existing Transactions</div>
+      
+        <ng-container *ngIf="isLoadingTransactions; else transactionTable">
+          <!-- Loader for table content -->
+          <div class="payment-details-table-loader--container">
+            <mat-spinner></mat-spinner>
+            <p>Loading transactions...</p>
+          </div>
+        </ng-container>
+      
+        <ng-template #transactionTable>
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+            <!-- Transaction ID Column -->
+            <ng-container matColumnDef="transactionId">
+              <th mat-header-cell *matHeaderCellDef class="mat-header-cell"> Transaction ID </th>
+              <td mat-cell *matCellDef="let transaction" class="mat-cell"> {{transaction.transactionId}} </td>
+            </ng-container>
+      
+            <!-- Transaction Channel Column -->
+            <ng-container matColumnDef="transactionChannel">
+              <th mat-header-cell *matHeaderCellDef class="mat-header-cell"> Transaction Channel </th>
+              <td mat-cell *matCellDef="let transaction" class="mat-cell"> {{transaction.transactionChannel}} </td>
+            </ng-container>
+      
+            <!-- Transaction Date Column -->
+            <ng-container matColumnDef="transactionDate">
+              <th mat-header-cell *matHeaderCellDef class="mat-header-cell"> Transaction Date </th>
+              <td mat-cell *matCellDef="let transaction" class="mat-cell"> {{transaction.transactionDate | date: 'short'}} </td>
+            </ng-container>
+      
+            <!-- Paid Amount Column -->
+            <ng-container matColumnDef="paidAmount">
+              <th mat-header-cell *matHeaderCellDef class="mat-header-cell"> Paid Amount </th>
+              <td mat-cell *matCellDef="let transaction" class="mat-cell"> {{transaction.paidAmount}} </td>
+            </ng-container>
+      
+            <!-- Due Amount Column -->
+            <ng-container matColumnDef="dueAmount">
+              <th mat-header-cell *matHeaderCellDef class="mat-header-cell"> Due Amount </th>
+              <td mat-cell *matCellDef="let transaction" class="mat-cell"> {{transaction.dueAmount}} </td>
+            </ng-container>
+      
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+      
+          <ng-container *ngIf="dataSource.data.length === 0">
+            <div>No transactions found.</div>
+          </ng-container>
+        </ng-template>
+      </div>
+      
+      
+  </form>
+</mat-card>
+
+
+
