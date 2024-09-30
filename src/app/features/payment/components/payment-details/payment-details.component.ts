@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CampaignService } from 'src/app/features/campaign/campaign.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -25,16 +25,29 @@ export class PaymentDetailsComponent implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router, 
     private fb: FormBuilder,
     private campaignService: CampaignService,
     private paymentService: PaymentService,
     private dialog: MatDialog,
     public loaderService: LoaderService,
     private notificationService: NotificationService
+  ) {
     
-  ) {}
+    this.router.events.subscribe((event: any) => {
+      if (event instanceof NavigationEnd) {
+        this.ngOnInit(); 
+      }
+    });
+  }
 
   ngOnInit(): void {
+    this.isPaymentComplete = false;
+    this.showUpdateTransactionSection = true;
+    this.isLoadingTransactions = false;
+    this.existingTransactions = [];
+    this.dataSource.data = [];
+  
     this.paymentForm = this.fb.group({
       customerName: [{ value: '', disabled: true }],
       dateRange: this.fb.group({
@@ -48,13 +61,14 @@ export class PaymentDetailsComponent implements OnInit{
       transactionId: ['', [Validators.required]],
       transactionChannel: ['', [Validators.required]],
     });
-
+  
     this.campaignId = this.route.snapshot.paramMap.get('campaignId');
     if (this.campaignId) {
       this.fetchCampaignDetails(this.campaignId);
       this.fetchTransactions(this.campaignId);
     }
   }
+  
 
   fetchCampaignDetails(campaignId: string): void {
     this.campaignService.getCampaignById(campaignId).subscribe({
@@ -87,7 +101,8 @@ export class PaymentDetailsComponent implements OnInit{
           const totalPaidAmount = this.existingTransactions.reduce((acc, transaction) => acc + transaction.paidAmount, 0);
           const totalAmount = this.paymentForm.get('totalAmount')?.value || 0;
           const dueAmount = totalAmount - totalPaidAmount;
-          this.paymentForm.get('dueAmount')?.setValue(dueAmount);
+  
+          this.paymentForm.get('dueAmount')?.setValue(dueAmount >= 0 ? dueAmount : 0); 
           this.checkForCompletePayment(dueAmount);
         } else {
           this.existingTransactions = [];
@@ -97,13 +112,9 @@ export class PaymentDetailsComponent implements OnInit{
         }
   
         this.dataSource.data = this.existingTransactions;
-        if (this.existingTransactions.length > 0) {
+        setTimeout(() => {
           this.isLoadingTransactions = false;
-        } else {
-          setTimeout(() => {
-            this.isLoadingTransactions = true;
-          }, 2000);
-        }
+        }, 2000); 
       },
       error: (error) => {
         setTimeout(() => {
@@ -114,11 +125,12 @@ export class PaymentDetailsComponent implements OnInit{
       }
     });
   }
+  
 
   checkForCompletePayment(dueAmount: number): void {
     this.isPaymentComplete = dueAmount === 0;
+    this.showUpdateTransactionSection = !this.isPaymentComplete;
   }
-  
 
   calculateDueAmount(): void {
     const totalAmount = this.paymentForm.get('totalAmount')?.value || 0;
