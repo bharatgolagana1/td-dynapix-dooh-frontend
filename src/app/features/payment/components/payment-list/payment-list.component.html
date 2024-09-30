@@ -1,71 +1,75 @@
 <div class="payment-list-container">
   <mat-card>
     <div class="payment--title">Payment List</div>
-    <ng-container *ngIf="loaderService.loaderState | async">
-      <!-- Loader for table content -->
-      <div class="payment-list-table-loader--container">
-        <mat-spinner></mat-spinner>
-        <p>Payment Loading...</p>
-      </div>
-    </ng-container>
+
     <div class="payment--table">
-      <table mat-table [dataSource]="campaigns" class="mat-elevation-z0">
-        
-        <ng-container matColumnDef="customerName">
-          <mat-header-cell *matHeaderCellDef>Customer Name</mat-header-cell>
-          <mat-cell *matCellDef="let campaign">
-            {{ campaign.customerName }}
-          </mat-cell>
-        </ng-container>
+      <ng-container *ngIf="loaderService.loaderState | async; else tableContent">
+        <!-- Loader for table content -->
+        <div class="payment-list-table-loader--container">
+          <mat-spinner></mat-spinner>
+          <p>Payment Loading...</p>
+        </div>
+      </ng-container>
 
-        <ng-container matColumnDef="startDate">
-          <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
-          <mat-cell *matCellDef="let campaign">
-            {{ campaign.startDate | date }}
-          </mat-cell>
-        </ng-container>
+      <!-- Content for table -->
+      <ng-template #tableContent>
+        <table mat-table [dataSource]="campaigns" class="mat-elevation-z0">
+          <ng-container matColumnDef="customerName">
+            <mat-header-cell *matHeaderCellDef>Customer Name</mat-header-cell>
+            <mat-cell *matCellDef="let campaign">
+              {{ campaign.customerName }}
+            </mat-cell>
+          </ng-container>
 
-        <ng-container matColumnDef="endDate">
-          <mat-header-cell *matHeaderCellDef>End Date</mat-header-cell>
-          <mat-cell *matCellDef="let campaign">
-            {{ campaign.endDate | date }}
-          </mat-cell>
-        </ng-container>
+          <ng-container matColumnDef="startDate">
+            <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
+            <mat-cell *matCellDef="let campaign">
+              {{ campaign.startDate | date }}
+            </mat-cell>
+          </ng-container>
 
-        <ng-container matColumnDef="noOfScreens">
-          <mat-header-cell *matHeaderCellDef>No of Screens</mat-header-cell>
-          <mat-cell *matCellDef="let campaign">
-            {{ campaign.screenIds.length }}
-          </mat-cell>
-        </ng-container>
+          <ng-container matColumnDef="endDate">
+            <mat-header-cell *matHeaderCellDef>End Date</mat-header-cell>
+            <mat-cell *matCellDef="let campaign">
+              {{ campaign.endDate | date }}
+            </mat-cell>
+          </ng-container>
 
-        <ng-container matColumnDef="totalAmount">
-          <mat-header-cell *matHeaderCellDef>Total Amount</mat-header-cell>
-          <mat-cell *matCellDef="let campaign">
-            {{ campaign.totalAmount  }}
-          </mat-cell>
-        </ng-container>
+          <ng-container matColumnDef="noOfScreens">
+            <mat-header-cell *matHeaderCellDef>No of Screens</mat-header-cell>
+            <mat-cell *matCellDef="let campaign">
+              {{ campaign.screenIds.length }}
+            </mat-cell>
+          </ng-container>
 
-        <mat-header-row
-          *matHeaderRowDef="displayedColumns"
-          class="mat-header-cell"
-        ></mat-header-row>
-        <mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          class="mat-cell"
-          (click)="onRowClick(row)"
-          style="cursor: pointer;" 
-        ></mat-row>
-      </table>
+          <ng-container matColumnDef="totalAmount">
+            <mat-header-cell *matHeaderCellDef>Total Amount</mat-header-cell>
+            <mat-cell *matCellDef="let campaign">
+              {{ campaign.totalAmount }}
+            </mat-cell>
+          </ng-container>
 
-      <mat-paginator
-        [length]="totalItems"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="[5, 10, 20]"
-        showFirstLastButtons
-        (page)="onPageChange($event)"
-      >
-      </mat-paginator>
+          <mat-header-row
+            *matHeaderRowDef="displayedColumns"
+            class="mat-header-cell"
+          ></mat-header-row>
+          <mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            class="mat-cell"
+            (click)="onRowClick(row)"
+            style="cursor: pointer;"
+          ></mat-row>
+        </table>
+
+        <mat-paginator
+          [length]="totalItems"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+          (page)="onPageChange($event)"
+        >
+        </mat-paginator>
+      </ng-template>
     </div>
-   </mat-card>
+  </mat-card>
 </div>
