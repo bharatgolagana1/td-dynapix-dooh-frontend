@@ -74,10 +74,22 @@ export class CampaignService {
     );
   }
 
-  getCampaigns(page: number = 1, limit: number = 10): Observable<any> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('limit', limit.toString());
+  getCampaigns(
+    pageIndex: number = 0,
+    pageSize: number = 10,
+    search: string = '',
+    sortBy: string = 'createdDate',
+    sortOrder: string = 'desc'
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('pageIndex', pageIndex.toString())
+      .set('pageSize', pageSize.toString())
+      .set('search', search)
+      .set('sortBy', sortBy)
+      .set('sortOrder', sortOrder);
+
+    params = this.appendOrganizationId(params);
+
   
     return this.http.get<any>(`${this.baseApiUrl}/campaign`, { params });
   }
