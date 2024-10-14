@@ -41,7 +41,7 @@ export class CampaignListComponent implements OnInit {
 
   loadCampaigns() {
     this.loaderService.showLoader();
-    this.campaignService.getCampaigns(this.pageIndex + 1, this.pageSize).subscribe(
+    this.campaignService.getCampaigns(this.pageIndex, this.pageSize).subscribe(
       (response) => {
         this.campaigns = response.campaigns;
         this.totalItems = response.totalItems;
