@@ -213,6 +213,7 @@
         <mat-card class="edit-quote--card" *ngIf="showPreview" >
           <div class="edit-quote-card--container">
             <div class="edit-quote--title">Preview</div>
+            <div id="quote-preview">
             <div class="edit-quote-preview-header--content">
             <div class="edit-quote-card--name">{{ quoteForm.value.customerName }}</div>
             <div class="edit-quote-preview-sub--content"><p class="edit-quote-card--name">Date:</p> {{ quoteForm.value.dateRange.startDate | date:'mediumDate' }} - {{ quoteForm.value.dateRange.endDate | date:'mediumDate' }}</div>
@@ -275,7 +276,7 @@
               </ul>
             </div>
           </div>
-       
+        </div>
         </mat-card>
     </div>
     <div class="edit-quote-footer--content">
