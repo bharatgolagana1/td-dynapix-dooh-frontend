@@ -15,8 +15,8 @@ const routes: Routes = [
       import('./features/dashboard/dashboard.module').then(
         (m) => m.DashboardModule
       ),
-      canActivate: [AuthGuard, PermissionGuard],
-      data: { permission: 'view_dashboard' },
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { permission: 'view_dashboard' },
   },
   {
     path: AppRoutePaths.users,
@@ -31,15 +31,15 @@ const routes: Routes = [
       import('./features/schedulers/scheduler.module').then(
         (m) => m.SchedulerModule
       ),
-      canActivate: [AuthGuard, PermissionGuard],
-       data: { permission: 'View_Schedulers' },
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { permission: 'View_Schedulers' },
   },
   {
     path: AppRoutePaths.media,
     loadChildren: () =>
       import('./features/media/media.module').then((m) => m.MediaModule),
     canActivate: [AuthGuard, PermissionGuard],
-       data: { permission: 'View_Media' },
+    data: { permission: 'View_Media' },
   },
   {
     path: AppRoutePaths.defaultMedia,
@@ -52,9 +52,8 @@ const routes: Routes = [
     path: AppRoutePaths.screen,
     loadChildren: () =>
       import('./features/screen/screen.module').then((m) => m.ScreenModule),
-      canActivate: [AuthGuard, PermissionGuard],
-       data: { permission: 'View_Screens' },
-    
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { permission: 'View_Screens' },
   },
   {
     path: AppRoutePaths.updateScreen,
@@ -77,8 +76,8 @@ const routes: Routes = [
       import('./features/organization/organization.module').then(
         (m) => m.OrganizationModule
       ),
-      canActivate: [AuthGuard, PermissionGuard],
-      data: { permission: 'View_Organization' },
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { permission: 'View_Organization' },
   },
   {
     path: AppRoutePaths.booking,
@@ -93,8 +92,8 @@ const routes: Routes = [
       import('./features/campaign/campaign.module').then(
         (m) => m.CampaignModule
       ),
-      canActivate: [AuthGuard, PermissionGuard],
-      data: { permission: 'View_Campaign' },
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { permission: 'list_campaign' },
   },
   {
     path: AppRoutePaths.quote,
@@ -113,8 +112,8 @@ const routes: Routes = [
       import('./features/settings/settings.module').then(
         (m) => m.SettingsModule
       ),
-      canActivate: [AuthGuard, PermissionGuard],
-      data: { permission: 'View_Settings' },
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { permission: 'View_Settings' },
   },
   {
     path: AppRoutePaths.generate,
@@ -122,17 +121,15 @@ const routes: Routes = [
       import('./features/ai-generator/ai-generator-routing.module').then(
         (m) => m.AIGeneratorRoutingModule
       ),
-      canActivate: [AuthGuard, PermissionGuard],
-      data: { permission: 'View_Generate' },
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { permission: 'View_Generate' },
   },
   {
     path: AppRoutePaths.payment,
     loadChildren: () =>
-      import('./features/payment/payment.module').then(
-        (m) => m.PaymentModule
-      ),
-      canActivate: [AuthGuard, PermissionGuard],
-      data: { permission: 'View_Payment' },
+      import('./features/payment/payment.module').then((m) => m.PaymentModule),
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { permission: 'View_Payment' },
   },
   {
     path: 'page-not-found',

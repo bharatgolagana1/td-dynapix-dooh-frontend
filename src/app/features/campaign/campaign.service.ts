@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { KeycloakOperationService } from 'src/app/core/services/keycloak.service';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CampaignService {
-      private baseApiUrl = environment.baseApiUrl;
+  private baseApiUrl = environment.baseApiUrl;
 
   constructor(
     private http: HttpClient,
-    private keycloakOperationService: KeycloakOperationService
+    private keycloakOperationService: KeycloakOperationService,
+    private userService: UserService
   ) {}
 
   private appendOrganizationId(params: any = {}) {
@@ -24,9 +26,17 @@ export class CampaignService {
   }
 
   searchScreensByName(screenName: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseApiUrl}/campaign/search`, {
-      params: { screenName },
-    });
+    console.log('customer name', this.userService.getCustomerName());
+    return combineLatest([this.userService.getCustomerName()]).pipe(
+      switchMap(([customerName]) => {
+        const params = new HttpParams()
+          .set('screenName', screenName)
+          .set('customerName', customerName || '');
+        return this.http.get<any[]>(`${this.baseApiUrl}/campaign/search`, {
+          params,
+        });
+      })
+    );
   }
 
   getScreenDetailsByName(screenName: string): Observable<any[]> {
@@ -81,19 +91,22 @@ export class CampaignService {
     sortBy: string = 'createdDate',
     sortOrder: string = 'desc'
   ): Observable<any> {
-    let params = new HttpParams()
-      .set('pageIndex', pageIndex.toString())
-      .set('pageSize', pageSize.toString())
-      .set('search', search)
-      .set('sortBy', sortBy)
-      .set('sortOrder', sortOrder);
+    return combineLatest([this.userService.getCustomerName()]).pipe(
+      switchMap(([customerName]) => {
+        let params = new HttpParams()
+          .set('pageIndex', pageIndex.toString())
+          .set('pageSize', pageSize.toString())
+          .set('search', search)
+          .set('sortBy', sortBy)
+          .set('sortOrder', sortOrder)
+          .set('customerName', customerName || ''); // Add customerName
 
-    params = this.appendOrganizationId(params);
+        params = this.appendOrganizationId(params);
 
-  
-    return this.http.get<any>(`${this.baseApiUrl}/campaign`, { params });
+        return this.http.get<any>(`${this.baseApiUrl}/campaign`, { params });
+      })
+    );
   }
-  
 
   getDateOptions(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseApiUrl}/settings/campaign/date`);
@@ -138,9 +151,12 @@ export class CampaignService {
   }
 
   approveCampaignMedia(campaignId: string) {
-    return this.http.post<any>(`${this.baseApiUrl}/campaign/campaign/live-approval`, { campaignId });
+    return this.http.post<any>(
+      `${this.baseApiUrl}/campaign/campaign/live-approval`,
+      { campaignId }
+    );
   }
-  
+
   screensList(filters: any): Observable<any> {
     return this.http.post(
       `${this.baseApiUrl}/screen/api/available-screens`,

@@ -16,7 +16,9 @@ export class PermissionsService {
   }
 
   getPermissionsByRole(roleId: string): Observable<Permission[]> {
-    return this.http.get<Permission[]>(`${this.baseUrl}/api/permissions/role/${roleId}`);
+    return this.http.get<Permission[]>(
+      `${this.baseUrl}/api/permissions/role/${roleId}`
+    );
   }
 
   updatePermissions(data: any): Observable<void> {
@@ -38,7 +40,7 @@ export class PermissionsService {
   }
 
   hasAnyPermission(taskValues: string[]): boolean {
-    return taskValues.some(taskValue => this.hasPermission(taskValue));
+    return taskValues.some((taskValue) => this.hasPermission(taskValue));
   }
 
   private loadPermissionsFromStorage(): void {

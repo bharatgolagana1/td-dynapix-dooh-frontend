@@ -20,7 +20,7 @@ interface SubNavState {
   settings: boolean;
   quote: boolean;
   campaign: boolean;
-  publicCase:boolean
+  publicCase: boolean;
   generate: boolean;
   payment: boolean;
 }
@@ -44,9 +44,9 @@ export class AppComponent implements OnInit {
     settings: false,
     quote: false,
     campaign: false,
-    publicCase:false,
+    publicCase: false,
     generate: false,
-    payment:false,
+    payment: false,
   };
   isSidenavOpened = true;
   isSmallScreen = false;
@@ -92,7 +92,7 @@ export class AppComponent implements OnInit {
 
     if (this.isLoggedIn) {
       this.userProfile = await this.keycloak.loadUserProfile();
-      this.router.navigate([`${window.location.origin}/dashboard`]);
+      this.router.navigate(['/dashboard']);
 
       this.KeycloakOperationService.getUserData().subscribe(
         (data) => {
@@ -148,7 +148,7 @@ export class AppComponent implements OnInit {
     return this.subNavState[navName];
   }
 
-    hasPermission(taskValue: string): boolean {
-      return this.permissionsService.hasPermission(taskValue);
-    }
+  hasPermission(taskValue: string): boolean {
+    return this.permissionsService.hasPermission(taskValue);
+  }
 }

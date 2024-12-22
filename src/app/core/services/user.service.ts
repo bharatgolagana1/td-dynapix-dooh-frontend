@@ -12,6 +12,7 @@ export class UserService {
   private organizationId = new BehaviorSubject<string | null>(null);
   private userEmail = new BehaviorSubject<string | null>(null);
   private userId = new BehaviorSubject<string | null>(null);
+  private customerName = new BehaviorSubject<string | null>(null);
   constructor(private http: HttpClient) {
     this.loadUserData();
   }
@@ -19,10 +20,15 @@ export class UserService {
     this.organizationId.next(orgId);
   }
 
+  getCustomerName(): Observable<string | null> {
+    return this.customerName.asObservable();
+  }
+
   loadOrgData(data: any) {
     this.organizationId.next(data.organizationId);
     this.userEmail.next(data.email);
     this.userId.next(data.username);
+    this.customerName.next(data?.customerName);
   }
 
   loadUserData(): Observable<string | null> {
@@ -33,6 +39,7 @@ export class UserService {
           this.organizationId.next(orgId);
           this.userEmail.next(response.email);
           this.userId.next(response.username);
+          this.customerName.next(response?.customerName);
           sessionStorage.setItem('orgId', orgId);
           return orgId;
         })
@@ -49,16 +56,19 @@ export class UserService {
     organizationId: string | null;
     userId: string | null;
     userEmail: string | null;
+    customerName: string | null;
   }> {
     return combineLatest([
       this.organizationId.asObservable(),
       this.userId.asObservable(),
       this.userEmail.asObservable(),
+      this.customerName.asObservable(),
     ]).pipe(
-      map(([organizationId, userId, userEmail]) => ({
+      map(([organizationId, userId, userEmail, customerName]) => ({
         organizationId,
         userId,
         userEmail,
+        customerName,
       }))
     );
   }
