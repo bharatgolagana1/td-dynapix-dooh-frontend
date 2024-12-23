@@ -68,6 +68,7 @@ export class CreateCampaignComponent implements OnInit, AfterViewInit {
     { value: 'Horizontal', label: 'Horizontal' },
     { value: 'Vertical', label: 'Vertical' },
   ];
+  tags: string[] = [];
 
   selectedDates: { screenId: string; dates: Date[] }[] = [];
 
@@ -98,6 +99,7 @@ export class CreateCampaignComponent implements OnInit, AfterViewInit {
       }),
       screenIds: new FormControl([], [Validators.required]),
       extraSlotSize: [''],
+      tags: new FormControl([], []),
     });
   }
 
@@ -226,7 +228,9 @@ export class CreateCampaignComponent implements OnInit, AfterViewInit {
 
     formData.append('startDate', formValues.dateRange.startDate);
     formData.append('endDate', formValues.dateRange.endDate);
-
+    if (this.campaignForm.value?.tags?.length > 0) {
+      formData.append('tags', JSON.stringify(this.campaignForm.value.tags));
+    }
     if (formValues.extraSlotSize) {
       formData.append('extraSlotSize', formValues.extraSlotSize);
     }
@@ -268,11 +272,33 @@ export class CreateCampaignComponent implements OnInit, AfterViewInit {
       },
       screenIds: [],
       extraSlotSize: '',
+      tags: [],
     });
     this.screens = [];
     this.selectedDates = [];
 
     // Optional: Only reload screens if needed
     // this.loadScreens();
+  }
+
+  addTag(event: any): void {
+    const input = event.input;
+    const value = event.value;
+    if ((value || '').trim()) {
+      this.tags.push(value.trim());
+    }
+    if (input) {
+      input.value = '';
+    }
+    this.campaignForm.get('tags')?.setValue(this.tags);
+  }
+
+  removeTag(tag: string): void {
+    const index = this.tags.indexOf(tag);
+
+    if (index >= 0) {
+      this.tags.splice(index, 1);
+    }
+    this.campaignForm.get('tags')?.setValue(this.tags);
   }
 }
